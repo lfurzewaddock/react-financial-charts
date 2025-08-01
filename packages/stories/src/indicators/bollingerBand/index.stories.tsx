@@ -1,4 +1,4 @@
-import { Story } from "@storybook/react";
+import { StoryFn } from "@storybook/react";
 import * as React from "react";
 import { BollingerSeries, BollingerSeriesProps } from "../../../../series/src/BollingerSeries";
 import BollingerIndicator from "./BollingerIndicator";
@@ -12,6 +12,6 @@ export default {
     },
 };
 
-const Template: Story<BollingerSeriesProps> = ({ fillStyle }) => <BollingerIndicator fillStyle={fillStyle} />;
+const Template: StoryFn<BollingerSeriesProps> = ({ fillStyle }) => <BollingerIndicator fillStyle={fillStyle} />;
 
 export const basic = Template.bind({});

@@ -21,7 +21,7 @@ interface ChartProps {
     readonly height: number;
     readonly ratio: number;
     readonly width: number;
-    readonly zoomAnchor?: (options: IZoomAnchorOptions<any>) => number | Date;
+    readonly zoomAnchor?: (options: IZoomAnchorOptions<any, any>) => number | Date;
 }
 
 class Interaction extends React.Component<ChartProps> {

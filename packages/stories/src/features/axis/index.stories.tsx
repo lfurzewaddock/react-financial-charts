@@ -1,4 +1,4 @@
-import { Story } from "@storybook/react";
+import { StoryFn } from "@storybook/react";
 import * as React from "react";
 import { YAxis, YAxisProps } from "../../../../axes/src/YAxis";
 import AxisExample from "./Axis";
@@ -20,6 +20,6 @@ export default {
     },
 };
 
-const Template: Story<YAxisProps> = (args) => <AxisExample {...args} />;
+const Template: StoryFn<YAxisProps> = (args) => <AxisExample {...args} />;
 
 export const yAxis = Template.bind({});

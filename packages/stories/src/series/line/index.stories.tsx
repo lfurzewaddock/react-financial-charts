@@ -1,4 +1,4 @@
-import { Story } from "@storybook/react";
+import { StoryFn } from "@storybook/react";
 import * as React from "react";
 import { LineSeries, LineSeriesProps } from "../../../../series/src/LineSeries";
 import { Daily, Intraday } from "./BasicLineSeries";
@@ -11,10 +11,10 @@ export default {
     },
 };
 
-const Template: Story<LineSeriesProps> = (args) => <Daily {...args} />;
+const Template: StoryFn<LineSeriesProps> = (args) => <Daily {...args} />;
 
 export const daily = Template.bind({});
 
-const IntradayTemplate: Story<LineSeriesProps> = (args) => <Intraday {...args} />;
+const IntradayTemplate: StoryFn<LineSeriesProps> = (args) => <Intraday {...args} />;
 
 export const intraday = IntradayTemplate.bind({});
