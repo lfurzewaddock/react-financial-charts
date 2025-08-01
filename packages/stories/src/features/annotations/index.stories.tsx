@@ -1,4 +1,4 @@
-import { Story } from "@storybook/react";
+import { StoryFn } from "@storybook/react";
 import * as React from "react";
 import { Label, LabelProps } from "../../../../annotations/src/Label";
 import Annotations from "./Annotations";
@@ -16,6 +16,6 @@ export default {
     },
 };
 
-const Template: Story<LabelProps> = (args) => <Annotations {...args} />;
+const Template: StoryFn<LabelProps> = (args) => <Annotations {...args} />;
 
 export const background = Template.bind({});

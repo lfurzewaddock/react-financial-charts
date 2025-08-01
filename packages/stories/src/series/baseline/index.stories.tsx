@@ -1,4 +1,4 @@
-import { Story } from "@storybook/react";
+import { StoryFn } from "@storybook/react";
 import * as React from "react";
 import {
     AlternatingFillAreaSeries,
@@ -20,10 +20,10 @@ export default {
     },
 };
 
-const Template: Story<AlternatingFillAreaSeriesProps> = (args) => <Daily {...args} />;
+const Template: StoryFn<AlternatingFillAreaSeriesProps> = (args) => <Daily {...args} />;
 
 export const daily = Template.bind({});
 
-const IntradayTemplate: Story<AlternatingFillAreaSeriesProps> = (args) => <Intraday {...args} />;
+const IntradayTemplate: StoryFn<AlternatingFillAreaSeriesProps> = (args) => <Intraday {...args} />;
 
 export const intraday = IntradayTemplate.bind({});
