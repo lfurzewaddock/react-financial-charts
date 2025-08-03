@@ -1,7 +1,7 @@
 {
     "packages": ["packages/*"],
     "version": "2.0.1",
-    "npmClient": "npm",
+    "npmClient": "pnpm",
     "command": {
         "bootstrap": {
             "hoist": true

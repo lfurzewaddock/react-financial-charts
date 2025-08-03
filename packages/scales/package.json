@@ -32,7 +32,7 @@
         "url": "https://github.com/reactivemarkets/react-financial-charts/issues"
     },
     "scripts": {
-        "build": "npm run clean && npm run compile",
+        "build": "pnpm run clean && pnpm run compile",
         "clean": "rimraf lib",
         "compile": "tsc -p tsconfig.json",
         "watch": "tsc -p tsconfig.json --watch --preserveWatchOutput"
@@ -46,5 +46,8 @@
     "peerDependencies": {
         "react": "^16.0.0 || ^17.0.0 || ^18.0.0",
         "react-dom": "^16.0.0 || ^17.0.0 || ^18.0.0"
+    },
+    "devDependencies": {
+        "@types/d3": "^3.5.53"
     }
 }
