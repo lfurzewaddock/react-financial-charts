@@ -3,7 +3,7 @@ import { StorybookConfig } from "@storybook/react-webpack5";
 
 const config: StorybookConfig = {
     addons: [
-        getAbsolutePath("@storybook/addon-essentials"),
+        getAbsolutePath("@storybook/addon-docs"),
         getAbsolutePath("@chromatic-com/storybook"),
         getAbsolutePath("@storybook/addon-webpack5-compiler-babel"),
     ],
@@ -30,10 +30,6 @@ const config: StorybookConfig = {
             strictMode: true,
             fastRefresh: true,
         },
-    },
-
-    docs: {
-        autodocs: true,
     },
 
     typescript: {

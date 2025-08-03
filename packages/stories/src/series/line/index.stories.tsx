@@ -1,4 +1,4 @@
-import { StoryFn } from "@storybook/react";
+import { StoryFn } from "@storybook/react-webpack5";
 import * as React from "react";
 import { LineSeries, LineSeriesProps } from "../../../../series/src/LineSeries";
 import { Daily, Intraday } from "./BasicLineSeries";

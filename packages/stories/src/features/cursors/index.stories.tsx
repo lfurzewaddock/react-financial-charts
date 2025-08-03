@@ -1,4 +1,4 @@
-import { StoryFn } from "@storybook/react";
+import { StoryFn } from "@storybook/react-webpack5";
 import * as React from "react";
 import { Cursor, CursorProps } from "../../../../coordinates/src/Cursor";
 import Cursors from "./Cursors";
