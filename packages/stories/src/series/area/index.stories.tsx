@@ -1,4 +1,4 @@
-import { StoryFn } from "@storybook/react";
+import { StoryFn } from "@storybook/react-webpack5";
 import * as React from "react";
 import { AreaSeries, AreaSeriesProps } from "../../../../series/src/AreaSeries";
 import { Daily, Intraday } from "./BasicAreaSeries";

@@ -1,4 +1,4 @@
-import { Preview } from '@storybook/react';
+import { Preview } from '@storybook/react-webpack5';
 
 const preview: Preview = {
     parameters: {
@@ -7,6 +7,9 @@ const preview: Preview = {
             storySort: {
                 order: ["Introduction", "Features", "Visualization"],
             },
+        },
+        docs: {
+            codePanel: true,
         },
     },
     tags: ["autodocs"],
