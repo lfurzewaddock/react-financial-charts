@@ -56,7 +56,7 @@ The aim with this project is create financial charts that work out of the box.
 ## Installation
 
 ```sh
-npm install react-financial-charts
+pnpm install react-financial-charts
 ```
 
 ## Documentation
@@ -69,19 +69,21 @@ Refer to [CONTRIBUTING.md](./CONTRIBUTING.md)
 
 This project is a mono-repo that uses [Lerna](https://lerna.js.org/) to manage dependencies between packages.
 
+Note: Lerna is configured to use [PNPm](https://pnpm.io/installation) package manager 
+
 To get started run:
 
 ```bash
 git clone https://github.com/react-financial/react-financial-charts.git
 cd react-financial-charts
-npm ci
-npm run build
+pnpm i --frozen-lockfile
+pnpm run build
 ```
 
 To start up a development server run:
 
 ```bash
-npm start
+pnpm start
 ```
 
 ## Roadmap

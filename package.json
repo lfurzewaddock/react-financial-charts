@@ -26,17 +26,14 @@
     "start": "run-p watch start:stories",
     "start:stories": "lerna run start --stream",
     "test": "lerna run test --stream",
-    "prestart": "npm run build",
-    "prepublishOnly": "npm run build",
+    "prestart": "pnpm run build",
+    "prepublishOnly": "pnpm run build",
     "publish": "lerna publish from-package --yes",
     "release": "lerna version --yes",
     "release:pre": "lerna version --conventional-prerelease --yes",
     "release:grad": "lerna version --conventional-graduate --yes",
     "watch": "lerna run watch --parallel"
   },
-  "workspaces": [
-    "packages/*"
-  ],
   "devDependencies": {
     "@babel/core": "^7.13.1",
     "@babel/plugin-transform-typescript": "^7.26.8",
@@ -63,6 +60,7 @@
     "@types/d3-scale": "^3.2.2",
     "@types/d3-selection": "^2.0.0",
     "@types/d3-shape": "^2.0.0",
+    "@types/d3-time": "^3.0.4",
     "@types/d3-time-format": "^3.0.0",
     "@types/lodash.flattendeep": "^4.4.6",
     "@types/react": "^17.0.2",
