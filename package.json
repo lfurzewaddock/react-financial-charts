@@ -47,7 +47,7 @@
     "@storybook/addon-webpack5-compiler-babel": "^3.0.6",
     "@storybook/cli": "^9.1.0",
     "@storybook/react-webpack5": "^9.1.0",
-    "@types/d3-array": "^2.9.0",
+    "@types/d3-array": "^3.2.1",
     "@types/d3-dsv": "^2.0.1",
     "@types/d3-force": "^3.0.10",
     "@types/d3-format": "^2.0.0",
