@@ -103,8 +103,8 @@ importers:
         specifier: ^3.2.2
         version: 3.3.5
       '@types/d3-selection':
-        specifier: ^2.0.0
-        version: 2.0.5
+        specifier: ^3.0.11
+        version: 3.0.11
       '@types/d3-shape':
         specifier: ^2.0.0
         version: 2.1.7
@@ -211,8 +211,8 @@ importers:
         specifier: ^3.2.3
         version: 3.3.0
       d3-selection:
-        specifier: ^2.0.0
-        version: 2.0.0
+        specifier: ^3.0.0
+        version: 3.0.0
       react:
         specifier: ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
         version: 19.1.1
@@ -290,8 +290,8 @@ importers:
         specifier: ^3.2.3
         version: 3.3.0
       d3-selection:
-        specifier: ^2.0.0
-        version: 2.0.0
+        specifier: ^3.0.0
+        version: 3.0.0
       lodash.flattendeep:
         specifier: ^4.4.0
         version: 4.4.0
@@ -1714,8 +1714,8 @@ packages:
   '@types/d3-scale@3.3.5':
     resolution: {integrity: sha512-YOpKj0kIEusRf7ofeJcSZQsvKbnTwpe1DUF+P2qsotqG53kEsjm7EzzliqQxMkAWdkZcHrg5rRhB4JiDOQPX+A==}
 
-  '@types/d3-selection@2.0.5':
-    resolution: {integrity: sha512-71BorcY0yXl12S7lvb01JdaN9TpeUHBDb4RRhSq8U8BEkX/nIk5p7Byho+ZRTsx5nYLMpAbY3qt5EhqFzfGJlw==}
+  '@types/d3-selection@3.0.11':
+    resolution: {integrity: sha512-bhAXu23DJWsrI45xafYpkQ4NtcKMwWnAC/vKrd2l+nxMFuvOT3XMYTIj2opv8vq8AO5Yh7Qac/nSeP/3zjTK0w==}
 
   '@types/d3-shape@2.1.7':
     resolution: {integrity: sha512-HedHlfGHdwzKqX9+PiQVXZrdmGlwo7naoefJP7kCNk4Y7qcpQt1tUaoRa6qn0kbTdlaIHGO7111qLtb/6J8uuw==}
@@ -2545,8 +2545,9 @@ packages:
   d3-scale@3.3.0:
     resolution: {integrity: sha512-1JGp44NQCt5d1g+Yy+GeOnZP7xHo0ii8zsQp6PGzd+C1/dl0KGsp9A7Mxwp+1D1o4unbTTxVdU/ZOIEBoeZPbQ==}
 
-  d3-selection@2.0.0:
-    resolution: {integrity: sha512-XoGGqhLUN/W14NmaqcO/bb1nqjDAw5WtSYb2X8wiuQWvSZUsUVYsOSkOybUrNvcBjaywBdYPy03eXHMXjk9nZA==}
+  d3-selection@3.0.0:
+    resolution: {integrity: sha512-fmTRWbNMmsmWq6xJV8D19U/gw/bwrHfNXxrIN+HfZgnzqTHp9jOmKMhsTUjXOJnZOdZY9Q28y4yebKzqDKlxlQ==}
+    engines: {node: '>=12'}
 
   d3-shape@2.1.0:
     resolution: {integrity: sha512-PnjUqfM2PpskbSLTJvAzp2Wv4CZsnAgTfcVRTwW03QR3MkXF8Uo7B1y/lWkAsmbKwuecto++4NlsYcvYpXpTHA==}
@@ -7035,7 +7036,7 @@ snapshots:
     dependencies:
       '@types/d3-time': 2.1.4
 
-  '@types/d3-selection@2.0.5': {}
+  '@types/d3-selection@3.0.11': {}
 
   '@types/d3-shape@2.1.7':
     dependencies:
@@ -7961,7 +7962,7 @@ snapshots:
       d3-time: 2.1.1
       d3-time-format: 3.0.0
 
-  d3-selection@2.0.0: {}
+  d3-selection@3.0.0: {}
 
   d3-shape@2.1.0:
     dependencies:
