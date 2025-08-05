@@ -11,7 +11,7 @@
         "start": "storybook dev -p 4444"
     },
     "dependencies": {
-        "d3-dsv": "^2.0.0",
+        "d3-dsv": "^3.0.1",
         "d3-format": "^3.1.0",
         "d3-time-format": "^4.1.0",
         "react": "^19.1.1",
