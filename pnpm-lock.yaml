@@ -10,40 +10,40 @@ importers:
     dependencies:
       '@react-financial-charts/annotations':
         specifier: file:packages/annotations
-        version: file:packages/annotations(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: link:packages/annotations
       '@react-financial-charts/axes':
         specifier: file:packages/axes
-        version: file:packages/axes(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: link:packages/axes
       '@react-financial-charts/coordinates':
         specifier: file:packages/coordinates
-        version: file:packages/coordinates(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: link:packages/coordinates
       '@react-financial-charts/core':
         specifier: file:packages/core
-        version: file:packages/core(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: link:packages/core
       '@react-financial-charts/indicators':
         specifier: file:packages/indicators
-        version: file:packages/indicators(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: link:packages/indicators
       '@react-financial-charts/interactive':
         specifier: file:packages/interactive
-        version: file:packages/interactive(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: link:packages/interactive
       '@react-financial-charts/scales':
         specifier: file:packages/scales
-        version: file:packages/scales(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: link:packages/scales
       '@react-financial-charts/series':
         specifier: file:packages/series
-        version: file:packages/series(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: link:packages/series
       '@react-financial-charts/stories':
         specifier: file:packages/stories
         version: link:packages/stories
       '@react-financial-charts/tooltip':
         specifier: file:packages/tooltip
-        version: file:packages/tooltip(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: link:packages/tooltip
       '@react-financial-charts/utils':
         specifier: file:packages/utils
-        version: file:packages/utils(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: link:packages/utils
       react-financial-charts:
         specifier: file:packages/charts
-        version: file:packages/charts(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: link:packages/charts
     devDependencies:
       '@babel/core':
         specifier: ^7.28.0
@@ -80,7 +80,7 @@ importers:
         version: 9.1.1(@babel/preset-env@7.28.0(@babel/core@7.28.0))(@testing-library/dom@10.4.1)(prettier@3.6.2)
       '@storybook/react-webpack5':
         specifier: ^9.1.0
-        version: 9.1.1(esbuild@0.25.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@9.1.1(@testing-library/dom@10.4.1)(prettier@3.6.2))(typescript@5.9.2)
+        version: 9.1.1(esbuild@0.25.8)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(storybook@9.1.1(@testing-library/dom@10.4.1)(prettier@3.6.2))(typescript@5.9.2)
       '@types/d3-array':
         specifier: ^3.2.1
         version: 3.2.1
@@ -91,8 +91,8 @@ importers:
         specifier: ^3.0.10
         version: 3.0.10
       '@types/d3-format':
-        specifier: ^2.0.0
-        version: 2.0.5
+        specifier: ^3.0.4
+        version: 3.0.4
       '@types/d3-interpolate':
         specifier: ^2.0.0
         version: 2.0.5
@@ -263,8 +263,8 @@ importers:
         specifier: file:../core
         version: link:../core
       d3-format:
-        specifier: ^2.0.0
-        version: 2.0.0
+        specifier: ^3.1.0
+        version: 3.1.0
       react:
         specifier: ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
         version: 19.1.1
@@ -324,8 +324,8 @@ importers:
         specifier: ^3.2.4
         version: 3.2.4
       d3-format:
-        specifier: ^2.0.0
-        version: 2.0.0
+        specifier: ^3.1.0
+        version: 3.1.0
       d3-interpolate:
         specifier: ^2.0.1
         version: 2.0.1
@@ -391,8 +391,8 @@ importers:
         specifier: ^2.0.0
         version: 2.0.0
       d3-format:
-        specifier: ^2.0.0
-        version: 2.0.0
+        specifier: ^3.1.0
+        version: 3.1.0
       d3-time-format:
         specifier: ^3.0.0
         version: 3.0.0
@@ -419,8 +419,8 @@ importers:
         specifier: ^3.2.4
         version: 3.2.4
       d3-format:
-        specifier: ^2.0.0
-        version: 2.0.0
+        specifier: ^3.1.0
+        version: 3.1.0
       d3-time-format:
         specifier: ^3.0.0
         version: 3.0.0
@@ -1507,66 +1507,6 @@ packages:
     resolution: {integrity: sha512-QNqXyfVS2wm9hweSYD2O7F0G06uurj9kZ96TRQE5Y9hU7+tgdZwIkbAKc5Ocy1HxEY2kuDQa6cQ1WRs/O5LFKA==}
     engines: {node: ^12.20.0 || ^14.18.0 || >=16.0.0}
 
-  '@react-financial-charts/annotations@file:packages/annotations':
-    resolution: {directory: packages/annotations, type: directory}
-    peerDependencies:
-      react: ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-      react-dom: ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-
-  '@react-financial-charts/axes@file:packages/axes':
-    resolution: {directory: packages/axes, type: directory}
-    peerDependencies:
-      react: ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-      react-dom: ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-
-  '@react-financial-charts/coordinates@file:packages/coordinates':
-    resolution: {directory: packages/coordinates, type: directory}
-    peerDependencies:
-      react: ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-      react-dom: ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-
-  '@react-financial-charts/core@file:packages/core':
-    resolution: {directory: packages/core, type: directory}
-    peerDependencies:
-      react: ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-      react-dom: ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-
-  '@react-financial-charts/indicators@file:packages/indicators':
-    resolution: {directory: packages/indicators, type: directory}
-    peerDependencies:
-      react: ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-      react-dom: ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-
-  '@react-financial-charts/interactive@file:packages/interactive':
-    resolution: {directory: packages/interactive, type: directory}
-    peerDependencies:
-      react: ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-      react-dom: ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-
-  '@react-financial-charts/scales@file:packages/scales':
-    resolution: {directory: packages/scales, type: directory}
-    peerDependencies:
-      react: ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-      react-dom: ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-
-  '@react-financial-charts/series@file:packages/series':
-    resolution: {directory: packages/series, type: directory}
-    peerDependencies:
-      react: ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-      react-dom: ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-
-  '@react-financial-charts/tooltip@file:packages/tooltip':
-    resolution: {directory: packages/tooltip, type: directory}
-    peerDependencies:
-      react: ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-      react-dom: ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-
-  '@react-financial-charts/utils@file:packages/utils':
-    resolution: {directory: packages/utils, type: directory}
-    peerDependencies:
-      react: ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-      react-dom: ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-
   '@sigstore/bundle@2.3.2':
     resolution: {integrity: sha512-wueKWDk70QixNLB363yHc2D2ItTgYiMTdPwK8D9dKQMR3ZQ0c35IxP5xnwQ8cNLoCgCRcHf14kE+CLIvNX1zmA==}
     engines: {node: ^16.14.0 || >=18.0.0}
@@ -1750,8 +1690,8 @@ packages:
   '@types/d3-force@3.0.10':
     resolution: {integrity: sha512-ZYeSaCF3p73RdOKcjj+swRlZfnYpK1EbaDiYICEEp5Q6sUiqFaFQ9qgoshp5CzIyyb/yD09kD9o2zEltCexlgw==}
 
-  '@types/d3-format@2.0.5':
-    resolution: {integrity: sha512-ntJZQfz4BK8m53vkUVk+3PE7PHr9esrfVkClxebcMNP/4N1F0rPdzv9hKNqx2gZBRHSYg1kQumeUDIrHDpQGwQ==}
+  '@types/d3-format@3.0.4':
+    resolution: {integrity: sha512-fALi2aI6shfg7vM5KiR1wNJnZ7r6UuggVqtDA+xiEdPZQwy/trcQaHnwShLuLdta2rTymCNpxYTiMZX/e09F4g==}
 
   '@types/d3-interpolate@2.0.5':
     resolution: {integrity: sha512-UINE41RDaUMbulp+bxQMDnhOi51rh5lA2dG+dWZU0UY/IwQiG/u2x8TfnWYU9+xwGdXsJoAvrBYUEQl0r91atg==}
@@ -2581,8 +2521,9 @@ packages:
     resolution: {integrity: sha512-zxV/SsA+U4yte8051P4ECydjD/S+qeYtnaIyAs9tgHCqfguma/aAQDjo85A9Z6EKhBirHRJHXIgJUlffT4wdLg==}
     engines: {node: '>=12'}
 
-  d3-format@2.0.0:
-    resolution: {integrity: sha512-Ab3S6XuE/Q+flY96HXT0jOXcM4EAClYFnRGY5zsjRGNy6qCYrQsMffs7cV5Q9xejb35zxW5hf/guKw34kvIKsA==}
+  d3-format@3.1.0:
+    resolution: {integrity: sha512-YyUI6AEuY/Wpt8KWLgZHsIU86atmikuoOmCfommt0LYHiQSPjvX2AcFc38PX0CBpr2RCyZhjex+NS/LPOv6YqA==}
+    engines: {node: '>=12'}
 
   d3-interpolate@2.0.1:
     resolution: {integrity: sha512-c5UhwwTs/yybcmTpAVqwSFl6vrQ8JZJoT5F7xNFK9pymv5C0Ymcc9/LIJHtYIggg/yS9YHw8i8O8tgb9pupjeQ==}
@@ -4560,12 +4501,6 @@ packages:
     resolution: {integrity: sha512-Dlq/5LAZgF0Gaz6yiqZCf6VCcZs1ghAJyrsu84Q/GT0gV+mCxbfmKNoGRKBYMJ8IEdGPqu49YWXD02GCknEDkw==}
     peerDependencies:
       react: ^19.1.1
-
-  react-financial-charts@file:packages/charts:
-    resolution: {directory: packages/charts, type: directory}
-    peerDependencies:
-      react: ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-      react-dom: ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
   react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
@@ -6791,89 +6726,6 @@ snapshots:
 
   '@pkgr/core@0.2.9': {}
 
-  '@react-financial-charts/annotations@file:packages/annotations(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
-    dependencies:
-      '@react-financial-charts/core': file:packages/core(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
-
-  '@react-financial-charts/axes@file:packages/axes(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
-    dependencies:
-      '@react-financial-charts/core': file:packages/core(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      d3-array: 3.2.4
-      d3-force: 3.0.0
-      d3-scale: 4.0.2
-      d3-selection: 3.0.0
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
-
-  '@react-financial-charts/coordinates@file:packages/coordinates(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
-    dependencies:
-      '@react-financial-charts/core': file:packages/core(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      d3-format: 2.0.0
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
-
-  '@react-financial-charts/core@file:packages/core(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
-    dependencies:
-      d3-array: 3.2.4
-      d3-scale: 4.0.2
-      d3-selection: 3.0.0
-      lodash.flattendeep: 4.4.0
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
-
-  '@react-financial-charts/indicators@file:packages/indicators(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
-    dependencies:
-      d3-array: 3.2.4
-      d3-scale: 4.0.2
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
-
-  '@react-financial-charts/interactive@file:packages/interactive(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
-    dependencies:
-      '@react-financial-charts/coordinates': file:packages/coordinates(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@react-financial-charts/core': file:packages/core(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      d3-array: 3.2.4
-      d3-format: 2.0.0
-      d3-interpolate: 2.0.1
-      d3-path: 2.0.0
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
-
-  '@react-financial-charts/scales@file:packages/scales(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
-    dependencies:
-      '@react-financial-charts/core': file:packages/core(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      d3-array: 3.2.4
-      d3-scale: 4.0.2
-      d3-time-format: 3.0.0
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
-
-  '@react-financial-charts/series@file:packages/series(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
-    dependencies:
-      '@react-financial-charts/core': file:packages/core(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      d3-array: 3.2.4
-      d3-scale: 4.0.2
-      d3-shape: 2.1.0
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
-
-  '@react-financial-charts/tooltip@file:packages/tooltip(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
-    dependencies:
-      '@react-financial-charts/core': file:packages/core(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      d3-array: 3.2.4
-      d3-format: 2.0.0
-      d3-time-format: 3.0.0
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
-
-  '@react-financial-charts/utils@file:packages/utils(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
-    dependencies:
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
-      react-virtualized-auto-sizer: 1.0.26(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-
   '@sigstore/bundle@2.3.2':
     dependencies:
       '@sigstore/protobuf-specs': 0.3.3
@@ -7014,16 +6866,16 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
-  '@storybook/preset-react-webpack@9.1.1(esbuild@0.25.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@9.1.1(@testing-library/dom@10.4.1)(prettier@3.6.2))(typescript@5.9.2)':
+  '@storybook/preset-react-webpack@9.1.1(esbuild@0.25.8)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(storybook@9.1.1(@testing-library/dom@10.4.1)(prettier@3.6.2))(typescript@5.9.2)':
     dependencies:
       '@storybook/core-webpack': 9.1.1(storybook@9.1.1(@testing-library/dom@10.4.1)(prettier@3.6.2))
       '@storybook/react-docgen-typescript-plugin': 1.0.6--canary.9.0c3f3b7.0(typescript@5.9.2)(webpack@5.101.0(esbuild@0.25.8))
       '@types/semver': 7.7.0
       find-up: 7.0.0
       magic-string: 0.30.17
-      react: 18.3.1
+      react: 19.1.1
       react-docgen: 7.1.1
-      react-dom: 18.3.1(react@18.3.1)
+      react-dom: 19.1.1(react@19.1.1)
       resolve: 1.22.10
       semver: 7.7.2
       storybook: 9.1.1(@testing-library/dom@10.4.1)(prettier@3.6.2)
@@ -7058,13 +6910,19 @@ snapshots:
       react-dom: 18.3.1(react@18.3.1)
       storybook: 9.1.1(@testing-library/dom@10.4.1)(prettier@3.6.2)
 
-  '@storybook/react-webpack5@9.1.1(esbuild@0.25.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@9.1.1(@testing-library/dom@10.4.1)(prettier@3.6.2))(typescript@5.9.2)':
+  '@storybook/react-dom-shim@9.1.1(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(storybook@9.1.1(@testing-library/dom@10.4.1)(prettier@3.6.2))':
+    dependencies:
+      react: 19.1.1
+      react-dom: 19.1.1(react@19.1.1)
+      storybook: 9.1.1(@testing-library/dom@10.4.1)(prettier@3.6.2)
+
+  '@storybook/react-webpack5@9.1.1(esbuild@0.25.8)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(storybook@9.1.1(@testing-library/dom@10.4.1)(prettier@3.6.2))(typescript@5.9.2)':
     dependencies:
       '@storybook/builder-webpack5': 9.1.1(esbuild@0.25.8)(storybook@9.1.1(@testing-library/dom@10.4.1)(prettier@3.6.2))(typescript@5.9.2)
-      '@storybook/preset-react-webpack': 9.1.1(esbuild@0.25.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@9.1.1(@testing-library/dom@10.4.1)(prettier@3.6.2))(typescript@5.9.2)
-      '@storybook/react': 9.1.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@9.1.1(@testing-library/dom@10.4.1)(prettier@3.6.2))(typescript@5.9.2)
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
+      '@storybook/preset-react-webpack': 9.1.1(esbuild@0.25.8)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(storybook@9.1.1(@testing-library/dom@10.4.1)(prettier@3.6.2))(typescript@5.9.2)
+      '@storybook/react': 9.1.1(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(storybook@9.1.1(@testing-library/dom@10.4.1)(prettier@3.6.2))(typescript@5.9.2)
+      react: 19.1.1
+      react-dom: 19.1.1(react@19.1.1)
       storybook: 9.1.1(@testing-library/dom@10.4.1)(prettier@3.6.2)
     optionalDependencies:
       typescript: 5.9.2
@@ -7076,12 +6934,12 @@ snapshots:
       - uglify-js
       - webpack-cli
 
-  '@storybook/react@9.1.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@9.1.1(@testing-library/dom@10.4.1)(prettier@3.6.2))(typescript@5.9.2)':
+  '@storybook/react@9.1.1(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(storybook@9.1.1(@testing-library/dom@10.4.1)(prettier@3.6.2))(typescript@5.9.2)':
     dependencies:
       '@storybook/global': 5.0.0
-      '@storybook/react-dom-shim': 9.1.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@9.1.1(@testing-library/dom@10.4.1)(prettier@3.6.2))
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
+      '@storybook/react-dom-shim': 9.1.1(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(storybook@9.1.1(@testing-library/dom@10.4.1)(prettier@3.6.2))
+      react: 19.1.1
+      react-dom: 19.1.1(react@19.1.1)
       storybook: 9.1.1(@testing-library/dom@10.4.1)(prettier@3.6.2)
     optionalDependencies:
       typescript: 5.9.2
@@ -7161,7 +7019,7 @@ snapshots:
 
   '@types/d3-force@3.0.10': {}
 
-  '@types/d3-format@2.0.5': {}
+  '@types/d3-format@3.0.4': {}
 
   '@types/d3-interpolate@2.0.5':
     dependencies:
@@ -8083,7 +7941,7 @@ snapshots:
       d3-quadtree: 3.0.1
       d3-timer: 3.0.1
 
-  d3-format@2.0.0: {}
+  d3-format@3.1.0: {}
 
   d3-interpolate@2.0.1:
     dependencies:
@@ -8096,7 +7954,7 @@ snapshots:
   d3-scale@4.0.2:
     dependencies:
       d3-array: 3.2.4
-      d3-format: 2.0.0
+      d3-format: 3.1.0
       d3-interpolate: 2.0.1
       d3-time: 2.1.1
       d3-time-format: 3.0.0
@@ -10396,31 +10254,11 @@ snapshots:
       react: 19.1.1
       scheduler: 0.26.0
 
-  react-financial-charts@file:packages/charts(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
-    dependencies:
-      '@react-financial-charts/annotations': file:packages/annotations(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@react-financial-charts/axes': file:packages/axes(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@react-financial-charts/coordinates': file:packages/coordinates(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@react-financial-charts/core': file:packages/core(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@react-financial-charts/indicators': file:packages/indicators(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@react-financial-charts/interactive': file:packages/interactive(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@react-financial-charts/scales': file:packages/scales(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@react-financial-charts/series': file:packages/series(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@react-financial-charts/tooltip': file:packages/tooltip(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@react-financial-charts/utils': file:packages/utils(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
-
   react-is@16.13.1: {}
 
   react-is@17.0.2: {}
 
   react-is@18.3.1: {}
-
-  react-virtualized-auto-sizer@1.0.26(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
-    dependencies:
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
 
   react-virtualized-auto-sizer@1.0.26(react-dom@19.1.1(react@19.1.1))(react@19.1.1):
     dependencies:
