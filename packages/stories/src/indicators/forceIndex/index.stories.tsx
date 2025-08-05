@@ -6,9 +6,11 @@ export default {
     title: "Visualization/Indicator/Force Index",
     component: forceIndex,
     parameters: {
-        componentSubtitle: `The Force Index is an indicator that uses price
-        and volume to assess the power behind a move or identify possible
-        turning points.`,
+        docs: {
+            subtitle: `The Force Index is an indicator that uses price
+            and volume to assess the power behind a move or identify possible
+            turning points.`,
+        }
     },
 };
 

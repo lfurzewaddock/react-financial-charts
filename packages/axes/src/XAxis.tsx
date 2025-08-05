@@ -68,6 +68,8 @@ export class XAxis<T extends number | Date> extends React.Component<XAxisProps<T
 
     public static contextType = ChartContext;
 
+    public declare context: React.ContextType<typeof ChartContext>;
+
     public render() {
         const {
             getMouseDelta = XAxis.defaultProps.getMouseDelta,
@@ -99,7 +101,7 @@ export class XAxis<T extends number | Date> extends React.Component<XAxisProps<T
     private readonly axisZoomCallback = (newXDomain: number[]) => {
         const { xAxisZoom } = this.context;
 
-        xAxisZoom(newXDomain);
+        if (xAxisZoom) xAxisZoom(newXDomain);
     };
 
     private readonly helper = () => {
@@ -124,7 +126,7 @@ export class XAxis<T extends number | Date> extends React.Component<XAxisProps<T
                 axisLocation = height / 2;
                 break;
             default:
-                axisLocation = axisAt;
+                axisLocation = axisAt ?? height;
         }
 
         const y = orient === "top" ? -xZoomHeight : 0;

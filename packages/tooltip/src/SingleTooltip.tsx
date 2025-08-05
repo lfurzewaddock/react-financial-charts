@@ -88,7 +88,7 @@ export class SingleTooltip extends React.Component<SingleTooltipProps> {
 
     public render() {
         const { layout } = this.props;
-        let comp: JSX.Element | null = null;
+        let comp: React.ReactElement | null = null;
 
         switch (layout) {
             case "horizontal":

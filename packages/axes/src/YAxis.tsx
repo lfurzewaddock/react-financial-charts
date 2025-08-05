@@ -68,6 +68,8 @@ export class YAxis extends React.Component<YAxisProps> {
 
     public static contextType = ChartContext;
 
+    public declare context: React.ContextType<typeof ChartContext>;
+
     public render() {
         const {
             getMouseDelta = YAxis.defaultProps.getMouseDelta,
@@ -97,7 +99,7 @@ export class YAxis extends React.Component<YAxisProps> {
     private readonly axisZoomCallback = (newYDomain: number[]) => {
         const { chartId, yAxisZoom } = this.context;
 
-        yAxisZoom(chartId, newYDomain);
+        if (yAxisZoom) yAxisZoom(String(chartId), newYDomain);
     };
 
     private readonly helper = () => {
@@ -122,7 +124,7 @@ export class YAxis extends React.Component<YAxisProps> {
                 axisLocation = width / 2;
                 break;
             default:
-                axisLocation = axisAt;
+                axisLocation = axisAt ?? width;
         }
 
         const x = orient === "left" ? -yZoomWidth : 0;

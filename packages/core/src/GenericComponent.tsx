@@ -94,6 +94,25 @@ export class GenericComponent extends React.Component<GenericComponentProps, Gen
         this.state = {
             updateCount: 0,
         };
+        this.updateMorePropsFromContext(props, context);
+    }
+
+    private updateMorePropsFromContext(props: GenericComponentProps, context: any) {
+        const { xScale, plotData, chartConfig, getMutableState } = context;
+
+        this.moreProps = {
+            ...this.moreProps,
+            ...getMutableState(),
+            /*
+            ^ this is so
+            mouseXY, currentCharts, currentItem are available to
+            newly created components like MouseHoverText which
+            is created right after a new interactive object is drawn
+            */
+            xScale,
+            plotData,
+            chartConfig,
+        };
     }
 
     public updateMoreProps(moreProps: any) {
@@ -311,7 +330,7 @@ export class GenericComponent extends React.Component<GenericComponentProps, Gen
         }
     }
 
-    public UNSAFE_componentWillMount() {
+    public componentDidMount() {
         const { subscribe, chartId } = this.context;
         const { clip, edgeClip } = this.props;
 
@@ -324,7 +343,7 @@ export class GenericComponent extends React.Component<GenericComponentProps, Gen
             getPanConditions: this.getPanConditions,
         });
 
-        this.UNSAFE_componentWillReceiveProps(this.props, this.context);
+        this.componentDidUpdate(this.props);
     }
 
     public componentWillUnmount() {
@@ -336,12 +355,9 @@ export class GenericComponent extends React.Component<GenericComponentProps, Gen
         }
     }
 
-    public componentDidMount() {
-        this.componentDidUpdate(this.props);
-    }
-
     public componentDidUpdate(prevProps: GenericComponentProps) {
         const { canvasDraw, selected, interactiveCursorClass } = this.props;
+        this.updateMorePropsFromContext(this.props, this.context);
 
         if (prevProps.selected !== selected) {
             const { setCursorClass } = this.context;
@@ -357,24 +373,6 @@ export class GenericComponent extends React.Component<GenericComponentProps, Gen
             this.updateMoreProps(this.moreProps);
             this.drawOnCanvas();
         }
-    }
-
-    public UNSAFE_componentWillReceiveProps(nextProps: GenericComponentProps, nextContext: any) {
-        const { xScale, plotData, chartConfig, getMutableState } = nextContext;
-
-        this.moreProps = {
-            ...this.moreProps,
-            ...getMutableState(),
-            /*
-			^ this is so
-			mouseXY, currentCharts, currentItem are available to
-			newly created components like MouseHoverText which
-			is created right after a new interactive object is drawn
-			*/
-            xScale,
-            plotData,
-            chartConfig,
-        };
     }
 
     public getMoreProps() {

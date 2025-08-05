@@ -23,12 +23,11 @@ const config: StorybookConfig = {
         return config;
     },
 
+    // https://storybook.js.org/docs/configure/integration/frameworks#configure
     framework: {
         name: getAbsolutePath("@storybook/react-webpack5"),
-
         options: {
             strictMode: true,
-            fastRefresh: true,
         },
     },
 
