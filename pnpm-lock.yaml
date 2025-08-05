@@ -196,8 +196,8 @@ importers:
         specifier: file:../core
         version: link:../core
       d3-array:
-        specifier: ^2.9.1
-        version: 2.12.1
+        specifier: ^3.2.4
+        version: 3.2.4
       d3-force:
         specifier: ^2.1.1
         version: 2.1.1
@@ -275,8 +275,8 @@ importers:
   packages/core:
     dependencies:
       d3-array:
-        specifier: ^2.9.1
-        version: 2.12.1
+        specifier: ^3.2.4
+        version: 3.2.4
       d3-scale:
         specifier: ^4.0.2
         version: 4.0.2
@@ -300,8 +300,8 @@ importers:
   packages/indicators:
     dependencies:
       d3-array:
-        specifier: ^2.9.1
-        version: 2.12.1
+        specifier: ^3.2.4
+        version: 3.2.4
       d3-scale:
         specifier: ^4.0.2
         version: 4.0.2
@@ -321,8 +321,8 @@ importers:
         specifier: file:../core
         version: link:../core
       d3-array:
-        specifier: ^2.9.1
-        version: 2.12.1
+        specifier: ^3.2.4
+        version: 3.2.4
       d3-format:
         specifier: ^2.0.0
         version: 2.0.0
@@ -345,8 +345,8 @@ importers:
         specifier: file:../core
         version: link:../core
       d3-array:
-        specifier: ^2.9.1
-        version: 2.12.1
+        specifier: ^3.2.4
+        version: 3.2.4
       d3-scale:
         specifier: ^4.0.2
         version: 4.0.2
@@ -370,8 +370,8 @@ importers:
         specifier: file:../core
         version: link:../core
       d3-array:
-        specifier: ^2.9.1
-        version: 2.12.1
+        specifier: ^3.2.4
+        version: 3.2.4
       d3-scale:
         specifier: ^4.0.2
         version: 4.0.2
@@ -416,8 +416,8 @@ importers:
         specifier: file:../core
         version: link:../core
       d3-array:
-        specifier: ^2.9.1
-        version: 2.12.1
+        specifier: ^3.2.4
+        version: 3.2.4
       d3-format:
         specifier: ^2.0.0
         version: 2.0.0
@@ -2501,6 +2501,10 @@ packages:
 
   d3-array@2.12.1:
     resolution: {integrity: sha512-B0ErZK/66mHtEsR1TkPEEkwdy+WDesimkM5gpZr5Dsg54BiTA5RXtYW5qTLIAcekaS9xfZrzBLF/OAkB3Qn1YQ==}
+
+  d3-array@3.2.4:
+    resolution: {integrity: sha512-tdQAmyA18i4J7wprpYq8ClcxZy3SC31QMeByyCFyRt7BVHdREQZ5lpzoe5mFEYZUWe+oq8HBvk9JjpibyEV4Jg==}
+    engines: {node: '>=12'}
 
   d3-color@2.0.0:
     resolution: {integrity: sha512-SPXi0TSKPD4g9tw0NMZFnR95XVgUZiBH+uUTqQuDu1OsE2zomHU7ho0FISciaPvosimixwHFl3WHLGabv6dDgQ==}
@@ -7912,6 +7916,10 @@ snapshots:
     dependencies:
       internmap: 1.0.1
 
+  d3-array@3.2.4:
+    dependencies:
+      internmap: 1.0.1
+
   d3-color@2.0.0: {}
 
   d3-dispatch@2.0.0: {}
@@ -7940,7 +7948,7 @@ snapshots:
 
   d3-scale@4.0.2:
     dependencies:
-      d3-array: 2.12.1
+      d3-array: 3.2.4
       d3-format: 2.0.0
       d3-interpolate: 2.0.1
       d3-time: 2.1.1
