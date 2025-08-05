@@ -6,7 +6,9 @@ export default {
     title: "Visualization/Indicator/ATR",
     component: atr,
     parameters: {
-        componentSubtitle: "Average True Range (ATR) is an indicator that measures volatility.",
+        docs: {
+            subtitle: "Average True Range (ATR) is an indicator that measures volatility.",
+        }
     },
 };
 
