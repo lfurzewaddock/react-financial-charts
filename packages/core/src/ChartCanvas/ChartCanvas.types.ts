@@ -4,6 +4,9 @@ import { ChartConfig } from "../utils/ChartDataUtil";
 import { ICanvasContexts } from "../CanvasContainer";
 import { IZoomAnchorOptions } from "../zoom";
 import type { MoreProps } from "../MoreProps";
+import evaluator from "../utils/evaluator";
+
+type UtilEvaluator = ReturnType<typeof evaluator>;
 
 export interface ChartCanvasContextType<TXAxis extends number | Date> {
     width: number;
@@ -11,7 +14,7 @@ export interface ChartCanvasContextType<TXAxis extends number | Date> {
     margin: { top: number; right: number; bottom: number; left: number };
     chartId: number | string;
     getCanvasContexts?: () => ICanvasContexts | undefined;
-    xScale: Function;
+    xScale: ScaleContinuousNumeric<number, number> | ScaleTime<number, number>;
     ratio: number;
     xAccessor: (data: any) => TXAxis;
     displayXAccessor: (data: any) => TXAxis;
@@ -98,7 +101,7 @@ export interface ChartCanvasState<TXAxis extends number | Date> {
     propIteration?: number;
     xAccessor: (data: any) => TXAxis;
     displayXAccessor?: any;
-    filterData?: any;
+    filterData?: UtilEvaluator["filterData"];
     chartConfigs: ChartConfig[];
     plotData: any[];
     xScale: ScaleContinuousNumeric<number, number> | ScaleTime<number, number>;
@@ -120,4 +123,3 @@ export interface MutableState {
     currentItem: any;
     currentCharts: string[];
 }
-

@@ -12,8 +12,14 @@ import {
 import { EventCapture } from "../EventCapture";
 import { CanvasContainer } from "../CanvasContainer";
 import evaluator from "../utils/evaluator";
-import { ChartCanvasContext } from '.'
-import type { ChartCanvasContextType, ChartCanvasProps, ChartCanvasState, MutableState, Subscription } from '.';
+import {
+    ChartCanvasContext,
+    ChartCanvasContextType,
+    ChartCanvasProps,
+    ChartCanvasState,
+    MutableState,
+    Subscription,
+} from ".";
 
 const CANDIDATES_FOR_RESET = ["seriesName"];
 
@@ -478,6 +484,15 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
         const { filterData, fullData } = this.state;
         const { postCalculator = ChartCanvas.defaultProps.postCalculator } = this.props;
 
+        // BS4TS: satisfy type optional prop
+        if (filterData == null) {
+            console.warn("Unexpected: property 'filterData' is undefined so return data with no changes");
+            return {
+                xScale: initialXScale,
+                plotData: initialPlotData,
+                chartConfigs: initialChartConfig,
+            };
+        }
         const { plotData: beforePlotData, domain } = filterData(fullData, newDomain, xAccessor, initialXScale, {
             currentPlotData: initialPlotData,
             currentDomain: initialXScale!.domain(),
@@ -529,8 +544,24 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
         const x = Math.round((-xDash * iTL[0]) / (-xDash + fTL[0]));
         const y = Math.round(e - ((yDash - e) * (e - iTL[0])) / (yDash + (e - fTL[0])));
 
-        const newDomain = [x, y].map(initialPinchXScale.invert);
+        const newDomain: any = [x, y].map(initialPinchXScale.invert);
 
+        // BS4TS: satisfy type optional prop
+        if (filterData == null) {
+            console.warn("Unexpected: property 'filterData' is undefined so return data with no changes");
+            return {
+                chartConfigs: initialChartConfig,
+                xScale: initialXScale,
+                plotData: initialPlotData,
+                mouseXY: finalPinch.touch1Pos,
+                currentItem: getCurrentItem(initialXScale, xAccessor, finalPinch.touch1Pos, initialPlotData),
+                xAccessor,
+                fullData,
+            };
+        }
+        // TODO fix TS var 'newDomain'
+        // Argument of type 'unknown[]' is not assignable to parameter of type '[number | Date, number | Date]'.
+        // Target requires 2 element(s) but source may have fewer.
         const { plotData: beforePlotData, domain } = filterData(fullData, newDomain, xAccessor, initialPinchXScale, {
             currentPlotData: initialPlotData,
             currentDomain: initialXScale!.domain(),
@@ -651,8 +682,6 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
         const currentItem = getCurrentItem(xScale, xAccessor, mouseXY, plotData);
         const currentCharts = getCurrentCharts(chartConfigs, mouseXY);
 
-        this.clearThreeCanvas();
-
         const firstItem = head(fullData);
         const scale_start = head(xScale.domain());
         const data_start = xAccessor!(firstItem);
@@ -706,8 +735,6 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
 
     public xAxisZoom = (newDomain: any) => {
         const { xScale, plotData, chartConfigs } = this.calculateStateForDomain(newDomain);
-        this.clearThreeCanvas();
-
         const { xAccessor, fullData } = this.state;
         const firstItem = head(fullData);
         const scale_start = head(xScale.domain());
@@ -740,11 +767,10 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
         );
     };
 
-    public yAxisZoom = (chartId: string, newDomain: any) => {
-        this.clearThreeCanvas();
+    public yAxisZoom = (chartId: string, newDomain: number[]) => {
         const { chartConfigs: initialChartConfig } = this.state;
-        const chartConfigs = initialChartConfig.map((each: any) => {
-            if (each.id === chartId) {
+        const chartConfigs = initialChartConfig.map((each) => {
+            if (each.id == chartId) {
                 const { yScale } = each;
                 return {
                     ...each,
@@ -793,11 +819,27 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
         const { xAccessor, displayXAccessor, chartConfigs: initialChartConfig, filterData, fullData } = this.state;
         const { postCalculator = ChartCanvas.defaultProps.postCalculator } = this.props;
 
-        const newDomain = initialXScale
+        const newDomain: any = initialXScale
             .range()
             .map((x) => x - dx)
             .map((x) => initialXScale.invert(x));
 
+        // BS4TS: satisfy type optional prop
+        if (filterData == null) {
+            console.warn("Unexpected: property 'filterData' is undefined so return data with no changes");
+            return {
+                xScale: initialXScale,
+                plotData: this.state.plotData,
+                chartConfigs: initialChartConfig,
+                mouseXY,
+                currentCharts: getCurrentCharts(initialChartConfig, mouseXY),
+                currentItem: getCurrentItem(initialXScale, xAccessor, mouseXY, this.state.plotData),
+            };
+        }
+
+        // TODO fix TS var 'newDomain'
+        // Argument of type '(number | Date)[]' is not assignable to parameter of type '[number | Date, number | Date]'.
+        // Target requires 2 element(s) but source may have fewer.
         const { plotData: beforePlotData, domain } = filterData(fullData, newDomain, xAccessor, initialXScale, {
             currentPlotData: this.hackyWayToStopPanBeyondBounds__plotData,
             currentDomain: this.hackyWayToStopPanBeyondBounds__domain,

@@ -617,7 +617,7 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
         }
     };
 
-    public handlePinchZoom = (e: any) => {
+    public handlePinchZoom = (e: React.TouchEvent) => {
         const { pinchZoomStart } = this.state;
         if (pinchZoomStart === undefined) {
             return;
@@ -678,12 +678,12 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
         const className = disableInteraction
             ? undefined
             : this.state.cursorOverrideClass !== undefined
-            ? this.state.cursorOverrideClass
-            : !useCrossHairStyleCursor
-            ? undefined
-            : this.state.panInProgress
-            ? "react-financial-charts-grabbing-cursor"
-            : "react-financial-charts-crosshair-cursor";
+              ? this.state.cursorOverrideClass
+              : !useCrossHairStyleCursor
+                ? undefined
+                : this.state.panInProgress
+                  ? "react-financial-charts-grabbing-cursor"
+                  : "react-financial-charts-crosshair-cursor";
 
         const interactionProps = disableInteraction
             ? undefined
