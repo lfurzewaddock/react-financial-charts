@@ -1,19 +1,25 @@
 import { extent as d3Extent, max, min } from "d3-array";
 import { ScaleContinuousNumeric, ScaleTime } from "d3-scale";
 import * as React from "react";
-import { clearCanvas, functor, head, identity, isDefined, isNotDefined, last, shallowEqual } from "./utils";
-import { IZoomAnchorOptions, mouseBasedZoomAnchor } from "./zoom";
+import { clearCanvas, functor, head, identity, isDefined, isNotDefined, last, shallowEqual } from "../utils";
+import { mouseBasedZoomAnchor } from "../zoom";
 import {
-    ChartConfig,
     getChartConfigWithUpdatedYScales,
     getCurrentCharts,
     getCurrentItem,
     getNewChartConfig,
-} from "./utils/ChartDataUtil";
-import { EventCapture } from "./EventCapture";
-import { CanvasContainer, ICanvasContexts } from "./CanvasContainer";
-import evaluator from "./utils/evaluator";
-import type { MoreProps } from "./MoreProps";
+} from "../utils/ChartDataUtil";
+import { EventCapture } from "../EventCapture";
+import { CanvasContainer } from "../CanvasContainer";
+import evaluator from "../utils/evaluator";
+import {
+    ChartCanvasContext,
+    ChartCanvasContextType,
+    ChartCanvasProps,
+    ChartCanvasState,
+    MutableState,
+    Subscription,
+} from ".";
 
 const CANDIDATES_FOR_RESET = ["seriesName"];
 
@@ -67,56 +73,6 @@ const getCursorStyle = () => {
 	}`;
     return <style type="text/css">{tooltipStyle}</style>;
 };
-
-export interface ChartCanvasContextType<TXAxis extends number | Date> {
-    width: number;
-    height: number;
-    margin: { top: number; right: number; bottom: number; left: number };
-    chartId: number | string;
-    getCanvasContexts?: () => ICanvasContexts | undefined;
-    xScale: Function;
-    ratio: number;
-    // Not sure if it should be optional
-    xAccessor: (data: any) => TXAxis;
-    displayXAccessor: (data: any) => TXAxis;
-    xAxisZoom?: (newDomain: any) => void;
-    yAxisZoom?: (chartId: string, newDomain: any) => void;
-    redraw: () => void;
-    plotData: any[];
-    fullData: any[];
-    chartConfigs: ChartConfig[];
-    morePropsDecorator?: () => void;
-    generateSubscriptionId?: () => number;
-    getMutableState: () => {};
-    amIOnTop: (id: string | number) => boolean;
-    subscribe: (id: string | number, rest: any) => void;
-    unsubscribe: (id: string | number) => void;
-    setCursorClass: (className: string | null | undefined) => void;
-}
-
-// eslint-disable-next-line @typescript-eslint/no-empty-function
-const noop = () => {};
-export const chartCanvasContextDefaultValue: ChartCanvasContextType<number | Date> = {
-    amIOnTop: () => false,
-    chartConfigs: [],
-    chartId: 0,
-    ratio: 0,
-    displayXAccessor: () => 0,
-    fullData: [],
-    getMutableState: () => ({}),
-    height: 0,
-    margin: { top: 0, right: 0, bottom: 0, left: 0 },
-    plotData: [],
-    setCursorClass: noop,
-    subscribe: noop,
-    unsubscribe: noop,
-    redraw: noop,
-    width: 0,
-    xAccessor: () => 0,
-    xScale: noop,
-};
-export const ChartCanvasContext =
-    React.createContext<ChartCanvasContextType<number | Date>>(chartCanvasContextDefaultValue);
 
 const getDimensions = <TXAxis extends number | Date>(props: ChartCanvasProps<TXAxis>) => {
     const { margin, height, width } = props;
@@ -330,97 +286,6 @@ const isInteractionEnabled = (
     return interaction;
 };
 
-export interface ChartCanvasProps<TXAxis extends number | Date> {
-    readonly clamp?:
-        | boolean
-        | ("left" | "right" | "both")
-        | ((domain: [number, number], items: [number, number]) => [number, number]);
-    readonly className?: string;
-    readonly children?: React.ReactNode;
-    readonly data: any[];
-    readonly defaultFocus?: boolean;
-    readonly disableInteraction?: boolean;
-    readonly disablePan?: boolean;
-    readonly disableZoom?: boolean;
-    readonly displayXAccessor?: (data: any) => TXAxis;
-    readonly flipXScale?: boolean;
-    readonly height: number;
-    readonly margin: {
-        bottom: number;
-        left: number;
-        right: number;
-        top: number;
-    };
-    readonly maintainPointsPerPixelOnResize?: boolean;
-    readonly minPointsPerPxThreshold?: number;
-    readonly mouseMoveEvent?: boolean;
-    /**
-     * Called when panning left past the first data point.
-     */
-    readonly onLoadAfter?: (start: TXAxis, end: TXAxis) => void;
-    /**
-     * Called when panning right past the last data point.
-     */
-    readonly onLoadBefore?: (start: TXAxis, end: TXAxis) => void;
-    /**
-     * Click event handler.
-     */
-    readonly onClick?: React.MouseEventHandler<HTMLDivElement>;
-    /**
-     * Double click event handler.
-     */
-    readonly onDoubleClick?: React.MouseEventHandler<HTMLDivElement>;
-    readonly padding?:
-        | number
-        | {
-              bottom: number;
-              left: number;
-              right: number;
-              top: number;
-          };
-    readonly plotFull?: boolean;
-    readonly pointsPerPxThreshold?: number;
-    readonly postCalculator?: (plotData: any[]) => any[];
-    readonly ratio: number;
-    readonly seriesName: string;
-    readonly useCrossHairStyleCursor?: boolean;
-    readonly width: number;
-    readonly xAccessor: (data: any) => TXAxis;
-    readonly xExtents: ((data: any[]) => [TXAxis, TXAxis]) | (((data: any[]) => TXAxis) | TXAxis)[];
-    readonly xScale: ScaleContinuousNumeric<number, number> | ScaleTime<number, number>;
-    readonly zIndex?: number;
-    readonly zoomAnchor?: (options: IZoomAnchorOptions<any, TXAxis>) => TXAxis;
-    readonly zoomMultiplier?: number;
-}
-
-interface ChartCanvasState<TXAxis extends number | Date> {
-    lastProps?: ChartCanvasProps<TXAxis>;
-    propIteration?: number;
-    xAccessor: (data: any) => TXAxis;
-    displayXAccessor?: any;
-    filterData?: any;
-    chartConfigs: ChartConfig[];
-    plotData: any[];
-    xScale: ScaleContinuousNumeric<number, number> | ScaleTime<number, number>;
-    fullData: any[];
-}
-
-interface Subscription {
-    id: string;
-    getPanConditions: () => {
-        draggable: boolean;
-        panEnabled: boolean;
-    };
-    draw: (props: { trigger: string } | { force: boolean }) => void;
-    listener: (type: string, newMoreProps: MoreProps | undefined, state: any, e: any) => void;
-}
-
-interface MutableState {
-    mouseXY: [number, number];
-    currentItem: any;
-    currentCharts: string[];
-}
-
 export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
     ChartCanvasProps<TXAxis>,
     ChartCanvasState<TXAxis>
@@ -619,6 +484,15 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
         const { filterData, fullData } = this.state;
         const { postCalculator = ChartCanvas.defaultProps.postCalculator } = this.props;
 
+        // BS4TS: satisfy type optional prop
+        if (filterData == null) {
+            console.warn("Unexpected: property 'filterData' is undefined so return data with no changes");
+            return {
+                xScale: initialXScale,
+                plotData: initialPlotData,
+                chartConfigs: initialChartConfig,
+            };
+        }
         const { plotData: beforePlotData, domain } = filterData(fullData, newDomain, xAccessor, initialXScale, {
             currentPlotData: initialPlotData,
             currentDomain: initialXScale!.domain(),
@@ -670,8 +544,24 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
         const x = Math.round((-xDash * iTL[0]) / (-xDash + fTL[0]));
         const y = Math.round(e - ((yDash - e) * (e - iTL[0])) / (yDash + (e - fTL[0])));
 
-        const newDomain = [x, y].map(initialPinchXScale.invert);
+        const newDomain: any = [x, y].map(initialPinchXScale.invert);
 
+        // BS4TS: satisfy type optional prop
+        if (filterData == null) {
+            console.warn("Unexpected: property 'filterData' is undefined so return data with no changes");
+            return {
+                chartConfigs: initialChartConfig,
+                xScale: initialXScale,
+                plotData: initialPlotData,
+                mouseXY: finalPinch.touch1Pos,
+                currentItem: getCurrentItem(initialXScale, xAccessor, finalPinch.touch1Pos, initialPlotData),
+                xAccessor,
+                fullData,
+            };
+        }
+        // TODO fix TS var 'newDomain'
+        // Argument of type 'unknown[]' is not assignable to parameter of type '[number | Date, number | Date]'.
+        // Target requires 2 element(s) but source may have fewer.
         const { plotData: beforePlotData, domain } = filterData(fullData, newDomain, xAccessor, initialPinchXScale, {
             currentPlotData: initialPlotData,
             currentDomain: initialXScale!.domain(),
@@ -792,8 +682,6 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
         const currentItem = getCurrentItem(xScale, xAccessor, mouseXY, plotData);
         const currentCharts = getCurrentCharts(chartConfigs, mouseXY);
 
-        this.clearThreeCanvas();
-
         const firstItem = head(fullData);
         const scale_start = head(xScale.domain());
         const data_start = xAccessor!(firstItem);
@@ -847,8 +735,6 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
 
     public xAxisZoom = (newDomain: any) => {
         const { xScale, plotData, chartConfigs } = this.calculateStateForDomain(newDomain);
-        this.clearThreeCanvas();
-
         const { xAccessor, fullData } = this.state;
         const firstItem = head(fullData);
         const scale_start = head(xScale.domain());
@@ -881,11 +767,10 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
         );
     };
 
-    public yAxisZoom = (chartId: string, newDomain: any) => {
-        this.clearThreeCanvas();
+    public yAxisZoom = (chartId: string, newDomain: number[]) => {
         const { chartConfigs: initialChartConfig } = this.state;
-        const chartConfigs = initialChartConfig.map((each: any) => {
-            if (each.id === chartId) {
+        const chartConfigs = initialChartConfig.map((each) => {
+            if (each.id == chartId) {
                 const { yScale } = each;
                 return {
                     ...each,
@@ -934,11 +819,27 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
         const { xAccessor, displayXAccessor, chartConfigs: initialChartConfig, filterData, fullData } = this.state;
         const { postCalculator = ChartCanvas.defaultProps.postCalculator } = this.props;
 
-        const newDomain = initialXScale
+        const newDomain: any = initialXScale
             .range()
             .map((x) => x - dx)
             .map((x) => initialXScale.invert(x));
 
+        // BS4TS: satisfy type optional prop
+        if (filterData == null) {
+            console.warn("Unexpected: property 'filterData' is undefined so return data with no changes");
+            return {
+                xScale: initialXScale,
+                plotData: this.state.plotData,
+                chartConfigs: initialChartConfig,
+                mouseXY,
+                currentCharts: getCurrentCharts(initialChartConfig, mouseXY),
+                currentItem: getCurrentItem(initialXScale, xAccessor, mouseXY, this.state.plotData),
+            };
+        }
+
+        // TODO fix TS var 'newDomain'
+        // Argument of type '(number | Date)[]' is not assignable to parameter of type '[number | Date, number | Date]'.
+        // Target requires 2 element(s) but source may have fewer.
         const { plotData: beforePlotData, domain } = filterData(fullData, newDomain, xAccessor, initialXScale, {
             currentPlotData: this.hackyWayToStopPanBeyondBounds__plotData,
             currentDomain: this.hackyWayToStopPanBeyondBounds__domain,

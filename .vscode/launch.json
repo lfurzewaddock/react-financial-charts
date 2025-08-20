@@ -10,14 +10,7 @@
             "name": "Launch Chrome against localhost",
             "sourceMaps": true,
             "url": "http://localhost:4444",
-            "breakOnLoad": true,
             "webRoot": "${workspaceFolder}/packages/stories",
-            "sourceMapPathOverrides": {
-                "webpack:///*": "${webRoot}/*",
-                "webpack:///./*": "${webRoot}/*",
-                "webpack:///src/*": "${webRoot}/*",
-                "webpack:///./~/*": "${webRoot}/node_modules/*"
-            }
         }
     ]
 }
