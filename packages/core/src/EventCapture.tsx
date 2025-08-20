@@ -272,7 +272,7 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
         }, 100);
     }
 
-    public handleMouseMove = (e: any) => {
+    public handleMouseMove = (e: React.MouseEvent) => {
         const { onMouseMove, mouseMove } = this.props;
         if (onMouseMove === undefined) {
             return;
@@ -363,8 +363,8 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
     public cancelDrag() {
         const win = d3Window(this.ref.current);
         select(win)
-            // @ts-ignore
-            .on(MOUSEMOVE, this.mouseInside ? this.handleMouseMove : null)
+            // noop when mouse outside
+            .on(MOUSEMOVE, this.mouseInside ? this.handleMouseMove : () => {})
             .on(MOUSEUP, null);
 
         this.setState({
@@ -378,8 +378,8 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
 
         const win = d3Window(this.ref.current);
         select(win)
-            // @ts-ignore
-            .on(MOUSEMOVE, this.mouseInside ? this.handleMouseMove : null)
+            // noop when mouse outside
+            .on(MOUSEMOVE, this.mouseInside ? this.handleMouseMove : () => {})
             .on(MOUSEUP, null);
 
         if (this.dragHappened) {
@@ -515,8 +515,8 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
 
             const win = d3Window(this.ref.current);
             select(win)
-                // @ts-ignore
-                .on(MOUSEMOVE, this.mouseInside ? this.handleMouseMove : null)
+                // noop when mouse outside
+                .on(MOUSEMOVE, this.mouseInside ? this.handleMouseMove : () => {})
                 .on(MOUSEUP, null)
                 .on(TOUCHMOVE, null)
                 .on(TOUCHEND, null);
@@ -590,8 +590,8 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
 
                 const win = d3Window(this.ref.current);
                 select(win)
-                    // @ts-ignore
-                    .on(MOUSEMOVE, this.mouseInside ? this.handleMouseMove : null)
+                    // noop when mouse outside
+                    .on(MOUSEMOVE, this.mouseInside ? this.handleMouseMove : () => {})
                     .on(MOUSEUP, null)
                     .on(TOUCHMOVE, this.handlePinchZoom, false)
                     .on(TOUCHEND, this.handlePinchZoomEnd, false);
