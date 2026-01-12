@@ -28,7 +28,7 @@ importers:
         version: file:packages/interactive(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-financial-charts/scales':
         specifier: file:packages/scales
-        version: file:packages/scales(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+        version: link:packages/scales
       '@react-financial-charts/series':
         specifier: file:packages/series
         version: file:packages/series(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -243,7 +243,7 @@ importers:
         version: link:../interactive
       '@react-financial-charts/scales':
         specifier: file:../scales
-        version: link:../scales
+        version: file:packages/scales(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       '@react-financial-charts/series':
         specifier: file:../series
         version: link:../series
@@ -346,7 +346,7 @@ importers:
     dependencies:
       '@react-financial-charts/core':
         specifier: file:../core
-        version: link:../core
+        version: file:packages/core(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       d3-array:
         specifier: ^3.2.4
         version: 3.2.4
@@ -358,14 +358,10 @@ importers:
         version: 4.1.0
       react:
         specifier: ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-        version: 19.1.1
+        version: 19.2.3
       react-dom:
         specifier: ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-        version: 19.1.1(react@19.1.1)
-    devDependencies:
-      '@types/d3':
-        specifier: ^3.5.53
-        version: 3.5.53
+        version: 19.2.3(react@19.2.3)
 
   packages/series:
     dependencies:
@@ -1928,9 +1924,6 @@ packages:
 
   '@types/d3-time@3.0.4':
     resolution: {integrity: sha512-yuzZug1nkAAaBlBBikKZTgzCeA+k1uy4ZFwWANOfKw5z5LRhV0gNA7gNkKm7HoK+HRN0wX3EkxGk0fpbWhmB7g==}
-
-  '@types/d3@3.5.53':
-    resolution: {integrity: sha512-8yKQA9cAS6+wGsJpBysmnhlaaxlN42Qizqkw+h2nILSlS+MAG2z4JdO6p+PJrJ+ACvimkmLJL281h157e52psQ==}
 
   '@types/deep-eql@4.0.2':
     resolution: {integrity: sha512-c9h9dVVMigMPc4bwTvC5dxqtqJZwQPePsWjPlpSOnojbor6pGqdk541lfA7AqFQr5pB1BRdq0juY9db81BwyFw==}
@@ -7023,6 +7016,15 @@ snapshots:
       react: 19.2.3
       react-dom: 19.2.3(react@19.2.3)
 
+  '@react-financial-charts/core@file:packages/core(react-dom@19.1.1(react@19.1.1))(react@19.1.1)':
+    dependencies:
+      d3-array: 3.2.4
+      d3-scale: 4.0.2
+      d3-selection: 3.0.0
+      lodash.flattendeep: 4.4.0
+      react: 19.1.1
+      react-dom: 19.1.1(react@19.1.1)
+
   '@react-financial-charts/core@file:packages/core(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
     dependencies:
       d3-array: 3.2.4
@@ -7049,6 +7051,15 @@ snapshots:
       d3-path: 3.1.0
       react: 19.2.3
       react-dom: 19.2.3(react@19.2.3)
+
+  '@react-financial-charts/scales@file:packages/scales(react-dom@19.1.1(react@19.1.1))(react@19.1.1)':
+    dependencies:
+      '@react-financial-charts/core': file:packages/core(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+      d3-array: 3.2.4
+      d3-scale: 4.0.2
+      d3-time-format: 4.1.0
+      react: 19.1.1
+      react-dom: 19.1.1(react@19.1.1)
 
   '@react-financial-charts/scales@file:packages/scales(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
     dependencies:
@@ -7408,8 +7419,6 @@ snapshots:
   '@types/d3-time-format@4.0.3': {}
 
   '@types/d3-time@3.0.4': {}
-
-  '@types/d3@3.5.53': {}
 
   '@types/deep-eql@4.0.2': {}
 
