@@ -39,9 +39,9 @@ export class Cursor extends React.Component<CursorProps> {
         xCursorShapeStrokeStyle: "rgba(0, 0, 0, 0.5)",
     };
 
-    public static readonly contextType: React.Context<any> = ChartCanvasContext;
+    public static contextType = ChartCanvasContext;
 
-    declare public context: React.ContextType<typeof ChartCanvasContext>;
+    public declare context: React.ContextType<typeof ChartCanvasContext>;
 
     public render() {
         return (
@@ -85,7 +85,9 @@ export class Cursor extends React.Component<CursorProps> {
 
         const { customX = Cursor.defaultProps.customX, strokeStyle, strokeDasharray, disableYCursor } = props;
 
-        if (!show || currentItem === undefined) return undefined;
+        if (!show || currentItem === undefined) {
+            return undefined;
+        }
 
         const yCursor = {
             x1: 0,
@@ -114,7 +116,9 @@ export class Cursor extends React.Component<CursorProps> {
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps: any) => {
         const cursors = this.getXYCursor(this.props, moreProps);
-        if (cursors === undefined) return;
+        if (cursors === undefined) {
+            return;
+        }
 
         const { useXCursorShape } = this.props;
 
@@ -133,14 +137,17 @@ export class Cursor extends React.Component<CursorProps> {
                 const { xCursorShapeStrokeDasharray } = this.props;
                 if (xCursorShapeStrokeDasharray !== undefined) {
                     const xShapeStrokeStyle = this.getXCursorShapeStroke(moreProps);
-                    if (xShapeStrokeStyle !== undefined) ctx.strokeStyle = xShapeStrokeStyle;
-
+                    if (xShapeStrokeStyle !== undefined) {
+                        ctx.strokeStyle = xShapeStrokeStyle;
+                    }
                     ctx.setLineDash(getStrokeDasharrayCanvas(xCursorShapeStrokeDasharray));
                 }
 
                 ctx.beginPath();
                 const xShapeFillStyle = this.getXCursorShapeFill(moreProps);
-                if (xShapeFillStyle !== undefined) ctx.fillStyle = xShapeFillStyle;
+                if (xShapeFillStyle !== undefined) {
+                    ctx.fillStyle = xShapeFillStyle;
+                }
 
                 ctx.beginPath();
 
@@ -150,7 +157,9 @@ export class Cursor extends React.Component<CursorProps> {
                     : ctx.rect(xShape.xPos, 0, xShape.shapeWidth, xShape.height);
                 ctx.fill();
             } else {
-                if (line.strokeStyle !== undefined) ctx.strokeStyle = line.strokeStyle;
+                if (line.strokeStyle !== undefined) {
+                    ctx.strokeStyle = line.strokeStyle;
+                }
 
                 const dashArray = getStrokeDasharrayCanvas(line.strokeDasharray);
                 ctx.setLineDash(dashArray);

@@ -32,9 +32,9 @@ export class Label extends React.Component<LabelProps> {
         selectCanvas: (canvases: any) => canvases.bg,
     };
 
-    public static readonly contextType: React.Context<any> = ChartCanvasContext;
+    public static contextType = ChartCanvasContext;
 
-    declare public context: React.ContextType<typeof ChartCanvasContext>;
+    public declare context: React.ContextType<typeof ChartCanvasContext>;
 
     public render() {
         const { selectCanvas } = this.props;
@@ -68,11 +68,15 @@ export class Label extends React.Component<LabelProps> {
             ctx.rotate(radians);
         }
 
-        if (fontFamily !== undefined) ctx.font = `${fontWeight} ${fontSize}px ${fontFamily}`;
-
-        if (fillStyle !== undefined) ctx.fillStyle = fillStyle;
-
-        if (textAlign !== undefined) ctx.textAlign = textAlign;
+        if (fontFamily !== undefined) {
+            ctx.font = `${fontWeight} ${fontSize}px ${fontFamily}`;
+        }
+        if (fillStyle !== undefined) {
+            ctx.fillStyle = fillStyle;
+        }
+        if (textAlign !== undefined) {
+            ctx.textAlign = textAlign;
+        }
 
         ctx.beginPath();
         ctx.fillText(text, 0, 0);

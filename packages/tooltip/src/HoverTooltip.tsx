@@ -55,8 +55,9 @@ const defaultTooltipCanvas = (props: HoverTooltipProps, content: any, ctx: Canva
 
     const startY = Y + fontSize * 0.9;
     ctx.font = `bold ${fontSize}px ${fontFamily}`;
-    if (fontFill !== undefined) ctx.fillStyle = fontFill;
-
+    if (fontFill !== undefined) {
+        ctx.fillStyle = fontFill;
+    }
     ctx.textAlign = "left";
     ctx.fillText(content.x, X, startY);
 
@@ -69,8 +70,9 @@ const defaultTooltipCanvas = (props: HoverTooltipProps, content: any, ctx: Canva
         ctx.fillStyle = y.stroke ?? fontFill;
         ctx.fillText(y.label, X, textY);
 
-        if (fontFill !== undefined) ctx.fillStyle = fontFill;
-
+        if (fontFill !== undefined) {
+            ctx.fillStyle = fontFill;
+        }
         ctx.fillText(y.value, X * 2 + maxLabel, textY);
     }
 };
@@ -97,8 +99,9 @@ const drawOnCanvas = (
 
     const { x, y, content, centerX, pointWidth, bgSize } = pointer;
 
-    if (background?.fillStyle !== undefined) ctx.fillStyle = background.fillStyle;
-
+    if (background?.fillStyle !== undefined) {
+        ctx.fillStyle = background.fillStyle;
+    }
     ctx.beginPath();
     ctx.rect(centerX - pointWidth / 2, 0, pointWidth, height);
     ctx.fill();
@@ -116,8 +119,9 @@ const calculateTooltipSize = (props: HoverTooltipProps, content: any, ctx: Canva
     const { fontFamily, fontSize = 12, fontFill } = props;
 
     ctx.font = `bold ${fontSize}px ${fontFamily}`;
-    if (fontFill !== undefined) ctx.fillStyle = fontFill;
-
+    if (fontFill !== undefined) {
+        ctx.fillStyle = fontFill;
+    }
     ctx.textAlign = "left";
 
     const measureText = (str: string) => ({
@@ -221,7 +225,7 @@ export class HoverTooltip extends React.Component<HoverTooltipProps> {
         fontSize: 14,
     };
 
-    public static readonly contextType: React.Context<any> = ChartCanvasContext;
+    public static contextType = ChartCanvasContext;
 
     public render() {
         return <GenericComponent canvasDraw={this.drawOnCanvas} drawOn={["mousemove", "pan"]} />;
@@ -229,7 +233,9 @@ export class HoverTooltip extends React.Component<HoverTooltipProps> {
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps: any) => {
         const pointer = this.helper(ctx, moreProps);
-        if (pointer === undefined) return;
+        if (pointer === undefined) {
+            return;
+        }
 
         const { height } = moreProps;
 
@@ -241,10 +247,14 @@ export class HoverTooltip extends React.Component<HoverTooltipProps> {
 
         const { origin = HoverTooltip.defaultProps.origin, tooltip } = this.props;
 
-        if (!show || currentItem === undefined) return;
+        if (!show || currentItem === undefined) {
+            return;
+        }
 
         const xValue = xAccessor(currentItem);
-        if (xValue === undefined) return;
+        if (xValue === undefined) {
+            return;
+        }
 
         const content = tooltip.content({ currentItem, xAccessor: displayXAccessor });
         const centerX = xScale(xValue);
