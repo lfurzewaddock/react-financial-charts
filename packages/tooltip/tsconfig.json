@@ -13,12 +13,7 @@
         "outDir": "lib",
         "sourceMap": true,
         "strict": true,
-        "target": "es2017",
-        "baseUrl": ".",
-        "skipLibCheck": true,
-        "paths": {
-            "@react-financial-charts/*": ["../../packages/*/src"]
-        }
+        "target": "es2017"
     },
     "include": [
         "src"
