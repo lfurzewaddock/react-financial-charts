@@ -1,12 +1,12 @@
 # React Financial Charts
 
+> **Note:** this repo is a fork of [react-financial-charts](https://github.com/react-financial/react-financial-charts) due to the original project being unmaintained.
+
 > **Note:** this repo is a fork of [react-stockcharts](https://github.com/rrag/react-stockcharts), renamed, converted to typescript and bug fixes applied due to the original project being unmaintained.
 
 > **Note:** v1 is a fully breaking change with large parts, if not all, rewritten. Do not expect the same API! although the same features should exist.
 
-![ci](https://github.com/react-financial/react-financial-charts/workflows/ci/badge.svg)
-[![codecov](https://codecov.io/gh/reactivemarkets/react-financial-charts/branch/master/graph/badge.svg)](https://codecov.io/gh/reactivemarkets/react-financial-charts)
- [![GitHub license](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://github.com/react-financial/react-financial-charts/blob/master/LICENSE) [![npm version](https://img.shields.io/npm/v/react-financial-charts.svg?style=flat)](https://www.npmjs.com/package/react-financial-charts)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Flfurzewaddock%2Freact-financial-charts.svg?type=shield&issueType=security)](https://app.fossa.com/projects/git%2Bgithub.com%2Flfurzewaddock%2Freact-financial-charts?ref=badge_shield&issueType=security)[![GitHub license](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://github.com/lfurzewaddock/react-financial-charts/blob/main/LICENSE)
 
 Charts dedicated to finance.
 
@@ -56,12 +56,12 @@ The aim with this project is create financial charts that work out of the box.
 ## Installation
 
 ```sh
-pnpm install react-financial-charts
+pnpm install @lfurzewaddock/react-financial-charts
 ```
 
 ## Documentation
 
-[Stories](https://react-financial.github.io/react-financial-charts/)
+[Stories](https://lfurzewaddock.github.io/react-financial-charts/)
 
 ## Contributing
 
@@ -69,12 +69,12 @@ Refer to [CONTRIBUTING.md](./CONTRIBUTING.md)
 
 This project is a mono-repo that uses [Lerna](https://lerna.js.org/) to manage dependencies between packages.
 
-Note: Lerna is configured to use [PNPm](https://pnpm.io/installation) package manager 
+Note: Lerna is configured to use [PNPm](https://pnpm.io/installation) package manager
 
 To get started run:
 
 ```bash
-git clone https://github.com/react-financial/react-financial-charts.git
+git clone git@github.com:lfurzewaddock/react-financial-charts.git
 cd react-financial-charts
 pnpm i --frozen-lockfile
 pnpm run build
@@ -107,4 +107,4 @@ pnpm start
 
 ## LICENSE
 
-[![FOSSA Status](https://app.fossa.com/api/projects/custom%2B13613%2Fgit%40github.com%3Areactivemarkets%2Freact-financial-charts.git.svg?type=large)](https://app.fossa.com/projects/custom%2B13613%2Fgit%40github.com%3Areactivemarkets%2Freact-financial-charts.git?ref=badge_large)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Flfurzewaddock%2Freact-financial-charts.svg?type=large&issueType=license)](https://app.fossa.com/projects/git%2Bgithub.com%2Flfurzewaddock%2Freact-financial-charts?ref=badge_large&issueType=license)
