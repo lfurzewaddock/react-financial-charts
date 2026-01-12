@@ -76,7 +76,7 @@ export default defineConfig([
             "react/display-name": "off",
             "react/prop-types": "off",
             "arrow-spacing": "error",
-            curly: "error",
+            curly: ["error", "multi"],
             "no-duplicate-imports": "error",
             "no-multiple-empty-lines": "error",
             "no-var": "error",
