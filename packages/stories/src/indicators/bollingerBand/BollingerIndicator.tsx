@@ -30,6 +30,8 @@ class BollingerIndicator extends React.Component<ChartProps> {
 
     public render() {
         const { data: initialData, height, ratio, width, ...rest } = this.props;
+        // abort if no height yet
+        if (height <= 0) return;
 
         const calculator = bollingerBand()
             .merge((d: any, c: any) => {

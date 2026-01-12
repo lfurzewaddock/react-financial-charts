@@ -45,6 +45,8 @@ class StockChart extends React.Component<StockChartProps> {
 
     public render() {
         const { data: initialData, dateTimeFormat = "%d %b", height, ratio, width } = this.props;
+        // abort if no height yet
+        if (height <= 0) return;
 
         const ema12 = ema()
             .id(1)

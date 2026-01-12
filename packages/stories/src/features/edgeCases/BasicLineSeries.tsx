@@ -26,6 +26,8 @@ class BasicLineSeries extends React.Component<ChartProps> {
 
     public render() {
         const { data: initialData, height, ratio, width } = this.props;
+        // abort if no height yet
+        if (height <= 0) return;
 
         const { data, xScale, xAccessor, displayXAccessor } = this.xScaleProvider(initialData);
 

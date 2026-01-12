@@ -11,8 +11,8 @@
       "esnext",
       "dom",
     ],
-    "module": "esnext",
-    "moduleResolution": "node",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
     "noImplicitReturns": true,
     "noImplicitAny": true,
     "noImplicitThis": true,
@@ -21,7 +21,11 @@
     "sourceMap": true,
     "strict": true,
     "strictNullChecks": true,
-    "target": "es6"
+    "target": "es6",
+    "baseUrl": ".",
+    "paths": {
+        "tslib": ["./node_modules/tslib/tslib.d.ts"]
+    }
   },
   "include": [
     "src",

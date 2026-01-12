@@ -31,6 +31,8 @@ class Cursors extends React.Component<ChartProps> {
 
     public render() {
         const { crosshair, data: initialData, height, ratio, width, ...rest } = this.props;
+        // abort if no height yet
+        if (height <= 0) return;
 
         const { margin, xScaleProvider } = this;
 

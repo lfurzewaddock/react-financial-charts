@@ -30,6 +30,8 @@ class Coordinates extends React.Component<ChartProps> {
 
     public render() {
         const { arrowWidth, data: initialData, height, ratio, width } = this.props;
+        // abort if no height yet
+        if (height <= 0) return;
 
         const { margin, xScaleProvider } = this;
 

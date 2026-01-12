@@ -8,7 +8,7 @@ export default {
     title: "Features/Axis",
     argTypes: {
         axisAt: {
-            options: [ "left", "right", "middle" ],
+            options: ["left", "right", "middle"],
             control: { type: "select" },
         },
         gridLinesStrokeStyle: { control: "color" },

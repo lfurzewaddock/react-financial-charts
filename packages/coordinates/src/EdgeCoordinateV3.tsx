@@ -6,15 +6,13 @@ export const renderSVG = (props: any) => {
     const { className } = props;
 
     const edge = helper(props);
-    if (edge === null) {
-        return null;
-    }
+    if (edge === null) return null;
 
     let line;
     let coordinateBase;
     let coordinate;
 
-    if (edge.line !== undefined) {
+    if (edge.line !== undefined)
         line = (
             <line
                 className="react-financial-charts-cross-hair"
@@ -26,7 +24,7 @@ export const renderSVG = (props: any) => {
                 y2={edge.line.y2}
             />
         );
-    }
+
     if (edge.coordinate !== undefined && edge.coordinateBase !== undefined) {
         const { rectWidth, rectHeight, arrowWidth } = edge.coordinateBase;
 
@@ -114,14 +112,12 @@ const helper = (props: any) => {
         dx,
     } = props;
 
-    if (!show) {
-        return null;
-    }
+    if (!show) return null;
 
     let coordinateBase;
     let coordinate;
     if (displayCoordinate !== undefined) {
-        const textAnchor = "middle";
+        const textAnchor: "end" | "start" | "inherit" | "middle" = "middle";
 
         let edgeXRect;
         let edgeYRect;
@@ -189,14 +185,10 @@ export const drawOnCanvas = (ctx: CanvasRenderingContext2D, props: any) => {
     ctx.textBaseline = "middle";
 
     let width = rectWidth;
-    if (fitToText) {
-        width = Math.round(ctx.measureText(coordinate).width + 10);
-    }
+    if (fitToText) width = Math.round(ctx.measureText(coordinate).width + 10);
 
     const edge = helper({ ...props, rectWidth: width });
-    if (edge === null) {
-        return;
-    }
+    if (edge === null) return;
 
     if (edge.line !== undefined && isDefined(edge.line)) {
         const dashArray = getStrokeDasharrayCanvas(edge.line.strokeDasharray);
@@ -241,17 +233,12 @@ export const drawOnCanvas = (ctx: CanvasRenderingContext2D, props: any) => {
             ctx.lineTo(x + rectWidth, y + rectHeight);
             ctx.lineTo(x, y + rectHeight);
             ctx.closePath();
-        } else if (rectRadius) {
-            roundRect(ctx, x - 0.5, y - 0.5, rectWidth, rectHeight, 3);
-        } else {
-            ctx.rect(x - 0.5, y, rectWidth, rectHeight);
-        }
+        } else if (rectRadius) roundRect(ctx, x - 0.5, y - 0.5, rectWidth, rectHeight, 3);
+        else ctx.rect(x - 0.5, y, rectWidth, rectHeight);
 
         ctx.fill();
 
-        if (edge.coordinateBase.stroke !== undefined) {
-            ctx.stroke();
-        }
+        if (edge.coordinateBase.stroke !== undefined) ctx.stroke();
 
         if (edge.coordinate !== undefined) {
             ctx.fillStyle = edge.coordinate.textFill;
