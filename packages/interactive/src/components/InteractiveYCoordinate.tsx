@@ -1,6 +1,5 @@
 import * as React from "react";
-import { drawOnCanvas } from "@react-financial-charts/coordinates/lib/EdgeCoordinateV3";
-import { getYCoordinate } from "@react-financial-charts/coordinates/lib/MouseCoordinateY";
+import { drawOnCanvas, getYCoordinate } from "@react-financial-charts/coordinates";
 import {
     getStrokeDasharrayCanvas,
     getMouseCanvas,
@@ -92,20 +91,16 @@ export class InteractiveYCoordinate extends React.Component<InteractiveYCoordina
         } = this.props;
 
         const values = this.helper(moreProps);
-        if (values == null) {
-            return;
-        }
+        if (values == null) return;
 
         const { x1, x2, y, rect } = values;
 
         ctx.strokeStyle = strokeStyle;
 
         ctx.beginPath();
-        if (selected || hovering) {
-            ctx.lineWidth = strokeWidth + 1;
-        } else {
-            ctx.lineWidth = strokeWidth;
-        }
+        if (selected || hovering) ctx.lineWidth = strokeWidth + 1;
+        else ctx.lineWidth = strokeWidth;
+
         ctx.textBaseline = "middle";
         ctx.textAlign = "start";
         ctx.font = `${fontStyle} ${fontWeight} ${fontSize}px ${fontFamily}`;
@@ -155,26 +150,17 @@ export class InteractiveYCoordinate extends React.Component<InteractiveYCoordina
 
         if (onHover !== undefined) {
             const values = this.helper(moreProps);
-            if (values == null) {
-                return false;
-            }
+            if (values == null) return false;
 
             const { x1, x2, y, rect } = values;
             const {
                 mouseXY: [mouseX, mouseY],
             } = moreProps;
 
-            if (
-                mouseX >= rect.x &&
-                mouseX <= rect.x + this.width &&
-                mouseY >= rect.y &&
-                mouseY <= rect.y + rect.height
-            ) {
+            if (mouseX >= rect.x && mouseX <= rect.x + this.width && mouseY >= rect.y && mouseY <= rect.y + rect.height)
                 return true;
-            }
-            if (x1 <= mouseX && x2 >= mouseX && Math.abs(mouseY - y) < 4) {
-                return true;
-            }
+
+            if (x1 <= mouseX && x2 >= mouseX && Math.abs(mouseY - y) < 4) return true;
         }
         return false;
     };
