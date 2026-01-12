@@ -28,22 +28,22 @@ const config: StorybookConfig = {
             exclude: /node_modules(?!\/@amplio)/,
         });
 
-        // Add aliases for monorepo packages - point to src directories
+        // Add aliases for monorepo packages to handle file: dependencies
         const packagesDir = resolve(__dirname, "../../..");
         config.resolve = config.resolve || {};
         config.resolve.alias = {
             ...config.resolve.alias,
-            "@react-financial-charts/annotations$": resolve(packagesDir, "packages/annotations/src/index.ts"),
-            "@react-financial-charts/axes$": resolve(packagesDir, "packages/axes/src/index.ts"),
-            "@react-financial-charts/coordinates$": resolve(packagesDir, "packages/coordinates/src/index.ts"),
-            "@react-financial-charts/core$": resolve(packagesDir, "packages/core/src/index.ts"),
-            "@react-financial-charts/indicators$": resolve(packagesDir, "packages/indicators/src/index.ts"),
-            "@react-financial-charts/interactive$": resolve(packagesDir, "packages/interactive/src/index.ts"),
-            "@react-financial-charts/scales$": resolve(packagesDir, "packages/scales/src/index.ts"),
-            "@react-financial-charts/series$": resolve(packagesDir, "packages/series/src/index.ts"),
-            "@react-financial-charts/tooltip$": resolve(packagesDir, "packages/tooltip/src/index.ts"),
-            "@react-financial-charts/utils$": resolve(packagesDir, "packages/utils/src/index.ts"),
-            "react-financial-charts$": resolve(packagesDir, "packages/charts/src/index.ts"),
+            "@react-financial-charts/annotations": resolve(packagesDir, "packages/annotations"),
+            "@react-financial-charts/axes": resolve(packagesDir, "packages/axes"),
+            "@react-financial-charts/coordinates": resolve(packagesDir, "packages/coordinates"),
+            "@react-financial-charts/core": resolve(packagesDir, "packages/core"),
+            "@react-financial-charts/indicators": resolve(packagesDir, "packages/indicators"),
+            "@react-financial-charts/interactive": resolve(packagesDir, "packages/interactive"),
+            "@react-financial-charts/scales": resolve(packagesDir, "packages/scales"),
+            "@react-financial-charts/series": resolve(packagesDir, "packages/series"),
+            "@react-financial-charts/tooltip": resolve(packagesDir, "packages/tooltip"),
+            "@react-financial-charts/utils": resolve(packagesDir, "packages/utils"),
+            "react-financial-charts": resolve(packagesDir, "packages/charts"),
         };
 
         return config;
