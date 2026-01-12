@@ -36,6 +36,9 @@ jobs:
             - name: Install dependencies
               run: pnpm install
 
+            - name: lerna Bootstrap
+              run: pnpm lerna bootstrap --no-ci
+
             - name: Build all packages
               run: pnpm run build
 
