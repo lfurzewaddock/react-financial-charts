@@ -27,8 +27,10 @@ class Scales extends React.Component<ChartProps> {
 
     public render() {
         const { data, height, ratio, width, xScale = scaleTime(), yScale } = this.props;
+        // abort if no height yet
+        if (height <= 0) return;
 
-        const xAccessor = (d: IOHLCData) => d.date;
+        const xAccessor = (d: IOHLCData) => d && d.date;
         const max = xAccessor(data[data.length - 1]);
         const min = xAccessor(data[Math.max(0, data.length - 100)]);
         const xExtents = [min, max];

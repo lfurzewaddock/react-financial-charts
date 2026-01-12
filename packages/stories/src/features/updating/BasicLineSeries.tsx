@@ -26,9 +26,11 @@ class BasicLineSeries extends React.Component<ChartProps> {
 
     public render() {
         const { data, height, ratio, width } = this.props;
+        // abort if no height yet
+        if (height <= 0) return;
 
         const xScale = scaleTime();
-        const xAccessor = (d: IOHLCData) => d.date;
+        const xAccessor = (d: IOHLCData) => d && d.date;
 
         return (
             <ChartCanvas
@@ -56,33 +58,18 @@ class BasicLineSeries extends React.Component<ChartProps> {
         let min: number | undefined;
         let max: number | undefined;
         for (const { low, high } of plotData) {
-            if (min === undefined) {
-                min = low;
-            }
-            if (max === undefined) {
-                max = high;
-            }
+            if (min === undefined) min = low;
 
-            if (low !== undefined) {
-                if (min! > low) {
-                    min = low;
-                }
-            }
+            if (max === undefined) max = high;
 
-            if (high !== undefined) {
-                if (max! < high) {
-                    max = high;
-                }
-            }
+            if (low !== undefined) if (min! > low) min = low;
+
+            if (high !== undefined) if (max! < high) max = high;
         }
 
-        if (min === undefined) {
-            min = 0;
-        }
+        if (min === undefined) min = 0;
 
-        if (max === undefined) {
-            max = 0;
-        }
+        if (max === undefined) max = 0;
 
         const padding = (max - min) * 0.1;
 

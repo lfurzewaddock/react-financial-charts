@@ -14,7 +14,10 @@ export const withSize = (props?: Omit<AutoSizerProps, "Child" | "ChildComponent"
                     <AutoSizer
                         {...props}
                         ChildComponent={({ height = 0, width = 0 }) => {
-                            return <OriginalComponent {...(this.props as TProps)} height={height} width={width} />;
+                            // abort if no height yet
+                            return height <= 0 ? null : (
+                                <OriginalComponent {...(this.props as TProps)} height={height} width={width} />
+                            );
                         }}
                     />
                 );

@@ -22,7 +22,7 @@ export interface BarAnnotationProps {
     readonly opacity?: number;
     readonly plotData: any[];
     readonly text?: string;
-    readonly textAnchor?: string;
+    readonly textAnchor?: "end" | "start" | "inherit" | "middle";
     readonly fontFamily?: string;
     readonly fontSize?: number;
     readonly textOpacity?: number;
@@ -158,9 +158,7 @@ export class BarAnnotation extends React.Component<BarAnnotationProps> {
 
     private readonly onClick = (e: React.MouseEvent) => {
         const { onClick, xScale, yScale, datum } = this.props;
-        if (onClick !== undefined) {
-            onClick(e, { xScale, yScale, datum });
-        }
+        if (onClick !== undefined) onClick(e, { xScale, yScale, datum });
     };
 
     private readonly helper = (props: BarAnnotationProps, xAccessor: any, xScale: any, yScale: any) => {

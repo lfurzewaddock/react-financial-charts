@@ -6,9 +6,7 @@ const helper = (props: any) => {
     const { rectWidth, rectHeight } = props;
     const { x1, y1, x2, y2 } = props;
 
-    if (!show) {
-        return null;
-    }
+    if (!show) return null;
 
     let edgeXRect;
     let edgeYRect;
@@ -29,7 +27,7 @@ const helper = (props: any) => {
 
     let coordinateBase;
     let coordinate;
-    const textAnchor = "middle";
+    const textAnchor: "end" | "start" | "inherit" | "middle" = "middle";
     if (displayCoordinate !== undefined) {
         coordinateBase = {
             edgeXRect,
@@ -101,9 +99,7 @@ export class EdgeCoordinate extends React.Component<EdgeCoordinateProps> {
         props = { ...EdgeCoordinate.defaultProps, ...props };
 
         const edge = helper(props);
-        if (edge === null) {
-            return;
-        }
+        if (edge === null) return;
 
         if (edge.coordinate !== undefined && edge.coordinateBase !== undefined) {
             const { rectWidth, rectHeight, arrowWidth } = edge.coordinateBase;
@@ -129,9 +125,8 @@ export class EdgeCoordinate extends React.Component<EdgeCoordinateProps> {
                 ctx.lineTo(x + rectWidth, y + rectHeight);
                 ctx.lineTo(x, y + rectHeight);
                 ctx.closePath();
-            } else {
-                ctx.rect(x, y, rectWidth, rectHeight);
-            }
+            } else ctx.rect(x, y, rectWidth, rectHeight);
+
             ctx.fill();
 
             ctx.font = `${edge.coordinate.fontSize}px ${edge.coordinate.fontFamily}`;
@@ -157,14 +152,13 @@ export class EdgeCoordinate extends React.Component<EdgeCoordinateProps> {
         const { className } = this.props;
 
         const edge = helper(this.props);
-        if (edge === null) {
-            return null;
-        }
+        if (edge === null) return null;
+
         let line;
         let coordinateBase;
         let coordinate;
 
-        if (edge.line !== undefined) {
+        if (edge.line !== undefined)
             line = (
                 <line
                     className="react-financial-charts-cross-hair"
@@ -175,7 +169,6 @@ export class EdgeCoordinate extends React.Component<EdgeCoordinateProps> {
                     y2={edge.line.y2}
                 />
             );
-        }
 
         if (edge.coordinate !== undefined && edge.coordinateBase !== undefined) {
             const { rectWidth, rectHeight, arrowWidth } = edge.coordinateBase;

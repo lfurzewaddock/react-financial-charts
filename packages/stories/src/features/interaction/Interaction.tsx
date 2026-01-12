@@ -42,6 +42,8 @@ class Interaction extends React.Component<ChartProps> {
             width,
             zoomAnchor,
         } = this.props;
+        // abort if no height yet
+        if (height <= 0) return;
 
         const { margin, xScaleProvider } = this;
 

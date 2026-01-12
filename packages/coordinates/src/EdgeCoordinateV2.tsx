@@ -4,14 +4,13 @@ export function renderSVG(props: any) {
     const { className } = props;
 
     const edge = helper(props);
-    if (edge === null) {
-        return null;
-    }
+    if (edge === null) return null;
+
     let line;
     let coordinateBase;
     let coordinate;
 
-    if (edge.line !== undefined) {
+    if (edge.line !== undefined)
         line = (
             <line
                 className="react-financial-charts-cross-hair"
@@ -22,7 +21,6 @@ export function renderSVG(props: any) {
                 y2={edge.line.y2}
             />
         );
-    }
 
     if (edge.coordinate !== undefined && edge.coordinateBase !== undefined) {
         const { rectWidth, rectHeight, arrowWidth } = edge.coordinateBase;
@@ -88,9 +86,7 @@ function helper(props: any) {
     const { rectWidth, rectHeight } = props;
     const { x1, y1, x2, y2, dx } = props;
 
-    if (!show) {
-        return null;
-    }
+    if (!show) return null;
 
     let edgeXRect;
     let edgeYRect;
@@ -111,7 +107,7 @@ function helper(props: any) {
     }
     let coordinateBase;
     let coordinate;
-    const textAnchor = "middle";
+    const textAnchor: "end" | "start" | "inherit" | "middle" = "middle";
     if (displayCoordinate !== undefined) {
         coordinateBase = {
             edgeXRect,
@@ -152,9 +148,7 @@ function helper(props: any) {
 export function drawOnCanvas(ctx: CanvasRenderingContext2D, props: any) {
     const edge = helper(props);
 
-    if (edge === null) {
-        return;
-    }
+    if (edge === null) return;
 
     if (edge.coordinate !== undefined && edge.coordinateBase !== undefined) {
         const { rectWidth, rectHeight, arrowWidth } = edge.coordinateBase;
@@ -180,9 +174,8 @@ export function drawOnCanvas(ctx: CanvasRenderingContext2D, props: any) {
             ctx.lineTo(x + rectWidth, y + rectHeight);
             ctx.lineTo(x, y + rectHeight);
             ctx.closePath();
-        } else {
-            ctx.rect(x, y, rectWidth, rectHeight);
-        }
+        } else ctx.rect(x, y, rectWidth, rectHeight);
+
         ctx.fill();
 
         ctx.font = `${edge.coordinate.fontSize}px ${edge.coordinate.fontFamily}`;

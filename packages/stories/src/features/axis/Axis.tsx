@@ -26,6 +26,8 @@ class AxisExample extends React.Component<ChartProps> {
 
     public render() {
         const { axisAt = "right", data: initialData, height, ratio, width, ...rest } = this.props;
+        // abort if no height yet
+        if (height <= 0) return;
 
         const margin = {
             bottom: 24,

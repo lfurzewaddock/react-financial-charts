@@ -55,9 +55,7 @@ export class Brush extends React.Component<BrushProps, BrushState> {
 
     public render() {
         const { enabled } = this.props;
-        if (!enabled) {
-            return null;
-        }
+        if (!enabled) return null;
 
         return (
             <GenericChartComponent
@@ -74,9 +72,7 @@ export class Brush extends React.Component<BrushProps, BrushState> {
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D) => {
         const { rect } = this.state;
-        if (rect === null) {
-            return;
-        }
+        if (rect === null) return;
 
         const { x, y, height, width } = rect;
         const {
@@ -119,9 +115,7 @@ export class Brush extends React.Component<BrushProps, BrushState> {
     };
 
     private readonly handleDrawSquare = (_: React.MouseEvent, moreProps: any) => {
-        if (this.state.x1y1 == null) {
-            return;
-        }
+        if (this.state.x1y1 == null) return;
 
         this.zoomHappening = true;
 

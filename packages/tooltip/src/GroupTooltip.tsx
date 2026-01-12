@@ -49,10 +49,10 @@ export class GroupTooltip extends React.Component<GroupTooltipProps> {
 
         const dx = 20;
         const dy = 40;
-        let textAnchor: string | undefined;
+        let textAnchor: "end" | "start" | "inherit" | "middle" | undefined;
         let xyPos: (number | null)[] | null = null;
 
-        if (position !== undefined) {
+        if (position !== undefined)
             switch (position) {
                 case "topRight":
                     xyPos = [width - dx, null];
@@ -68,9 +68,7 @@ export class GroupTooltip extends React.Component<GroupTooltipProps> {
                 default:
                     xyPos = [null, null];
             }
-        } else {
-            xyPos = [null, null];
-        }
+        else xyPos = [null, null];
 
         return { xyPos, textAnchor };
     };
@@ -106,15 +104,12 @@ export class GroupTooltip extends React.Component<GroupTooltipProps> {
             const yDisplayValue = yValue ? displayFormat(yValue) : displayInit;
 
             const orig: () => [number, number] = () => {
-                if (layout === "horizontal" || layout === "horizontalRows") {
-                    return [width * idx, 0];
-                }
-                if (layout === "vertical") {
-                    return [0, verticalSize * idx];
-                }
-                if (layout === "verticalRows") {
-                    return [0, verticalSize * 2.3 * idx];
-                }
+                if (layout === "horizontal" || layout === "horizontalRows") return [width * idx, 0];
+
+                if (layout === "vertical") return [0, verticalSize * idx];
+
+                if (layout === "verticalRows") return [0, verticalSize * 2.3 * idx];
+
                 return [0, 0];
             };
 
