@@ -15,7 +15,6 @@
         "strict": true,
         "target": "es2017",
         "baseUrl": ".",
-        "skipLibCheck": true,
         "paths": {
             "@react-financial-charts/*": ["../../packages/*/src"]
         }
