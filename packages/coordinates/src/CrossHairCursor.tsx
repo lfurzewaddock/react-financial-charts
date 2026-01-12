@@ -31,10 +31,10 @@ export class CrossHairCursor extends React.Component<CrossHairCursorProps> {
         strokeWidth: 1,
     };
 
-    public static readonly contextType: React.Context<any> = ChartCanvasContext;
+    public static contextType = ChartCanvasContext;
 
-    declare public context: React.ContextType<typeof ChartCanvasContext>;
-
+    public declare context: React.ContextType<typeof ChartCanvasContext>;
+    
     public render() {
         return (
             <GenericComponent
@@ -48,7 +48,9 @@ export class CrossHairCursor extends React.Component<CrossHairCursorProps> {
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps: any) => {
         const lines = this.getLines(this.props, moreProps);
-        if (lines === undefined) return;
+        if (lines === undefined) {
+            return;
+        }
 
         const { margin, ratio } = this.context;
 
@@ -85,7 +87,9 @@ export class CrossHairCursor extends React.Component<CrossHairCursorProps> {
             strokeWidth = CrossHairCursor.defaultProps.strokeWidth,
         } = props;
 
-        if (!show || currentItem === undefined) return undefined;
+        if (!show || currentItem === undefined) {
+            return undefined;
+        }
 
         const line1 = {
             x1: 0,
