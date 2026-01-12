@@ -16,7 +16,7 @@
         "target": "es2017",
         "baseUrl": ".",
         "paths": {
-            "@react-financial-scales/*": ["../../packages/*/src"]
+            "@react-financial-charts/*": ["../../packages/*/src"]
         }
     },
     "include": [
