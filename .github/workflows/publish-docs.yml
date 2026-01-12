@@ -34,7 +34,10 @@ jobs:
                   cache: "pnpm"
 
             - name: Install dependencies
-              run: pnpm install --frozen-lockfile
+              run: pnpm install
+
+            - name: Link workspace packages
+              run: pnpm run link
 
             - name: Build documentation
               run: pnpm run docs
