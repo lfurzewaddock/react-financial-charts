@@ -11,7 +11,7 @@
             "allowBranch": "main",
             "conventionalCommits": true,
             "createRelease": "github",
-            "gitRemote": "upstream",
+            "gitRemote": "origin",
             "message": "chore(release): publish %v"
         }
     },
