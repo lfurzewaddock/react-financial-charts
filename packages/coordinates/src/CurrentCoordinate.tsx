@@ -1,4 +1,4 @@
-import { getMouseCanvas, GenericChartComponent } from "@react-financial-charts/core";
+import { getMouseCanvas, GenericChartComponent } from "@lfurzewaddock/react-financial-charts-core";
 import * as React from "react";
 
 export interface CurrentCoordinateProps {

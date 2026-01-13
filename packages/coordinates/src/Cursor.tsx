@@ -6,7 +6,7 @@ import {
     getStrokeDasharrayCanvas,
     last,
     strokeDashTypes,
-} from "@react-financial-charts/core";
+} from "@lfurzewaddock/react-financial-charts-core";
 import * as React from "react";
 
 export interface CursorProps {
@@ -41,7 +41,7 @@ export class Cursor extends React.Component<CursorProps> {
 
     public static contextType = ChartCanvasContext;
 
-    public declare context: React.ContextType<typeof ChartCanvasContext>;
+    declare public context: React.ContextType<typeof ChartCanvasContext>;
 
     public render() {
         return (

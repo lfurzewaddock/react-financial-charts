@@ -1,5 +1,11 @@
 import * as React from "react";
-import { ChartContext, GenericChartComponent, getMouseCanvas, isDefined, noop } from "@react-financial-charts/core";
+import {
+    ChartContext,
+    GenericChartComponent,
+    getMouseCanvas,
+    isDefined,
+    noop,
+} from "@lfurzewaddock/react-financial-charts-core";
 import { HoverTextNearMouse } from "./components";
 import { getValueFromOverride, isHoverForInteractiveType, saveNodeType, terminate } from "./utils";
 import { EachText } from "./wrapper";

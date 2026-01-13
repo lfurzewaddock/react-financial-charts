@@ -13,7 +13,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## [2.0.1](https://github.com/markmcdowell/react-financial-charts/compare/v2.0.0...v2.0.1) (2023-05-13)
 
-**Note:** Version bump only for package @react-financial-charts/stories
+**Note:** Version bump only for package @lfurzewaddock/react-financial-charts-stories
 
 # [2.0.0](https://github.com/markmcdowell/react-financial-charts/compare/v1.3.2...v2.0.0) (2023-05-12)
 
@@ -23,15 +23,15 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## [1.3.2](https://github.com/markmcdowell/react-financial-charts/compare/v1.3.1...v1.3.2) (2021-10-17)
 
-**Note:** Version bump only for package @react-financial-charts/stories
+**Note:** Version bump only for package @lfurzewaddock/react-financial-charts-stories
 
 ## [1.3.1](https://github.com/markmcdowell/react-financial-charts/compare/v1.3.0...v1.3.1) (2021-06-16)
 
-**Note:** Version bump only for package @react-financial-charts/stories
+**Note:** Version bump only for package @lfurzewaddock/react-financial-charts-stories
 
 # [1.3.0](https://github.com/markmcdowell/react-financial-charts/compare/v1.2.2...v1.3.0) (2021-05-23)
 
-**Note:** Version bump only for package @react-financial-charts/stories
+**Note:** Version bump only for package @lfurzewaddock/react-financial-charts-stories
 
 ## [1.2.2](https://github.com/markmcdowell/react-financial-charts/compare/v1.2.1...v1.2.2) (2021-04-30)
 
@@ -47,7 +47,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 # [1.2.0](https://github.com/markmcdowell/react-financial-charts/compare/v1.1.0...v1.2.0) (2021-04-26)
 
-**Note:** Version bump only for package @react-financial-charts/stories
+**Note:** Version bump only for package @lfurzewaddock/react-financial-charts-stories
 
 # [1.1.0](https://github.com/markmcdowell/react-financial-charts/compare/v1.0.1...v1.1.0) (2021-02-26)
 
@@ -61,7 +61,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## [1.0.1](https://github.com/markmcdowell/react-financial-charts/compare/v1.0.0...v1.0.1) (2021-01-01)
 
-**Note:** Version bump only for package @react-financial-charts/stories
+**Note:** Version bump only for package @lfurzewaddock/react-financial-charts-stories
 
 # [1.0.0](https://github.com/markmcdowell/react-financial-charts/compare/v1.0.0-alpha.16...v1.0.0) (2020-12-30)
 
@@ -71,7 +71,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 # [1.0.0-alpha.16](https://github.com/markmcdowell/react-financial-charts/compare/v1.0.0-alpha.15...v1.0.0-alpha.16) (2020-09-04)
 
-**Note:** Version bump only for package @react-financial-charts/stories
+**Note:** Version bump only for package @lfurzewaddock/react-financial-charts-stories
 
 # [1.0.0-alpha.15](https://github.com/markmcdowell/react-financial-charts/compare/v1.0.0-alpha.14...v1.0.0-alpha.15) (2020-09-03)
 
@@ -101,11 +101,11 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 # [1.0.0-alpha.12](https://github.com/markmcdowell/react-financial-charts/compare/v1.0.0-alpha.11...v1.0.0-alpha.12) (2020-08-28)
 
-**Note:** Version bump only for package @react-financial-charts/stories
+**Note:** Version bump only for package @lfurzewaddock/react-financial-charts-stories
 
 # [1.0.0-alpha.11](https://github.com/markmcdowell/react-financial-charts/compare/v1.0.0-alpha.10...v1.0.0-alpha.11) (2020-08-28)
 
-**Note:** Version bump only for package @react-financial-charts/stories
+**Note:** Version bump only for package @lfurzewaddock/react-financial-charts-stories
 
 # [1.0.0-alpha.10](https://github.com/markmcdowell/react-financial-charts/compare/v1.0.0-alpha.9...v1.0.0-alpha.10) (2020-08-28)
 
@@ -146,7 +146,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 # [1.0.0-alpha.6](https://github.com/markmcdowell/react-financial-charts/compare/v1.0.0-alpha.5...v1.0.0-alpha.6) (2020-07-23)
 
-**Note:** Version bump only for package @react-financial-charts/stories
+**Note:** Version bump only for package @lfurzewaddock/react-financial-charts-stories
 
 # [1.0.0-alpha.5](https://github.com/markmcdowell/react-financial-charts/compare/v1.0.0-alpha.4...v1.0.0-alpha.5) (2020-07-23)
 
@@ -156,15 +156,15 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 # [1.0.0-alpha.4](https://github.com/markmcdowell/react-financial-charts/compare/v1.0.0-alpha.3...v1.0.0-alpha.4) (2020-07-19)
 
-**Note:** Version bump only for package @react-financial-charts/stories
+**Note:** Version bump only for package @lfurzewaddock/react-financial-charts-stories
 
 # [1.0.0-alpha.3](https://github.com/markmcdowell/react-financial-charts/compare/v1.0.0-alpha.2...v1.0.0-alpha.3) (2020-07-19)
 
-**Note:** Version bump only for package @react-financial-charts/stories
+**Note:** Version bump only for package @lfurzewaddock/react-financial-charts-stories
 
 # [1.0.0-alpha.2](https://github.com/markmcdowell/react-financial-charts/compare/v1.0.0-alpha.1...v1.0.0-alpha.2) (2020-07-15)
 
-**Note:** Version bump only for package @react-financial-charts/stories
+**Note:** Version bump only for package @lfurzewaddock/react-financial-charts-stories
 
 # [1.0.0-alpha.1](https://github.com/markmcdowell/react-financial-charts/compare/v1.0.0-alpha.0...v1.0.0-alpha.1) (2020-07-10)
 
@@ -199,7 +199,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## [0.4.1](https://github.com/markmcdowell/react-financial-charts/compare/v0.4.0...v0.4.1) (2019-12-17)
 
-**Note:** Version bump only for package @react-financial-charts/stories
+**Note:** Version bump only for package @lfurzewaddock/react-financial-charts-stories
 
 # [0.4.0](https://github.com/markmcdowell/react-financial-charts/compare/v0.3.3...v0.4.0) (2019-12-16)
 
@@ -214,11 +214,11 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## [0.3.3](https://github.com/markmcdowell/react-financial-charts/compare/v0.3.2...v0.3.3) (2019-11-27)
 
-**Note:** Version bump only for package @react-financial-charts/stories
+**Note:** Version bump only for package @lfurzewaddock/react-financial-charts-stories
 
 ## [0.3.2](https://github.com/markmcdowell/react-financial-charts/compare/v0.3.1...v0.3.2) (2019-11-21)
 
-**Note:** Version bump only for package @react-financial-charts/stories
+**Note:** Version bump only for package @lfurzewaddock/react-financial-charts-stories
 
 ## [0.3.1](https://github.com/markmcdowell/react-financial-charts/compare/v0.3.0...v0.3.1) (2019-10-14)
 
@@ -240,7 +240,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## [0.2.3](https://github.com/markmcdowell/react-financial-charts/compare/v0.2.2...v0.2.3) (2019-09-26)
 
-**Note:** Version bump only for package @react-financial-charts/stories
+**Note:** Version bump only for package @lfurzewaddock/react-financial-charts-stories
 
 ## [0.2.2](https://github.com/markmcdowell/react-financial-charts/compare/v0.2.1...v0.2.2) (2019-09-19)
 
@@ -251,11 +251,11 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## [0.2.1](https://github.com/markmcdowell/react-financial-charts/compare/v0.2.0...v0.2.1) (2019-09-14)
 
-**Note:** Version bump only for package @react-financial-charts/stories
+**Note:** Version bump only for package @lfurzewaddock/react-financial-charts-stories
 
 # [0.2.0](https://github.com/markmcdowell/react-financial-charts/compare/v0.1.5...v0.2.0) (2019-09-12)
 
-**Note:** Version bump only for package @react-financial-charts/stories
+**Note:** Version bump only for package @lfurzewaddock/react-financial-charts-stories
 
 ## [0.1.5](https://github.com/markmcdowell/react-financial-charts/compare/v0.1.4...v0.1.5) (2019-09-11)
 
@@ -265,7 +265,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## [0.1.4](https://github.com/markmcdowell/react-financial-charts/compare/v0.1.3...v0.1.4) (2019-09-10)
 
-**Note:** Version bump only for package @react-financial-charts/stories
+**Note:** Version bump only for package @lfurzewaddock/react-financial-charts-stories
 
 ## [0.1.3](https://github.com/markmcdowell/react-financial-charts/compare/v0.1.2...v0.1.3) (2019-09-10)
 
@@ -276,11 +276,11 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## [0.1.2](https://github.com/markmcdowell/react-financial-charts/compare/v0.1.1...v0.1.2) (2019-09-10)
 
-**Note:** Version bump only for package @react-financial-charts/stories
+**Note:** Version bump only for package @lfurzewaddock/react-financial-charts-stories
 
 ## [0.1.1](https://github.com/markmcdowell/react-financial-charts/compare/v0.1.0...v0.1.1) (2019-09-09)
 
-**Note:** Version bump only for package @react-financial-charts/stories
+**Note:** Version bump only for package @lfurzewaddock/react-financial-charts-stories
 
 # 0.1.0 (2019-09-08)
 

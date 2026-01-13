@@ -1,5 +1,5 @@
 {
-    "name": "@react-financial-charts/coordinates",
+    "name": "@lfurzewaddock/react-financial-charts-coordinates",
     "version": "2.0.2",
     "description": "Coordinates for react-financial-charts",
     "publishConfig": {
@@ -26,10 +26,10 @@
     "license": "MIT",
     "repository": {
         "type": "git",
-        "url": "https://github.com/reactivemarkets/react-financial-charts.git"
+        "url": "https://github.com/lfurzewaddock/react-financial-charts.git"
     },
     "bugs": {
-        "url": "https://github.com/reactivemarkets/react-financial-charts/issues"
+        "url": "https://github.com/lfurzewaddock/react-financial-charts/issues"
     },
     "scripts": {
         "build": "pnpm run clean && pnpm run compile",
@@ -38,7 +38,7 @@
         "watch": "tsc -p tsconfig.json --watch --preserveWatchOutput"
     },
     "dependencies": {
-        "@react-financial-charts/core": "file:../core",
+        "@lfurzewaddock/react-financial-charts-core": "file:../core",
         "d3-format": "^3.1.0"
     },
     "peerDependencies": {

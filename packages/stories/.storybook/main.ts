@@ -33,16 +33,16 @@ const config: StorybookConfig = {
         config.resolve = config.resolve || {};
         config.resolve.alias = {
             ...config.resolve.alias,
-            "@react-financial-charts/annotations": resolve(packagesDir, "packages/annotations"),
-            "@react-financial-charts/axes": resolve(packagesDir, "packages/axes"),
-            "@react-financial-charts/coordinates": resolve(packagesDir, "packages/coordinates"),
-            "@react-financial-charts/core": resolve(packagesDir, "packages/core"),
-            "@react-financial-charts/indicators": resolve(packagesDir, "packages/indicators"),
-            "@react-financial-charts/interactive": resolve(packagesDir, "packages/interactive"),
-            "@react-financial-charts/scales": resolve(packagesDir, "packages/scales"),
-            "@react-financial-charts/series": resolve(packagesDir, "packages/series"),
-            "@react-financial-charts/tooltip": resolve(packagesDir, "packages/tooltip"),
-            "@react-financial-charts/utils": resolve(packagesDir, "packages/utils"),
+            "@lfurzewaddock/react-financial-charts-annotations": resolve(packagesDir, "packages/annotations"),
+            "@lfurzewaddock/react-financial-charts-axes": resolve(packagesDir, "packages/axes"),
+            "@lfurzewaddock/react-financial-charts-coordinates": resolve(packagesDir, "packages/coordinates"),
+            "@lfurzewaddock/react-financial-charts-core": resolve(packagesDir, "packages/core"),
+            "@lfurzewaddock/react-financial-charts-indicators": resolve(packagesDir, "packages/indicators"),
+            "@lfurzewaddock/react-financial-charts-interactive": resolve(packagesDir, "packages/interactive"),
+            "@lfurzewaddock/react-financial-charts-scales": resolve(packagesDir, "packages/scales"),
+            "@lfurzewaddock/react-financial-charts-series": resolve(packagesDir, "packages/series"),
+            "@lfurzewaddock/react-financial-charts-tooltip": resolve(packagesDir, "packages/tooltip"),
+            "@lfurzewaddock/react-financial-charts-utils": resolve(packagesDir, "packages/utils"),
             "react-financial-charts": resolve(packagesDir, "packages/charts"),
         };
 

@@ -1,5 +1,5 @@
 # Indicators
 
 ```bash
-npm i @react-financial-charts/indicators
+npm i @lfurzewaddock/react-financial-charts-indicators
 ```

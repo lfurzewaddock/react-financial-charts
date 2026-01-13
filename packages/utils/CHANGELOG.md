@@ -11,7 +11,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## [2.0.1](https://github.com/reactivemarkets/react-financial-charts/compare/v2.0.0...v2.0.1) (2023-05-13)
 
-**Note:** Version bump only for package @react-financial-charts/utils
+**Note:** Version bump only for package @lfurzewaddock/react-financial-charts-utils
 
 # [2.0.0](https://github.com/reactivemarkets/react-financial-charts/compare/v1.3.2...v2.0.0) (2023-05-12)
 
@@ -76,7 +76,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 # [1.0.0-alpha.1](https://github.com/reactivemarkets/react-financial-charts/compare/v1.0.0-alpha.0...v1.0.0-alpha.1) (2020-07-10)
 
-**Note:** Version bump only for package @react-financial-charts/utils
+**Note:** Version bump only for package @lfurzewaddock/react-financial-charts-utils
 
 # [1.0.0-alpha.0](https://github.com/reactivemarkets/react-financial-charts/compare/v0.5.1...v1.0.0-alpha.0) (2020-07-08)
 

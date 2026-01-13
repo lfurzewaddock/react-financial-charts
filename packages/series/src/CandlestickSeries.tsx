@@ -1,4 +1,9 @@
-import { functor, getAxisCanvas, GenericChartComponent, plotDataLengthBarWidth } from "@react-financial-charts/core";
+import {
+    functor,
+    getAxisCanvas,
+    GenericChartComponent,
+    plotDataLengthBarWidth,
+} from "@lfurzewaddock/react-financial-charts-core";
 import { group } from "d3-array";
 import { ScaleContinuousNumeric, ScaleTime } from "d3-scale";
 import * as React from "react";

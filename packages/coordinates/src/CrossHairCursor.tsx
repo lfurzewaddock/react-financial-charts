@@ -5,7 +5,7 @@ import {
     GenericComponent,
     getMouseCanvas,
     ChartCanvasContext,
-} from "@react-financial-charts/core";
+} from "@lfurzewaddock/react-financial-charts-core";
 
 const defaultCustomX = (props: CrossHairCursorProps, moreProps: any) => {
     const { xScale, xAccessor, currentItem, mouseXY } = moreProps;
@@ -33,8 +33,8 @@ export class CrossHairCursor extends React.Component<CrossHairCursorProps> {
 
     public static contextType = ChartCanvasContext;
 
-    public declare context: React.ContextType<typeof ChartCanvasContext>;
-    
+    declare public context: React.ContextType<typeof ChartCanvasContext>;
+
     public render() {
         return (
             <GenericComponent

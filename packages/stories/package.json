@@ -1,9 +1,9 @@
 {
-    "name": "@react-financial-charts/stories",
+    "name": "@lfurzewaddock/react-financial-charts-stories",
     "version": "2.0.2",
     "description": "Stories for react financial charts",
     "private": true,
-    "author": "Reactive Markets",
+    "author": "Leo Furze-Waddock",
     "license": "MIT",
     "scripts": {
         "clean": "rimraf ../docs lib",
