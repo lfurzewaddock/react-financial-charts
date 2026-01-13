@@ -12,7 +12,7 @@
         "src"
     ],
     "sideEffects": false,
-    "author": "Reactive Markets",
+    "author": "Leo Furze-Waddock",
     "keywords": [
         "charts",
         "charting",
@@ -26,10 +26,10 @@
     "license": "MIT",
     "repository": {
         "type": "git",
-        "url": "https://github.com/reactivemarkets/react-financial-charts.git"
+        "url": "https://github.com/lfurzewaddock/react-financial-charts.git"
     },
     "bugs": {
-        "url": "https://github.com/reactivemarkets/react-financial-charts/issues"
+        "url": "https://github.com/lfurzewaddock/react-financial-charts/issues"
     },
     "scripts": {
         "build": "pnpm run clean && pnpm run compile",

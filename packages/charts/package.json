@@ -1,5 +1,5 @@
 {
-    "name": "react-financial-charts",
+    "name": "@lfurzewaddock/react-financial-charts",
     "version": "2.0.2",
     "description": "React charts specific to finance.",
     "main": "./lib/index.js",
@@ -9,7 +9,7 @@
         "src"
     ],
     "sideEffects": false,
-    "author": "reactivemarkets",
+    "author": "Leo Furze-Waddock",
     "keywords": [
         "charts",
         "charting",
@@ -23,10 +23,10 @@
     "license": "MIT",
     "repository": {
         "type": "git",
-        "url": "https://github.com/reactivemarkets/react-financial-charts.git"
+        "url": "https://github.com/lfurzewaddock/react-financial-charts.git"
     },
     "bugs": {
-        "url": "https://github.com/reactivemarkets/react-financial-charts/issues"
+        "url": "https://github.com/lfurzewaddock/react-financial-charts/issues"
     },
     "scripts": {
         "build": "pnpm run clean && pnpm run compile",
