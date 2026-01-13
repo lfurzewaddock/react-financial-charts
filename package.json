@@ -29,10 +29,14 @@
     "test": "lerna run test --stream",
     "prestart": "pnpm run build",
     "prepublishOnly": "pnpm run build",
-    "publish": "lerna publish from-package --yes",
-    "release": "lerna version --yes",
-    "release:pre": "lerna version --conventional-prerelease --yes",
-    "release:grad": "lerna version --conventional-graduate --yes",
+    "publish": "lerna publish from-package",
+    "release": "lerna version",
+    "release:pre": "lerna version --conventional-prerelease",
+    "release:grad": "lerna version --conventional-graduate",
+    "ci:publish": "lerna publish from-package --yes",
+    "ci:release": "lerna version --yes",
+    "ci:release:pre": "lerna version --conventional-prerelease --yes",
+    "ci:release:grad": "lerna version --conventional-graduate --yes",
     "watch": "lerna run watch --parallel"
   },
   "devDependencies": {
