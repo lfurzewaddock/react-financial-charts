@@ -6,7 +6,7 @@
 
 > **Note:** v1 is a fully breaking change with large parts, if not all, rewritten. Do not expect the same API! although the same features should exist.
 
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Flfurzewaddock%2Freact-financial-charts.svg?type=shield&issueType=security)](https://app.fossa.com/projects/git%2Bgithub.com%2Flfurzewaddock%2Freact-financial-charts?ref=badge_shield&issueType=security)[![GitHub license](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://github.com/lfurzewaddock/react-financial-charts/blob/main/LICENSE)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Flfurzewaddock%2Freact-financial-charts.svg?type=shield&issueType=security)](https://app.fossa.com/projects/git%2Bgithub.com%2Flfurzewaddock%2Freact-financial-charts?ref=badge_shield&issueType=security) [![GitHub license](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://github.com/lfurzewaddock/react-financial-charts/blob/main/LICENSE)
 
 Charts dedicated to finance.
 
@@ -69,7 +69,7 @@ Refer to [CONTRIBUTING.md](./CONTRIBUTING.md)
 
 This project is a mono-repo that uses [Lerna](https://lerna.js.org/) to manage dependencies between packages.
 
-Note: Lerna is configured to use [PNPm](https://pnpm.io/installation) package manager
+Note: Lerna is configured to use [pnpm](https://pnpm.io/installation) package manager
 
 To get started run:
 
@@ -84,6 +84,48 @@ To start up a development server run:
 
 ```bash
 pnpm start
+```
+
+## Release & Publish
+
+### Lerna [version](https://github.com/lerna/lerna/tree/main/libs/commands/version#lerna-version) does the following:
+
+1. Identifies packages that have been updated since the previous tagged release.
+2. Prompts for a new version.
+3. Modifies package metadata to reflect new release, running appropriate lifecycle scripts in root and per-package.
+4. Commits those changes and tags the commit.
+5. Pushes to the git remote.
+
+Release current changes
+
+```bash
+pnpm run release
+```
+
+Release current changes as prerelease versions
+
+```bash
+pnpm run release:pre
+```
+
+lerna version option(s) used:
+[--conventional-prerelease](https://github.com/lerna/lerna/tree/main/libs/commands/version#--conventional-prerelease)
+
+Graduate prerelease versioned packages to stable versions
+
+```bash
+pnpm run release:grad
+```
+
+lerna version option(s) used:
+[--conventional-graduate](https://github.com/lerna/lerna/tree/main/libs/commands/version#--conventional-graduate)
+
+### Lerna [publish](https://github.com/lerna/lerna/tree/main/libs/commands/publish#lerna-publish)
+
+Publish packages in the latest commit where the version is not present in the registry (from-package).
+
+```bash
+pnpm run publish
 ```
 
 ## Roadmap
