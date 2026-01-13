@@ -362,10 +362,6 @@ importers:
       react-dom:
         specifier: ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
         version: 19.2.3(react@19.2.3)
-    devDependencies:
-      '@types/d3':
-        specifier: ^3.5.53
-        version: 3.5.53
 
   packages/series:
     dependencies:
@@ -1871,9 +1867,6 @@ packages:
 
   '@types/d3-time@3.0.4':
     resolution: {integrity: sha512-yuzZug1nkAAaBlBBikKZTgzCeA+k1uy4ZFwWANOfKw5z5LRhV0gNA7gNkKm7HoK+HRN0wX3EkxGk0fpbWhmB7g==}
-
-  '@types/d3@3.5.53':
-    resolution: {integrity: sha512-8yKQA9cAS6+wGsJpBysmnhlaaxlN42Qizqkw+h2nILSlS+MAG2z4JdO6p+PJrJ+ACvimkmLJL281h157e52psQ==}
 
   '@types/deep-eql@4.0.2':
     resolution: {integrity: sha512-c9h9dVVMigMPc4bwTvC5dxqtqJZwQPePsWjPlpSOnojbor6pGqdk541lfA7AqFQr5pB1BRdq0juY9db81BwyFw==}
@@ -7244,8 +7237,6 @@ snapshots:
   '@types/d3-time-format@4.0.3': {}
 
   '@types/d3-time@3.0.4': {}
-
-  '@types/d3@3.5.53': {}
 
   '@types/deep-eql@4.0.2': {}
 
