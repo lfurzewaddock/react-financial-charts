@@ -1,6 +1,12 @@
 import { max, sum } from "d3-array";
 import * as React from "react";
-import { ChartCanvasContext, first, GenericComponent, isDefined, last } from "@react-financial-charts/core";
+import {
+    ChartCanvasContext,
+    first,
+    GenericComponent,
+    isDefined,
+    last,
+} from "@lfurzewaddock/react-financial-charts-core";
 
 const PADDING = 4;
 const X = 8;

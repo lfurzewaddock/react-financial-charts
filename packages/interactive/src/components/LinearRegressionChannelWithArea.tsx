@@ -1,6 +1,10 @@
 import { deviation, sum, zip } from "d3-array";
 import * as React from "react";
-import { getClosestItemIndexes, getMouseCanvas, GenericChartComponent } from "@react-financial-charts/core";
+import {
+    getClosestItemIndexes,
+    getMouseCanvas,
+    GenericChartComponent,
+} from "@lfurzewaddock/react-financial-charts-core";
 import { isHovering2 } from "./InteractiveStraightLine";
 
 export interface LinearRegressionChannelWithAreaProps {

@@ -1,5 +1,5 @@
 {
-    "name": "@react-financial-charts/annotations",
+    "name": "@lfurzewaddock/react-financial-charts-annotations",
     "version": "2.0.2",
     "description": "Annotations for react-financial-charts",
     "publishConfig": {
@@ -42,6 +42,6 @@
         "react-dom": "^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0"
     },
     "dependencies": {
-        "@react-financial-charts/core": "file:../core"
+        "@lfurzewaddock/react-financial-charts-core": "file:../core"
     }
 }

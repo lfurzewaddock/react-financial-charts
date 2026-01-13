@@ -1,4 +1,4 @@
-import { ChartContext, strokeDashTypes } from "@react-financial-charts/core";
+import { ChartContext, strokeDashTypes } from "@lfurzewaddock/react-financial-charts-core";
 import * as React from "react";
 import { Axis } from "./Axis";
 
@@ -68,7 +68,7 @@ export class XAxis<T extends number | Date> extends React.Component<XAxisProps<T
 
     public static contextType = ChartContext;
 
-    public declare context: React.ContextType<typeof ChartContext>;
+    declare public context: React.ContextType<typeof ChartContext>;
 
     public render() {
         const {

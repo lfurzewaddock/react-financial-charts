@@ -1,5 +1,5 @@
 {
-    "name": "@react-financial-charts/series",
+    "name": "@lfurzewaddock/react-financial-charts-series",
     "version": "2.0.2",
     "description": "Series for react-financial-charts",
     "publishConfig": {
@@ -38,7 +38,7 @@
         "watch": "tsc -p tsconfig.json --watch --preserveWatchOutput"
     },
     "dependencies": {
-        "@react-financial-charts/core": "file:../core",
+        "@lfurzewaddock/react-financial-charts-core": "file:../core",
         "d3-array": "^3.2.4",
         "d3-scale": "^4.0.2",
         "d3-shape": "^3.2.0"

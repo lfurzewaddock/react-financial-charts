@@ -1,5 +1,5 @@
 import * as React from "react";
-import { getMouseCanvas, GenericChartComponent } from "@react-financial-charts/core";
+import { getMouseCanvas, GenericChartComponent } from "@lfurzewaddock/react-financial-charts-core";
 
 interface ClickCallbackProps {
     readonly disablePan: boolean;

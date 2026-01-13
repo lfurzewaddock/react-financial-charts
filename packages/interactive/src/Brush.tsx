@@ -4,7 +4,7 @@ import {
     getMouseCanvas,
     GenericChartComponent,
     strokeDashTypes,
-} from "@react-financial-charts/core";
+} from "@lfurzewaddock/react-financial-charts-core";
 
 interface BrushProps {
     readonly enabled: boolean;

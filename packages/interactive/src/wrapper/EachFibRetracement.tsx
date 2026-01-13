@@ -1,6 +1,6 @@
 import * as React from "react";
-import { head, last, noop } from "@react-financial-charts/core";
-import { getXValue } from "@react-financial-charts/core/lib/utils/ChartDataUtil";
+import { head, last, noop } from "@lfurzewaddock/react-financial-charts-core";
+import { getXValue } from "@lfurzewaddock/react-financial-charts-core/lib/utils/ChartDataUtil";
 import { isHover, saveNodeType } from "../utils";
 import { ClickableCircle, HoverTextNearMouse, InteractiveStraightLine, generateLine, Text } from "../components";
 import { getNewXY } from "./EachTrendLine";
@@ -145,21 +145,21 @@ export class EachFibRetracement extends React.Component<EachFibRetracementProps,
                         j === 0
                             ? this.handleLineNSResizeTop
                             : j === lines.length - 1
-                            ? this.handleLineNSResizeBottom
-                            : this.handleLineMove;
+                              ? this.handleLineNSResizeBottom
+                              : this.handleLineMove;
 
                     const edge1DragHandler =
                         j === 0
                             ? this.handleLineNSResizeTop
                             : j === lines.length - 1
-                            ? this.handleLineNSResizeBottom
-                            : this.handleEdge1Drag;
+                              ? this.handleLineNSResizeBottom
+                              : this.handleEdge1Drag;
                     const edge2DragHandler =
                         j === 0
                             ? this.handleLineNSResizeTop
                             : j === lines.length - 1
-                            ? this.handleLineNSResizeBottom
-                            : this.handleEdge2Drag;
+                              ? this.handleLineNSResizeBottom
+                              : this.handleEdge2Drag;
 
                     const hoverHandler = interactive ? { onHover: this.handleHover, onUnHover: this.handleHover } : {};
                     return (

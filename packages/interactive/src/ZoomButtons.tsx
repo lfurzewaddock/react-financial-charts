@@ -1,4 +1,4 @@
-import { ChartContext, last } from "@react-financial-charts/core";
+import { ChartContext, last } from "@lfurzewaddock/react-financial-charts-core";
 import { interpolateNumber } from "d3-interpolate";
 import * as React from "react";
 
@@ -28,7 +28,7 @@ export class ZoomButtons extends React.Component<ZoomButtonsProps> {
 
     public static contextType = ChartContext;
 
-    public declare context: React.ContextType<typeof ChartContext>;
+    declare public context: React.ContextType<typeof ChartContext>;
 
     private interval?: number;
 

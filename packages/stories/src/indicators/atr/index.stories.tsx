@@ -1,5 +1,5 @@
 import * as React from "react";
-import { atr } from "@react-financial-charts/indicators";
+import { atr } from "@lfurzewaddock/react-financial-charts-indicators";
 import ATRIndicator from "./AtrIndicator";
 
 export default {
@@ -8,7 +8,7 @@ export default {
     parameters: {
         docs: {
             subtitle: "Average True Range (ATR) is an indicator that measures volatility.",
-        }
+        },
     },
 };
 

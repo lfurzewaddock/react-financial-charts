@@ -1,5 +1,5 @@
 {
-    "name": "@react-financial-charts/coordinates",
+    "name": "@lfurzewaddock/react-financial-charts-coordinates",
     "version": "2.0.2",
     "description": "Coordinates for react-financial-charts",
     "publishConfig": {
@@ -38,7 +38,7 @@
         "watch": "tsc -p tsconfig.json --watch --preserveWatchOutput"
     },
     "dependencies": {
-        "@react-financial-charts/core": "file:../core",
+        "@lfurzewaddock/react-financial-charts-core": "file:../core",
         "d3-format": "^3.1.0"
     },
     "peerDependencies": {

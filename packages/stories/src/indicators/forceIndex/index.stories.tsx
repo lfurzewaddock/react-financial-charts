@@ -1,5 +1,5 @@
 import * as React from "react";
-import { forceIndex } from "@react-financial-charts/indicators";
+import { forceIndex } from "@lfurzewaddock/react-financial-charts-indicators";
 import ForceIndicator from "./ForceIndicator";
 
 export default {
@@ -10,7 +10,7 @@ export default {
             subtitle: `The Force Index is an indicator that uses price
             and volume to assess the power behind a move or identify possible
             turning points.`,
-        }
+        },
     },
 };
 

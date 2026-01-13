@@ -1,5 +1,5 @@
 {
-    "name": "@react-financial-charts/interactive",
+    "name": "@lfurzewaddock/react-financial-charts-interactive",
     "version": "2.0.2",
     "description": "Interactive features for react-financial-charts",
     "publishConfig": {
@@ -38,8 +38,8 @@
         "watch": "tsc -p tsconfig.json --watch --preserveWatchOutput"
     },
     "dependencies": {
-        "@react-financial-charts/coordinates": "file:../coordinates",
-        "@react-financial-charts/core": "file:../core",
+        "@lfurzewaddock/react-financial-charts-coordinates": "file:../coordinates",
+        "@lfurzewaddock/react-financial-charts-core": "file:../core",
         "d3-array": "^3.2.4",
         "d3-format": "^3.1.0",
         "d3-interpolate": "^3.0.1",

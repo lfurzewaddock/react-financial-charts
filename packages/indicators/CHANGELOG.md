@@ -41,15 +41,15 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 # [1.0.0-alpha.16](https://github.com/reactivemarkets/react-financial-charts/compare/v1.0.0-alpha.15...v1.0.0-alpha.16) (2020-09-04)
 
-**Note:** Version bump only for package @react-financial-charts/indicators
+**Note:** Version bump only for package @lfurzewaddock/react-financial-charts-indicators
 
 # [1.0.0-alpha.15](https://github.com/reactivemarkets/react-financial-charts/compare/v1.0.0-alpha.14...v1.0.0-alpha.15) (2020-09-03)
 
-**Note:** Version bump only for package @react-financial-charts/indicators
+**Note:** Version bump only for package @lfurzewaddock/react-financial-charts-indicators
 
 # [1.0.0-alpha.14](https://github.com/reactivemarkets/react-financial-charts/compare/v1.0.0-alpha.13...v1.0.0-alpha.14) (2020-09-02)
 
-**Note:** Version bump only for package @react-financial-charts/indicators
+**Note:** Version bump only for package @lfurzewaddock/react-financial-charts-indicators
 
 # [1.0.0-alpha.13](https://github.com/reactivemarkets/react-financial-charts/compare/v1.0.0-alpha.12...v1.0.0-alpha.13) (2020-09-01)
 
@@ -59,7 +59,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 # [1.0.0-alpha.10](https://github.com/reactivemarkets/react-financial-charts/compare/v1.0.0-alpha.9...v1.0.0-alpha.10) (2020-08-28)
 
-**Note:** Version bump only for package @react-financial-charts/indicators
+**Note:** Version bump only for package @lfurzewaddock/react-financial-charts-indicators
 
 # [1.0.0-alpha.9](https://github.com/reactivemarkets/react-financial-charts/compare/v1.0.0-alpha.8...v1.0.0-alpha.9) (2020-08-24)
 
@@ -75,7 +75,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 # [1.0.0-alpha.7](https://github.com/reactivemarkets/react-financial-charts/compare/v1.0.0-alpha.6...v1.0.0-alpha.7) (2020-07-26)
 
-**Note:** Version bump only for package @react-financial-charts/indicators
+**Note:** Version bump only for package @lfurzewaddock/react-financial-charts-indicators
 
 # [1.0.0-alpha.1](https://github.com/reactivemarkets/react-financial-charts/compare/v1.0.0-alpha.0...v1.0.0-alpha.1) (2020-07-10)
 
