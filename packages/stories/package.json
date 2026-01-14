@@ -1,6 +1,6 @@
 {
     "name": "@lfurzewaddock/react-financial-charts-stories",
-    "version": "2.0.2",
+    "version": "2.0.3",
     "description": "Stories for react financial charts",
     "private": true,
     "author": "Leo Furze-Waddock",
@@ -11,13 +11,13 @@
         "start": "storybook dev -p 4444"
     },
     "dependencies": {
+        "@lfurzewaddock/react-financial-charts": "workspace:*",
         "d3-dsv": "^3.0.1",
         "d3-format": "^3.1.0",
         "d3-scale": "^4.0.2",
         "d3-time-format": "^4.1.0",
         "react": "^19.2.3",
-        "react-dom": "^19.2.3",
-        "@lfurzewaddock/react-financial-charts": "workspace:*"
+        "react-dom": "^19.2.3"
     },
     "devDependencies": {
         "tslib": "^2.8.1"
