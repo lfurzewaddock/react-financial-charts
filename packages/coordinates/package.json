@@ -38,7 +38,7 @@
         "watch": "tsc -p tsconfig.json --watch --preserveWatchOutput"
     },
     "dependencies": {
-        "@lfurzewaddock/react-financial-charts-core": "file:../core",
+        "@lfurzewaddock/react-financial-charts-core": "workspace:*",
         "d3-format": "^3.1.0"
     },
     "peerDependencies": {

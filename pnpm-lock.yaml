@@ -9,40 +9,40 @@ importers:
   .:
     dependencies:
       '@lfurzewaddock/react-financial-charts':
-        specifier: file:packages/charts
+        specifier: workspace:*
         version: link:packages/charts
       '@lfurzewaddock/react-financial-charts-annotations':
-        specifier: file:packages/annotations
+        specifier: workspace:*
         version: link:packages/annotations
       '@lfurzewaddock/react-financial-charts-axes':
-        specifier: file:packages/axes
+        specifier: workspace:*
         version: link:packages/axes
       '@lfurzewaddock/react-financial-charts-coordinates':
-        specifier: file:packages/coordinates
+        specifier: workspace:*
         version: link:packages/coordinates
       '@lfurzewaddock/react-financial-charts-core':
-        specifier: file:packages/core
+        specifier: workspace:*
         version: link:packages/core
       '@lfurzewaddock/react-financial-charts-indicators':
-        specifier: file:packages/indicators
+        specifier: workspace:*
         version: link:packages/indicators
       '@lfurzewaddock/react-financial-charts-interactive':
-        specifier: file:packages/interactive
+        specifier: workspace:*
         version: link:packages/interactive
       '@lfurzewaddock/react-financial-charts-scales':
-        specifier: file:packages/scales
+        specifier: workspace:*
         version: link:packages/scales
       '@lfurzewaddock/react-financial-charts-series':
-        specifier: file:packages/series
+        specifier: workspace:*
         version: link:packages/series
       '@lfurzewaddock/react-financial-charts-stories':
-        specifier: file:packages/stories
+        specifier: workspace:*
         version: link:packages/stories
       '@lfurzewaddock/react-financial-charts-tooltip':
-        specifier: file:packages/tooltip
+        specifier: workspace:*
         version: link:packages/tooltip
       '@lfurzewaddock/react-financial-charts-utils':
-        specifier: file:packages/utils
+        specifier: workspace:*
         version: link:packages/utils
     devDependencies:
       '@babel/core':
@@ -184,7 +184,7 @@ importers:
   packages/annotations:
     dependencies:
       '@lfurzewaddock/react-financial-charts-core':
-        specifier: file:../core
+        specifier: workspace:*
         version: link:../core
       react:
         specifier: ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
@@ -196,7 +196,7 @@ importers:
   packages/axes:
     dependencies:
       '@lfurzewaddock/react-financial-charts-core':
-        specifier: file:../core
+        specifier: workspace:*
         version: link:../core
       d3-array:
         specifier: ^3.2.4
@@ -224,34 +224,34 @@ importers:
   packages/charts:
     dependencies:
       '@lfurzewaddock/react-financial-charts-annotations':
-        specifier: file:../annotations
+        specifier: workspace:*
         version: link:../annotations
       '@lfurzewaddock/react-financial-charts-axes':
-        specifier: file:../axes
+        specifier: workspace:*
         version: link:../axes
       '@lfurzewaddock/react-financial-charts-coordinates':
-        specifier: file:../coordinates
+        specifier: workspace:*
         version: link:../coordinates
       '@lfurzewaddock/react-financial-charts-core':
-        specifier: file:../core
+        specifier: workspace:*
         version: link:../core
       '@lfurzewaddock/react-financial-charts-indicators':
-        specifier: file:../indicators
+        specifier: workspace:*
         version: link:../indicators
       '@lfurzewaddock/react-financial-charts-interactive':
-        specifier: file:../interactive
+        specifier: workspace:*
         version: link:../interactive
       '@lfurzewaddock/react-financial-charts-scales':
-        specifier: file:../scales
+        specifier: workspace:*
         version: link:../scales
       '@lfurzewaddock/react-financial-charts-series':
-        specifier: file:../series
+        specifier: workspace:*
         version: link:../series
       '@lfurzewaddock/react-financial-charts-tooltip':
-        specifier: file:../tooltip
+        specifier: workspace:*
         version: link:../tooltip
       '@lfurzewaddock/react-financial-charts-utils':
-        specifier: file:../utils
+        specifier: workspace:*
         version: link:../utils
       react:
         specifier: ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
@@ -263,7 +263,7 @@ importers:
   packages/coordinates:
     dependencies:
       '@lfurzewaddock/react-financial-charts-core':
-        specifier: file:../core
+        specifier: workspace:*
         version: link:../core
       d3-format:
         specifier: ^3.1.0
@@ -318,10 +318,10 @@ importers:
   packages/interactive:
     dependencies:
       '@lfurzewaddock/react-financial-charts-coordinates':
-        specifier: file:../coordinates
+        specifier: workspace:*
         version: link:../coordinates
       '@lfurzewaddock/react-financial-charts-core':
-        specifier: file:../core
+        specifier: workspace:*
         version: link:../core
       d3-array:
         specifier: ^3.2.4
@@ -345,7 +345,7 @@ importers:
   packages/scales:
     dependencies:
       '@lfurzewaddock/react-financial-charts-core':
-        specifier: file:../core
+        specifier: workspace:*
         version: link:../core
       d3-array:
         specifier: ^3.2.4
@@ -366,7 +366,7 @@ importers:
   packages/series:
     dependencies:
       '@lfurzewaddock/react-financial-charts-core':
-        specifier: file:../core
+        specifier: workspace:*
         version: link:../core
       d3-array:
         specifier: ^3.2.4
@@ -386,6 +386,9 @@ importers:
 
   packages/stories:
     dependencies:
+      '@lfurzewaddock/react-financial-charts':
+        specifier: workspace:*
+        version: link:../charts
       d3-dsv:
         specifier: ^3.0.1
         version: 3.0.1
@@ -404,9 +407,6 @@ importers:
       react-dom:
         specifier: ^19.2.3
         version: 19.2.3(react@19.2.3)
-      react-financial-charts:
-        specifier: file:../charts
-        version: link:../charts
     devDependencies:
       tslib:
         specifier: ^2.8.1
@@ -415,7 +415,7 @@ importers:
   packages/tooltip:
     dependencies:
       '@lfurzewaddock/react-financial-charts-core':
-        specifier: file:../core
+        specifier: workspace:*
         version: link:../core
       d3-array:
         specifier: ^3.2.4
