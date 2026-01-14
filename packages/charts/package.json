@@ -34,16 +34,16 @@
         "compile": "tsc -p tsconfig.json"
     },
     "dependencies": {
-        "@lfurzewaddock/react-financial-charts-annotations": "file:../annotations",
-        "@lfurzewaddock/react-financial-charts-axes": "file:../axes",
-        "@lfurzewaddock/react-financial-charts-coordinates": "file:../coordinates",
-        "@lfurzewaddock/react-financial-charts-core": "file:../core",
-        "@lfurzewaddock/react-financial-charts-indicators": "file:../indicators",
-        "@lfurzewaddock/react-financial-charts-interactive": "file:../interactive",
-        "@lfurzewaddock/react-financial-charts-scales": "file:../scales",
-        "@lfurzewaddock/react-financial-charts-series": "file:../series",
-        "@lfurzewaddock/react-financial-charts-tooltip": "file:../tooltip",
-        "@lfurzewaddock/react-financial-charts-utils": "file:../utils"
+        "@lfurzewaddock/react-financial-charts-annotations": "workspace:*",
+        "@lfurzewaddock/react-financial-charts-axes": "workspace:*",
+        "@lfurzewaddock/react-financial-charts-coordinates": "workspace:*",
+        "@lfurzewaddock/react-financial-charts-core": "workspace:*",
+        "@lfurzewaddock/react-financial-charts-indicators": "workspace:*",
+        "@lfurzewaddock/react-financial-charts-interactive": "workspace:*",
+        "@lfurzewaddock/react-financial-charts-scales": "workspace:*",
+        "@lfurzewaddock/react-financial-charts-series": "workspace:*",
+        "@lfurzewaddock/react-financial-charts-tooltip": "workspace:*",
+        "@lfurzewaddock/react-financial-charts-utils": "workspace:*"
     },
     "peerDependencies": {
         "react": "^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0",

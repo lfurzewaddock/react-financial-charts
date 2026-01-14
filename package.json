@@ -87,17 +87,17 @@
     "webpack": "^5.104.1"
   },
   "dependencies": {
-    "@lfurzewaddock/react-financial-charts-annotations": "file:packages/annotations",
-    "@lfurzewaddock/react-financial-charts-axes": "file:packages/axes",
-    "@lfurzewaddock/react-financial-charts-coordinates": "file:packages/coordinates",
-    "@lfurzewaddock/react-financial-charts-core": "file:packages/core",
-    "@lfurzewaddock/react-financial-charts-indicators": "file:packages/indicators",
-    "@lfurzewaddock/react-financial-charts-interactive": "file:packages/interactive",
-    "@lfurzewaddock/react-financial-charts-scales": "file:packages/scales",
-    "@lfurzewaddock/react-financial-charts-series": "file:packages/series",
-    "@lfurzewaddock/react-financial-charts-stories": "file:packages/stories",
-    "@lfurzewaddock/react-financial-charts-tooltip": "file:packages/tooltip",
-    "@lfurzewaddock/react-financial-charts-utils": "file:packages/utils",
-    "@lfurzewaddock/react-financial-charts": "file:packages/charts"
+    "@lfurzewaddock/react-financial-charts-annotations": "workspace:*",
+    "@lfurzewaddock/react-financial-charts-axes": "workspace:*",
+    "@lfurzewaddock/react-financial-charts-coordinates": "workspace:*",
+    "@lfurzewaddock/react-financial-charts-core": "workspace:*",
+    "@lfurzewaddock/react-financial-charts-indicators": "workspace:*",
+    "@lfurzewaddock/react-financial-charts-interactive": "workspace:*",
+    "@lfurzewaddock/react-financial-charts-scales": "workspace:*",
+    "@lfurzewaddock/react-financial-charts-series": "workspace:*",
+    "@lfurzewaddock/react-financial-charts-stories": "workspace:*",
+    "@lfurzewaddock/react-financial-charts-tooltip": "workspace:*",
+    "@lfurzewaddock/react-financial-charts-utils": "workspace:*",
+    "@lfurzewaddock/react-financial-charts": "workspace:*"
   }
 }
