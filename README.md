@@ -6,7 +6,7 @@
 
 > **Note:** v1 is a fully breaking change with large parts, if not all, rewritten. Do not expect the same API! although the same features should exist.
 
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Flfurzewaddock%2Freact-financial-charts.svg?type=shield&issueType=security)](https://app.fossa.com/projects/git%2Bgithub.com%2Flfurzewaddock%2Freact-financial-charts?ref=badge_shield&issueType=security) [![GitHub license](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://github.com/lfurzewaddock/react-financial-charts/blob/main/LICENSE)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Flfurzewaddock%2Freact-financial-charts.svg?type=shield&issueType=security)](https://app.fossa.com/projects/git%2Bgithub.com%2Flfurzewaddock%2Freact-financial-charts?ref=badge_shield&issueType=security) [![GitHub license](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://github.com/lfurzewaddock/react-financial-charts/blob/main/LICENSE) ![NPM Version](https://img.shields.io/npm/v/%40lfurzewaddock%2Freact-financial-charts)
 
 Charts dedicated to finance.
 

@@ -7,7 +7,7 @@ The aim with this project is create financial charts that work out of the box.
 ## Features
 
 - integrates multiple chart types
-- over 60 technical indicators and overlays
+- technical indicators and overlays
 - drawing objects
 
 ### Chart types
@@ -48,9 +48,15 @@ The aim with this project is create financial charts that work out of the box.
 ## Installation
 
 ```sh
-npm install react-financial-charts
+npm install @lfurzewaddock/react-financial-charts
 ```
+
+## Documentation
+
+[Stories](https://lfurzewaddock.github.io/react-financial-charts/)
 
 ## LICENSE
 
 [MIT](./LICENSE)
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Flfurzewaddock%2Freact-financial-charts.svg?type=large&issueType=license)](https://app.fossa.com/projects/git%2Bgithub.com%2Flfurzewaddock%2Freact-financial-charts?ref=badge_large&issueType=license)
