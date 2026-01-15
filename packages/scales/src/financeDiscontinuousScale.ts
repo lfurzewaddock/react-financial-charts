@@ -5,9 +5,8 @@ import { levelDefinition } from "./levels";
 const MAX_LEVEL = levelDefinition.length - 1;
 
 export default function financeDiscontinuousScale(index: any[], backingLinearScale = scaleLinear()) {
-    if (index === undefined) {
+    if (index === undefined)
         throw new Error("Use the discontinuousTimeScaleProvider to create financeDiscontinuousScale");
-    }
 
     function scale(newScale: number) {
         return backingLinearScale(newScale);
@@ -17,17 +16,13 @@ export default function financeDiscontinuousScale(index: any[], backingLinearSca
         return Math.round(inverted * 10000) / 10000;
     };
     scale.domain = (newDomain?: number[]) => {
-        if (newDomain === undefined) {
-            return backingLinearScale.domain();
-        }
+        if (newDomain === undefined) return backingLinearScale.domain();
 
         backingLinearScale.domain(newDomain);
         return scale;
     };
     scale.range = (range?: number[]) => {
-        if (range === undefined) {
-            return backingLinearScale.range();
-        }
+        if (range === undefined) return backingLinearScale.range();
 
         backingLinearScale.range(range);
         return scale;
@@ -36,17 +31,13 @@ export default function financeDiscontinuousScale(index: any[], backingLinearSca
         return backingLinearScale.rangeRound(range);
     };
     scale.clamp = (clamp?: boolean) => {
-        if (clamp === undefined) {
-            return backingLinearScale.clamp();
-        }
+        if (clamp === undefined) return backingLinearScale.clamp();
 
         backingLinearScale.clamp(clamp);
         return scale;
     };
     scale.interpolate = (interpolate?: InterpolatorFactory<number, number>) => {
-        if (interpolate === undefined) {
-            return backingLinearScale.interpolate();
-        }
+        if (interpolate === undefined) return backingLinearScale.interpolate();
 
         backingLinearScale.interpolate(interpolate);
         return scale;
@@ -68,11 +59,7 @@ export default function financeDiscontinuousScale(index: any[], backingLinearSca
             const ticksAtLevel = ticksMap.get(i);
             const temp = ticksAtLevel === undefined ? [] : ticksAtLevel.slice();
 
-            for (let j = start; j <= end; j++) {
-                if (index[j].level === i) {
-                    temp.push(index[j]);
-                }
-            }
+            for (let j = start; j <= end; j++) if (index[j].level === i) temp.push(index[j]);
 
             ticksMap.set(i, temp);
         }
@@ -80,9 +67,8 @@ export default function financeDiscontinuousScale(index: any[], backingLinearSca
         let unsortedTicks: number[] = [];
         for (let k = MAX_LEVEL; k >= 0; k--) {
             const selectedTicks = ticksMap.get(k) ?? [];
-            if (selectedTicks.length + unsortedTicks.length > desiredTickCount * 1.5) {
-                break;
-            }
+            if (selectedTicks.length + unsortedTicks.length > desiredTickCount * 1.5) break;
+
             unsortedTicks = unsortedTicks.concat(selectedTicks.map((d) => d.index));
         }
 
@@ -100,13 +86,10 @@ export default function financeDiscontinuousScale(index: any[], backingLinearSca
                     : 1) * 1.5,
             );
 
-            for (let i = 0; i < ticks.length - 1; i++) {
-                for (let j = i + 1; j < ticks.length; j++) {
-                    if (ticks[j] - ticks[i] <= distance) {
+            for (let i = 0; i < ticks.length - 1; i++)
+                for (let j = i + 1; j < ticks.length; j++)
+                    if (ticks[j] - ticks[i] <= distance)
                         ticksSet.delete(index[ticks[i] + d].level >= index[ticks[j] + d].level ? ticks[j] : ticks[i]);
-                    }
-                }
-            }
 
             // @ts-ignore
             const tickValues = [...ticksSet.values()].map((i) => parseInt(i, 10));
@@ -136,9 +119,8 @@ export default function financeDiscontinuousScale(index: any[], backingLinearSca
         return scale;
     };
     scale.index = (x?: any[]) => {
-        if (x === undefined) {
-            return index;
-        }
+        if (x === undefined) return index;
+
         index = x;
         return scale;
     };

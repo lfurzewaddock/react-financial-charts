@@ -194,37 +194,31 @@ export function discontinuousTimeScaleProviderBuilder() {
     };
 
     discontinuousTimeScaleProvider.initialIndex = function (x: any) {
-        if (!arguments.length) {
-            return initialIndex;
-        }
+        if (!arguments.length) return initialIndex;
+
         initialIndex = x;
         return discontinuousTimeScaleProvider;
     };
     discontinuousTimeScaleProvider.inputDateAccessor = function (x: any) {
-        if (!arguments.length) {
-            return inputDateAccessor;
-        }
+        if (!arguments.length) return inputDateAccessor;
         inputDateAccessor = x;
         return discontinuousTimeScaleProvider;
     };
     discontinuousTimeScaleProvider.indexAccessor = function (x: any) {
-        if (!arguments.length) {
-            return indexAccessor;
-        }
+        if (!arguments.length) return indexAccessor;
+
         indexAccessor = x;
         return discontinuousTimeScaleProvider;
     };
     discontinuousTimeScaleProvider.indexMutator = function (x: any) {
-        if (!arguments.length) {
-            return indexMutator;
-        }
+        if (!arguments.length) return indexMutator;
+
         indexMutator = x;
         return discontinuousTimeScaleProvider;
     };
     discontinuousTimeScaleProvider.withIndex = function (x: any) {
-        if (!arguments.length) {
-            return withIndex;
-        }
+        if (!arguments.length) return withIndex;
+
         withIndex = x;
         return discontinuousTimeScaleProvider;
     };
@@ -239,12 +233,9 @@ export function discontinuousTimeScaleProviderBuilder() {
         return discontinuousTimeScaleProvider;
     };
     discontinuousTimeScaleProvider.setLocale = (locale?: any, formatters?: IFormatters) => {
-        if (locale !== undefined) {
-            timeFormatDefaultLocale(locale);
-        }
-        if (formatters !== undefined) {
-            currentFormatters = formatters;
-        }
+        if (locale !== undefined) timeFormatDefaultLocale(locale);
+
+        if (formatters !== undefined) currentFormatters = formatters;
 
         return discontinuousTimeScaleProvider;
     };
