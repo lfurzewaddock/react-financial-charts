@@ -69,6 +69,7 @@ export default defineConfig([
             "@typescript-eslint/no-unused-vars": [
                 "error",
                 {
+                    argsIgnorePattern: "^_",
                     ignoreRestSiblings: true,
                 },
             ],
@@ -81,6 +82,7 @@ export default defineConfig([
             "no-multiple-empty-lines": "error",
             "no-var": "error",
             "prefer-rest-params": 0,
+            "prettier/prettier": "warn",
         },
     },
 ]);
