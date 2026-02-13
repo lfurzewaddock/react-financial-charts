@@ -98,7 +98,11 @@ pnpm start
 
 Release current changes
 
+If necessary generate a new GitHub token with repo permissions;
+https://github.com/ -> user -> settings -> Developer settings -> Personal access tokens -> Tokens (classic)
+
 ```bash
+export GH_TOKEN=INSERT_GITHUB_TOKEN
 pnpm run release
 ```
 
@@ -121,6 +125,13 @@ lerna version option(s) used:
 [--conventional-graduate](https://github.com/lerna/lerna/tree/main/libs/commands/version#--conventional-graduate)
 
 ### Lerna [publish](https://github.com/lerna/lerna/tree/main/libs/commands/publish#lerna-publish)
+
+Sign in to npm. Latest `npm install -g npm@latest` npm required for 2FA
+
+```bash
+npm login
+
+```
 
 Publish packages in the latest commit where the version is not present in the registry (from-package).
 
