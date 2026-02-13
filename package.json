@@ -2,7 +2,6 @@
   "name": "root",
   "private": true,
   "license": "MIT",
-  "packageManager": "pnpm@10.22.0",
   "scripts": {
     "build": "lerna run build",
     "build:annotations": "lerna run build --scope='*/annotations'",
