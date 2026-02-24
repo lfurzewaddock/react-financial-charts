@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/lfurzewaddock/react-financial-charts/compare/v2.0.4...v2.1.0) (2026-02-24)
+
+### Features
+
+- annotate markers ([fb05d8a](https://github.com/lfurzewaddock/react-financial-charts/commit/fb05d8aa2143a92345e60041d6638901d20fe127))
+
 ## [2.0.3](https://github.com/lfurzewaddock/react-financial-charts/compare/v2.0.2...v2.0.3) (2026-01-14)
 
 **Note:** Version bump only for package @lfurzewaddock/react-financial-charts-series
