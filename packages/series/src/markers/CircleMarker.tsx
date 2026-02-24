@@ -3,7 +3,7 @@ import * as React from "react";
 
 export interface CircleMarkerProps {
     readonly className?: string;
-    readonly fillStyle?: string;
+    readonly fillStyle?: string | ((datum: any) => string | undefined);
     readonly point: {
         x: number;
         y: number;
@@ -17,6 +17,8 @@ export interface CircleMarkerProps {
 export class CircleMarker extends React.Component<CircleMarkerProps> {
     public static defaultProps = {
         fillStyle: "#4682B4",
+        strokeStyle: "#4682B4",
+        strokeWidth: 1,
         className: "react-financial-charts-marker-circle",
     };
 
@@ -25,17 +27,11 @@ export class CircleMarker extends React.Component<CircleMarkerProps> {
         point: { x: number; y: number; datum: unknown },
         ctx: CanvasRenderingContext2D,
     ) => {
-        const { strokeStyle, fillStyle, r, strokeWidth } = props;
+        const { strokeStyle, r, strokeWidth } = props;
 
-        if (strokeStyle !== undefined) {
-            ctx.strokeStyle = strokeStyle;
-        }
-        if (strokeWidth !== undefined) {
-            ctx.lineWidth = strokeWidth;
-        }
-        if (fillStyle !== undefined) {
-            ctx.fillStyle = fillStyle;
-        }
+        if (strokeStyle !== undefined) ctx.strokeStyle = strokeStyle;
+
+        if (strokeWidth !== undefined) ctx.lineWidth = strokeWidth;
 
         const { datum, x, y } = point;
 
@@ -45,14 +41,13 @@ export class CircleMarker extends React.Component<CircleMarkerProps> {
         ctx.beginPath();
         ctx.arc(x, y, radius, 0, 2 * Math.PI, false);
         ctx.fill();
-        if (strokeStyle !== undefined) {
-            ctx.stroke();
-        }
+        if (strokeStyle !== undefined) ctx.stroke();
     };
 
     public render() {
         const { className, strokeStyle, strokeWidth, fillStyle, point, r } = this.props;
         const radius = functor(r)(point.datum);
+        const fill = functor(fillStyle)(point.datum) ?? CircleMarker.defaultProps.fillStyle;
 
         return (
             <circle
@@ -61,7 +56,7 @@ export class CircleMarker extends React.Component<CircleMarkerProps> {
                 cy={point.y}
                 stroke={strokeStyle}
                 strokeWidth={strokeWidth}
-                fill={fillStyle}
+                fill={fill}
                 r={radius}
             />
         );

@@ -6,7 +6,7 @@ export default {
     parameters: {
         docs: {
             subtitle: "Moving averages smooth the price data to form a trend following indicator.",
-        }
+        },
     },
 };
 

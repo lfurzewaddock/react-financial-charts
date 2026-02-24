@@ -35,7 +35,8 @@
         "build": "pnpm run clean && pnpm run compile",
         "clean": "rimraf lib",
         "compile": "tsc -p tsconfig.json",
-        "watch": "tsc -p tsconfig.json --watch --preserveWatchOutput"
+        "watch": "tsc -p tsconfig.json --watch --preserveWatchOutput",
+        "test": "jest --watch --coverage"
     },
     "dependencies": {
         "@lfurzewaddock/react-financial-charts-core": "workspace:*",
