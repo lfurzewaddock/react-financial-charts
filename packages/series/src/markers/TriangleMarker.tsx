@@ -3,8 +3,14 @@ import { functor } from "@lfurzewaddock/react-financial-charts-core";
 
 export interface TriangleProps {
     readonly className?: string;
-    readonly direction?: "top" | "bottom" | "left" | "right" | "hide" | ((datum: any) => any);
-    readonly fillStyle?: string | ((datum: any) => string);
+    readonly direction?:
+        | "top"
+        | "bottom"
+        | "left"
+        | "right"
+        | "hide"
+        | ((datum: any) => "top" | "bottom" | "left" | "right" | "hide");
+    readonly fillStyle?: string | ((datum: any) => string | undefined);
     readonly point: {
         x: number;
         y: number;
@@ -19,6 +25,8 @@ export class Triangle extends React.Component<TriangleProps> {
     public static defaultProps = {
         direction: "top",
         fillStyle: "#4682B4",
+        strokeStyle: "#4682B4",
+        strokeWidth: 1,
         className: "react-financial-charts-marker-triangle",
     };
 
@@ -29,15 +37,11 @@ export class Triangle extends React.Component<TriangleProps> {
     ) => {
         const { fillStyle, strokeStyle, strokeWidth, width } = props;
 
-        if (strokeStyle !== undefined) {
-            ctx.strokeStyle = functor(strokeStyle)(point.datum);
-        }
-        if (strokeWidth !== undefined) {
-            ctx.lineWidth = strokeWidth;
-        }
-        if (fillStyle !== undefined) {
-            ctx.fillStyle = functor(fillStyle)(point.datum);
-        }
+        if (strokeStyle !== undefined) ctx.strokeStyle = functor(strokeStyle)(point.datum);
+
+        if (strokeWidth !== undefined) ctx.lineWidth = strokeWidth;
+
+        if (fillStyle !== undefined) ctx.fillStyle = functor(fillStyle)(point.datum);
 
         const w = functor(width)(point.datum);
         const { x, y } = point;
@@ -60,20 +64,16 @@ export class Triangle extends React.Component<TriangleProps> {
         }
         ctx.fill();
 
-        if (strokeStyle !== undefined) {
-            ctx.stroke();
-        }
+        if (strokeStyle !== undefined) ctx.stroke();
     };
 
     public render() {
         const { className, fillStyle, strokeStyle, strokeWidth, point, width } = this.props;
 
         const rotation = getRotationInDegrees(this.props, point);
-        if (rotation == null) {
-            return null;
-        }
+        if (rotation == null) return null;
 
-        const fillColor = functor(fillStyle)(point.datum);
+        const fill = functor(fillStyle)(point.datum) ?? Triangle.defaultProps.fillStyle;
         const strokeColor = functor(strokeStyle)(point.datum);
 
         const w = functor(width)(point.datum);
@@ -91,7 +91,7 @@ export class Triangle extends React.Component<TriangleProps> {
                 points={points}
                 stroke={strokeColor}
                 strokeWidth={strokeWidth}
-                fill={fillColor}
+                fill={fill}
                 transform={rotation !== 0 ? `rotate(${rotation}, ${x}, ${y})` : undefined}
             />
         );
@@ -111,9 +111,7 @@ const getRotationInDegrees = (props: TriangleProps, point: any) => {
     const { direction = Triangle.defaultProps.direction } = props;
 
     const directionVal = functor(direction)(point.datum);
-    if (directionVal === "hide") {
-        return null;
-    }
+    if (directionVal === "hide") return null;
 
     let rotate = 0;
     switch (directionVal) {
