@@ -33,6 +33,8 @@ interface BrushState {
     x1y1?: any;
 }
 
+type DragMode = "new" | "resize-start" | "resize-end";
+
 export class Brush extends React.Component<BrushProps, BrushState> {
     public static defaultProps = {
         type: "2D",
@@ -47,8 +49,13 @@ export class Brush extends React.Component<BrushProps, BrushState> {
 
     declare public context: React.ContextType<typeof ChartContext>;
 
+    private static readonly HANDLE_HIT_AREA = 8;
+    private static readonly HANDLE_WIDTH = 4;
+
+    private draftEnd?: BrushSelection;
+    private draftStart?: BrushSelection;
+    private dragMode?: DragMode;
     private zoomHappening?: boolean;
-    private previousSelection?: { start: BrushSelection; end: BrushSelection };
 
     public constructor(props: BrushProps) {
         super(props);
@@ -73,7 +80,10 @@ export class Brush extends React.Component<BrushProps, BrushState> {
 
     public terminate() {
         this.zoomHappening = false;
-        this.previousSelection = undefined;
+        this.dragMode = undefined;
+        this.draftStart = undefined;
+        this.draftEnd = undefined;
+        this.setBrushCursor(null);
         this.setState({
             x1y1: null,
             start: undefined,
@@ -113,6 +123,7 @@ export class Brush extends React.Component<BrushProps, BrushState> {
 
         const { x, y, height, width } = rect;
         const {
+            type = Brush.defaultProps.type,
             strokeStyle = Brush.defaultProps.strokeStyle,
             fillStyle = Brush.defaultProps.fillStyle,
             strokeDashArray,
@@ -126,6 +137,13 @@ export class Brush extends React.Component<BrushProps, BrushState> {
         ctx.beginPath();
         ctx.fillRect(x, y, width, height);
         ctx.strokeRect(x, y, width, height);
+
+        if (type === "1D" && width > 0) {
+            const handleHalfWidth = Brush.HANDLE_WIDTH / 2;
+            ctx.fillStyle = strokeStyle;
+            ctx.fillRect(x - handleHalfWidth, y, Brush.HANDLE_WIDTH, height);
+            ctx.fillRect(x + width - handleHalfWidth, y, Brush.HANDLE_WIDTH, height);
+        }
     };
 
     private readonly getRectFromSelection = (start: BrushSelection, end: BrushSelection, moreProps: any) => {
@@ -161,17 +179,33 @@ export class Brush extends React.Component<BrushProps, BrushState> {
         };
     };
 
-    private readonly handleZoomStart = (_: React.MouseEvent, moreProps: any) => {
-        this.zoomHappening = false;
+    private readonly getHandleHit = (mouseX: number, moreProps: any) => {
+        const { type = Brush.defaultProps.type } = this.props;
         const { start, end } = this.state;
 
-        this.previousSelection =
-            start !== undefined && end !== undefined
-                ? {
-                      start,
-                      end,
-                  }
-                : undefined;
+        if (type !== "1D" || start === undefined || end === undefined) return null;
+
+        const rect = this.getRectFromSelection(start, end, moreProps);
+        if (rect === null) return null;
+
+        const leftX = rect.x;
+        const rightX = rect.x + rect.width;
+        const hitArea = Brush.HANDLE_HIT_AREA;
+
+        if (Math.abs(mouseX - leftX) <= hitArea) return "start" as const;
+
+        if (Math.abs(mouseX - rightX) <= hitArea) return "end" as const;
+
+        return null;
+    };
+
+    private readonly setBrushCursor = (className: string | null) => {
+        const { setCursorClass } = this.context;
+        if (setCursorClass !== undefined) setCursorClass(className);
+    };
+
+    private readonly handleZoomStart = (_: React.MouseEvent, moreProps: any) => {
+        this.zoomHappening = false;
 
         const { type = Brush.defaultProps.type } = this.props;
         const {
@@ -182,23 +216,52 @@ export class Brush extends React.Component<BrushProps, BrushState> {
             xScale,
         } = moreProps;
 
-        const x1y1 = [xScale(xAccessor(currentItem)), mouseY];
+        const currentSelection = {
+            item: currentItem,
+            xValue: xAccessor(currentItem),
+            yValue: type === "1D" ? undefined : yScale.invert(mouseY),
+        };
+
+        const x1y1 = [xScale(currentSelection.xValue), mouseY];
+
+        const handleHit = this.getHandleHit(x1y1[0], moreProps);
+
+        if (handleHit === "start" && this.state.end !== undefined) {
+            this.dragMode = "resize-start";
+            this.draftStart = currentSelection;
+            this.draftEnd = this.state.end;
+            this.setBrushCursor("react-financial-charts-ew-resize-cursor");
+        } else if (handleHit === "end" && this.state.start !== undefined) {
+            this.dragMode = "resize-end";
+            this.draftStart = this.state.start;
+            this.draftEnd = currentSelection;
+            this.setBrushCursor("react-financial-charts-ew-resize-cursor");
+        } else {
+            this.dragMode = "new";
+            this.draftStart = currentSelection;
+            this.draftEnd = undefined;
+        }
 
         this.setState({
             selected: true,
             x1y1,
-            start: {
-                item: currentItem,
-                xValue: xAccessor(currentItem),
-                yValue: type === "1D" ? undefined : yScale.invert(mouseY),
-            },
-            end: undefined,
             rect: null,
         });
     };
 
     private readonly handleDrawSquare = (_: React.MouseEvent, moreProps: any) => {
-        if (this.state.x1y1 == null) return;
+        if (this.state.x1y1 == null) {
+            const {
+                mouseXY: [mouseX],
+            } = moreProps;
+            const handleHit = this.getHandleHit(mouseX, moreProps);
+
+            this.setBrushCursor(handleHit !== null ? "react-financial-charts-ew-resize-cursor" : null);
+
+            return;
+        }
+
+        if (this.dragMode === undefined || this.draftStart === undefined) return;
 
         this.zoomHappening = true;
         const { type = Brush.defaultProps.type } = this.props;
@@ -206,35 +269,40 @@ export class Brush extends React.Component<BrushProps, BrushState> {
         const {
             mouseXY: [, mouseY],
             currentItem,
-            chartConfig: { yScale, height: chartHeight },
+            chartConfig: { yScale },
             xAccessor,
-            xScale,
         } = moreProps;
 
-        const [x2, y2] = [xScale(xAccessor(currentItem)), mouseY];
+        const currentSelection = {
+            item: currentItem,
+            xValue: xAccessor(currentItem),
+            yValue: type === "1D" ? undefined : yScale.invert(mouseY),
+        };
 
-        const {
-            x1y1: [x1, y1],
-        } = this.state;
+        let nextStart = this.draftStart;
+        let nextEnd = this.draftEnd;
 
-        const x = Math.min(x1, x2);
-        const y = type === "1D" ? 0 : Math.min(y1, y2);
-        const height = type === "1D" ? chartHeight : Math.abs(y2 - y1);
-        const width = Math.abs(x2 - x1);
+        if (this.dragMode === "new") nextEnd = currentSelection;
+        else if (this.dragMode === "resize-start") {
+            nextStart = currentSelection;
+            this.setBrushCursor("react-financial-charts-ew-resize-cursor");
+        } else if (this.dragMode === "resize-end") {
+            nextEnd = currentSelection;
+            this.setBrushCursor("react-financial-charts-ew-resize-cursor");
+        }
+
+        if (nextEnd === undefined) return;
+
+        this.draftStart = nextStart;
+        this.draftEnd = nextEnd;
+
+        const rect = this.getRectFromSelection(nextStart, nextEnd, moreProps);
+
+        if (rect === null) return;
 
         this.setState({
             selected: true,
-            end: {
-                item: currentItem,
-                xValue: xAccessor(currentItem),
-                yValue: type === "1D" ? undefined : yScale.invert(mouseY),
-            },
-            rect: {
-                x,
-                y,
-                height,
-                width,
-            },
+            rect,
         });
     };
 
@@ -245,7 +313,10 @@ export class Brush extends React.Component<BrushProps, BrushState> {
             type = Brush.defaultProps.type,
             zoomToDomain,
         } = this.props;
-        const { end, rect, start } = this.state;
+        const { rect } = this.state;
+
+        let nextStart = this.state.start;
+        let nextEnd = this.state.end;
 
         const selectionIsValid =
             rect !== null &&
@@ -253,8 +324,11 @@ export class Brush extends React.Component<BrushProps, BrushState> {
                 ? rect.width >= minimumSelectionSize
                 : rect.width >= minimumSelectionSize && rect.height >= minimumSelectionSize);
 
-        if (this.zoomHappening && selectionIsValid && start !== undefined && end !== undefined) {
-            const normalizedSelection = this.normalizeBrush(start, end);
+        if (this.zoomHappening && selectionIsValid && this.draftStart !== undefined && this.draftEnd !== undefined) {
+            const normalizedSelection = this.normalizeBrush(this.draftStart, this.draftEnd);
+
+            nextStart = normalizedSelection.start;
+            nextEnd = normalizedSelection.end;
 
             if (zoomToDomain) {
                 const { xAxisZoom } = this.context;
@@ -263,31 +337,19 @@ export class Brush extends React.Component<BrushProps, BrushState> {
             }
 
             if (onBrush !== undefined) onBrush(normalizedSelection, moreProps);
-
-            this.previousSelection = undefined;
-
-            this.setState({
-                selected: false,
-                x1y1: null,
-                start: normalizedSelection.start,
-                end: normalizedSelection.end,
-                rect: null,
-            });
-
-            return;
         }
 
         this.zoomHappening = false;
-
-        const { previousSelection } = this;
-
-        this.previousSelection = undefined;
+        this.dragMode = undefined;
+        this.draftStart = undefined;
+        this.draftEnd = undefined;
+        this.setBrushCursor(null);
 
         this.setState({
             selected: false,
             x1y1: null,
-            start: previousSelection?.start,
-            end: previousSelection?.end,
+            start: nextStart,
+            end: nextEnd,
             rect: null,
         });
     };
