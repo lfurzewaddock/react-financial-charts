@@ -55,10 +55,7 @@ class FocusContext extends React.Component<ChartProps, FocusContextState> {
 
         const contextExtents: [number | Date, number | Date] = [xAccessor(data[0]), xAccessor(data[data.length - 1])];
 
-        const max = xAccessor(data[data.length - 1]);
-        const min = xAccessor(data[Math.max(0, data.length - 100)]);
-
-        const defaultFocusExtents: [number | Date, number | Date] = [min, max];
+        const defaultFocusExtents: [number | Date, number | Date] = contextExtents;
 
         const focusExtents = this.state.focusExtents ?? defaultFocusExtents;
 
