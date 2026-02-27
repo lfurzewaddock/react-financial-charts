@@ -48,6 +48,7 @@ export class Brush extends React.Component<BrushProps, BrushState> {
     declare public context: React.ContextType<typeof ChartContext>;
 
     private zoomHappening?: boolean;
+    private previousSelection?: { start: BrushSelection; end: BrushSelection };
 
     public constructor(props: BrushProps) {
         super(props);
@@ -72,6 +73,7 @@ export class Brush extends React.Component<BrushProps, BrushState> {
 
     public terminate() {
         this.zoomHappening = false;
+        this.previousSelection = undefined;
         this.setState({
             x1y1: null,
             start: undefined,
@@ -97,8 +99,16 @@ export class Brush extends React.Component<BrushProps, BrushState> {
         );
     }
 
-    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D) => {
-        const { rect } = this.state;
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps: any) => {
+        const { end, rect: draftRect, start } = this.state;
+
+        const rect =
+            draftRect !== null
+                ? draftRect
+                : start !== undefined && end !== undefined
+                  ? this.getRectFromSelection(start, end, moreProps)
+                  : null;
+
         if (rect === null) return;
 
         const { x, y, height, width } = rect;
@@ -118,8 +128,51 @@ export class Brush extends React.Component<BrushProps, BrushState> {
         ctx.strokeRect(x, y, width, height);
     };
 
+    private readonly getRectFromSelection = (start: BrushSelection, end: BrushSelection, moreProps: any) => {
+        const { type = Brush.defaultProps.type } = this.props;
+        const {
+            chartConfig: { yScale, height: chartHeight },
+            xScale,
+        } = moreProps;
+
+        const x1 = xScale(start.xValue);
+        const x2 = xScale(end.xValue);
+
+        if (!Number.isFinite(x1) || !Number.isFinite(x2)) return null;
+
+        if (type === "1D")
+            return {
+                x: Math.min(x1, x2),
+                y: 0,
+                height: chartHeight,
+                width: Math.abs(x2 - x1),
+            };
+
+        const y1 = start.yValue === undefined ? 0 : yScale(start.yValue);
+        const y2 = end.yValue === undefined ? chartHeight : yScale(end.yValue);
+
+        if (!Number.isFinite(y1) || !Number.isFinite(y2)) return null;
+
+        return {
+            x: Math.min(x1, x2),
+            y: Math.min(y1, y2),
+            height: Math.abs(y2 - y1),
+            width: Math.abs(x2 - x1),
+        };
+    };
+
     private readonly handleZoomStart = (_: React.MouseEvent, moreProps: any) => {
         this.zoomHappening = false;
+        const { start, end } = this.state;
+
+        this.previousSelection =
+            start !== undefined && end !== undefined
+                ? {
+                      start,
+                      end,
+                  }
+                : undefined;
+
         const { type = Brush.defaultProps.type } = this.props;
         const {
             mouseXY: [, mouseY],
@@ -139,6 +192,8 @@ export class Brush extends React.Component<BrushProps, BrushState> {
                 xValue: xAccessor(currentItem),
                 yValue: type === "1D" ? undefined : yScale.invert(mouseY),
             },
+            end: undefined,
+            rect: null,
         });
     };
 
@@ -208,15 +263,31 @@ export class Brush extends React.Component<BrushProps, BrushState> {
             }
 
             if (onBrush !== undefined) onBrush(normalizedSelection, moreProps);
+
+            this.previousSelection = undefined;
+
+            this.setState({
+                selected: false,
+                x1y1: null,
+                start: normalizedSelection.start,
+                end: normalizedSelection.end,
+                rect: null,
+            });
+
+            return;
         }
 
         this.zoomHappening = false;
 
+        const { previousSelection } = this;
+
+        this.previousSelection = undefined;
+
         this.setState({
             selected: false,
             x1y1: null,
-            start: undefined,
-            end: undefined,
+            start: previousSelection?.start,
+            end: previousSelection?.end,
             rect: null,
         });
     };
