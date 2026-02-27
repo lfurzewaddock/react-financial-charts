@@ -260,4 +260,42 @@ describe("Brush focus-context behaviour", () => {
         expect((brush.state.start as any)?.xValue).toBe(3);
         expect((brush.state.end as any)?.xValue).toBe(9);
     });
+
+    it("commits edge-extended resize drag immediately and ignores trailing click complete", () => {
+        const { brush, buildMoreProps, onBrush } = createHarness();
+
+        act(() => {
+            brush.setState({
+                start: { item: { x: 3 }, xValue: 3 },
+                end: { item: { x: 7 }, xValue: 7 },
+            });
+        });
+
+        act(() => {
+            (brush as any).handleZoomStart({} as React.MouseEvent, buildMoreProps(3));
+        });
+
+        act(() => {
+            (brush as any).handleDrawSquare({ buttons: 1 } as unknown as React.MouseEvent, buildMoreProps(-1));
+        });
+
+        expect(onBrush).toHaveBeenCalledTimes(1);
+        let [{ start, end }] = onBrush.mock.calls[0];
+        expect(start.xValue).toBe(1);
+        expect(end.xValue).toBe(7);
+
+        expect((brush.state.start as any)?.xValue).toBe(1);
+        expect((brush.state.end as any)?.xValue).toBe(7);
+
+        act(() => {
+            (brush as any).handleZoomComplete({} as React.MouseEvent, buildMoreProps(-1));
+        });
+
+        expect(onBrush).toHaveBeenCalledTimes(1);
+        [{ start, end }] = onBrush.mock.calls[0];
+        expect(start.xValue).toBe(1);
+        expect(end.xValue).toBe(7);
+        expect((brush.state.start as any)?.xValue).toBe(1);
+        expect((brush.state.end as any)?.xValue).toBe(7);
+    });
 });

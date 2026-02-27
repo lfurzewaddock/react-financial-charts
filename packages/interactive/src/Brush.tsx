@@ -55,6 +55,7 @@ export class Brush extends React.Component<BrushProps, BrushState> {
     private draftEnd?: BrushSelection;
     private draftStart?: BrushSelection;
     private dragMode?: DragMode;
+    private interactionCommittedInDrag = false;
     private outsideClickSide?: "left" | "right";
     private zoomHappening?: boolean;
 
@@ -82,6 +83,7 @@ export class Brush extends React.Component<BrushProps, BrushState> {
     public terminate() {
         this.zoomHappening = false;
         this.dragMode = undefined;
+        this.interactionCommittedInDrag = false;
         this.outsideClickSide = undefined;
         this.draftStart = undefined;
         this.draftEnd = undefined;
@@ -206,8 +208,58 @@ export class Brush extends React.Component<BrushProps, BrushState> {
         if (setCursorClass !== undefined) setCursorClass(className);
     };
 
+    private readonly getEdgeSelection = (edge: "left" | "right", fallbackSelection: BrushSelection) => {
+        const { fullData, xAccessor, xScale } = this.context;
+
+        if (fullData.length > 0) {
+            const item = edge === "left" ? fullData[0] : fullData[fullData.length - 1];
+            return {
+                ...fallbackSelection,
+                item,
+                xValue: xAccessor(item),
+            };
+        }
+
+        const [rangeStart, rangeEnd] = xScale.range();
+        const edgePixel = edge === "left" ? Math.min(rangeStart, rangeEnd) : Math.max(rangeStart, rangeEnd);
+
+        return {
+            ...fallbackSelection,
+            xValue: xScale.invert(edgePixel),
+        };
+    };
+
+    private readonly commitSelection = (start: BrushSelection, end: BrushSelection, moreProps: any) => {
+        const { onBrush, zoomToDomain } = this.props;
+        const normalizedSelection = this.normalizeBrush(start, end);
+
+        if (zoomToDomain) {
+            const { xAxisZoom } = this.context;
+            if (xAxisZoom !== undefined) xAxisZoom([normalizedSelection.start.xValue, normalizedSelection.end.xValue]);
+        }
+
+        if (onBrush !== undefined) onBrush(normalizedSelection, moreProps);
+
+        this.interactionCommittedInDrag = true;
+        this.zoomHappening = false;
+        this.dragMode = undefined;
+        this.outsideClickSide = undefined;
+        this.draftStart = undefined;
+        this.draftEnd = undefined;
+        this.setBrushCursor(null);
+
+        this.setState({
+            selected: false,
+            x1y1: null,
+            start: normalizedSelection.start,
+            end: normalizedSelection.end,
+            rect: null,
+        });
+    };
+
     private readonly handleZoomStart = (_: React.MouseEvent, moreProps: any) => {
         this.zoomHappening = false;
+        this.interactionCommittedInDrag = false;
         this.outsideClickSide = undefined;
 
         const { type = Brush.defaultProps.type } = this.props;
@@ -302,6 +354,7 @@ export class Brush extends React.Component<BrushProps, BrushState> {
         if (this.state.x1y1 !== null && mouseButtons === 0) {
             this.zoomHappening = false;
             this.dragMode = undefined;
+            this.interactionCommittedInDrag = false;
             this.outsideClickSide = undefined;
             this.draftStart = undefined;
             this.draftEnd = undefined;
@@ -349,6 +402,26 @@ export class Brush extends React.Component<BrushProps, BrushState> {
         let nextStart = this.draftStart;
         let nextEnd = this.draftEnd;
 
+        const mouseX = moreProps.mouseXY[0];
+        const [rangeStart, rangeEnd] = moreProps.xScale.range();
+        const rangeMin = Math.min(rangeStart, rangeEnd);
+        const rangeMax = Math.max(rangeStart, rangeEnd);
+        const edge = mouseX <= rangeMin ? "left" : mouseX >= rangeMax ? "right" : undefined;
+
+        if (edge !== undefined) {
+            if (this.dragMode === "resize-start" && this.draftEnd !== undefined) {
+                const edgeStart = this.getEdgeSelection(edge, this.draftStart ?? currentSelection);
+                this.commitSelection(edgeStart, this.draftEnd, moreProps);
+                return;
+            }
+
+            if (this.dragMode === "resize-end" && this.draftStart !== undefined) {
+                const edgeEnd = this.getEdgeSelection(edge, this.draftEnd ?? currentSelection);
+                this.commitSelection(this.draftStart, edgeEnd, moreProps);
+                return;
+            }
+        }
+
         if (this.dragMode === "new") nextEnd = currentSelection;
         else if (this.dragMode === "resize-start") {
             nextStart = currentSelection;
@@ -384,6 +457,17 @@ export class Brush extends React.Component<BrushProps, BrushState> {
 
         let nextStart = this.state.start;
         let nextEnd = this.state.end;
+
+        if (this.interactionCommittedInDrag) {
+            this.interactionCommittedInDrag = false;
+            this.zoomHappening = false;
+            this.dragMode = undefined;
+            this.outsideClickSide = undefined;
+            this.draftStart = undefined;
+            this.draftEnd = undefined;
+            this.setBrushCursor(null);
+            return;
+        }
 
         const selectionIsValid =
             rect !== null &&
@@ -454,6 +538,7 @@ export class Brush extends React.Component<BrushProps, BrushState> {
 
         this.zoomHappening = false;
         this.dragMode = undefined;
+        this.interactionCommittedInDrag = false;
         this.outsideClickSide = undefined;
         this.draftStart = undefined;
         this.draftEnd = undefined;
