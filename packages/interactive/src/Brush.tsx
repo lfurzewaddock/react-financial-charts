@@ -406,7 +406,38 @@ export class Brush extends React.Component<BrushProps, BrushState> {
         const [rangeStart, rangeEnd] = moreProps.xScale.range();
         const rangeMin = Math.min(rangeStart, rangeEnd);
         const rangeMax = Math.max(rangeStart, rangeEnd);
-        const edge = mouseX <= rangeMin ? "left" : mouseX >= rangeMax ? "right" : undefined;
+
+        const valueOf = (value: number | Date) => (value instanceof Date ? value.valueOf() : value);
+        const leftEdgeSelection =
+            this.draftStart !== undefined ? this.getEdgeSelection("left", this.draftStart) : undefined;
+        const rightEdgeSelection =
+            this.draftEnd !== undefined ? this.getEdgeSelection("right", this.draftEnd) : undefined;
+
+        const leftEdgePixel = leftEdgeSelection !== undefined ? moreProps.xScale(leftEdgeSelection.xValue) : undefined;
+        const rightEdgePixel =
+            rightEdgeSelection !== undefined ? moreProps.xScale(rightEdgeSelection.xValue) : undefined;
+
+        const currentValue = valueOf(currentSelection.xValue);
+        const atLeftDomainEdge =
+            this.dragMode === "resize-start" &&
+            leftEdgeSelection !== undefined &&
+            currentValue === valueOf(leftEdgeSelection.xValue) &&
+            leftEdgePixel !== undefined &&
+            mouseX <= leftEdgePixel;
+
+        const atRightDomainEdge =
+            this.dragMode === "resize-end" &&
+            rightEdgeSelection !== undefined &&
+            currentValue === valueOf(rightEdgeSelection.xValue) &&
+            rightEdgePixel !== undefined &&
+            mouseX >= rightEdgePixel;
+
+        const edge =
+            atLeftDomainEdge || mouseX <= rangeMin
+                ? "left"
+                : atRightDomainEdge || mouseX >= rangeMax
+                  ? "right"
+                  : undefined;
 
         if (edge !== undefined) {
             if (this.dragMode === "resize-start" && this.draftEnd !== undefined) {
