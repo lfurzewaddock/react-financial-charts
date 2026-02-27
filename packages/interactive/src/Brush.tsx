@@ -55,6 +55,7 @@ export class Brush extends React.Component<BrushProps, BrushState> {
     private draftEnd?: BrushSelection;
     private draftStart?: BrushSelection;
     private dragMode?: DragMode;
+    private outsideClickSide?: "left" | "right";
     private zoomHappening?: boolean;
 
     public constructor(props: BrushProps) {
@@ -81,6 +82,7 @@ export class Brush extends React.Component<BrushProps, BrushState> {
     public terminate() {
         this.zoomHappening = false;
         this.dragMode = undefined;
+        this.outsideClickSide = undefined;
         this.draftStart = undefined;
         this.draftEnd = undefined;
         this.setBrushCursor(null);
@@ -206,6 +208,7 @@ export class Brush extends React.Component<BrushProps, BrushState> {
 
     private readonly handleZoomStart = (_: React.MouseEvent, moreProps: any) => {
         this.zoomHappening = false;
+        this.outsideClickSide = undefined;
 
         const { type = Brush.defaultProps.type } = this.props;
         const {
@@ -224,6 +227,13 @@ export class Brush extends React.Component<BrushProps, BrushState> {
 
         const x1y1 = [xScale(currentSelection.xValue), mouseY];
 
+        const { start, end } = this.state;
+        const currentRect =
+            start !== undefined && end !== undefined ? this.getRectFromSelection(start, end, moreProps) : null;
+
+        const clickedOutsideCurrentRect =
+            currentRect !== null && (x1y1[0] < currentRect.x || x1y1[0] > currentRect.x + currentRect.width);
+
         const handleHit = this.getHandleHit(x1y1[0], moreProps);
 
         if (handleHit === "start" && this.state.end !== undefined) {
@@ -240,6 +250,9 @@ export class Brush extends React.Component<BrushProps, BrushState> {
             this.dragMode = "new";
             this.draftStart = currentSelection;
             this.draftEnd = undefined;
+
+            if (type === "1D" && clickedOutsideCurrentRect && currentRect !== null)
+                this.outsideClickSide = x1y1[0] < currentRect.x ? "left" : "right";
         }
 
         this.setState({
@@ -264,6 +277,7 @@ export class Brush extends React.Component<BrushProps, BrushState> {
         if (this.dragMode === undefined || this.draftStart === undefined) return;
 
         this.zoomHappening = true;
+        this.outsideClickSide = undefined;
         const { type = Brush.defaultProps.type } = this.props;
 
         const {
@@ -337,10 +351,57 @@ export class Brush extends React.Component<BrushProps, BrushState> {
             }
 
             if (onBrush !== undefined) onBrush(normalizedSelection, moreProps);
+        } else if (
+            !this.zoomHappening &&
+            type === "1D" &&
+            this.outsideClickSide !== undefined &&
+            nextStart !== undefined &&
+            nextEnd !== undefined
+        ) {
+            const fullData = moreProps.fullData ?? moreProps.plotData ?? [];
+            const [firstItem, lastItem] = [fullData[0], fullData[fullData.length - 1]];
+            const [rangeStart, rangeEnd] = moreProps.xScale.range();
+
+            const leftEdgeXValue =
+                firstItem !== undefined
+                    ? moreProps.xAccessor(firstItem)
+                    : moreProps.xScale.invert(Math.min(rangeStart, rangeEnd));
+            const rightEdgeXValue =
+                lastItem !== undefined
+                    ? moreProps.xAccessor(lastItem)
+                    : moreProps.xScale.invert(Math.max(rangeStart, rangeEnd));
+
+            const leftSelection = {
+                item: firstItem ?? nextStart.item,
+                xValue: leftEdgeXValue,
+                yValue: nextStart.yValue,
+            };
+
+            const rightSelection = {
+                item: lastItem ?? nextEnd.item,
+                xValue: rightEdgeXValue,
+                yValue: nextEnd.yValue,
+            };
+
+            const expandedSelection =
+                this.outsideClickSide === "left"
+                    ? this.normalizeBrush(leftSelection, nextEnd)
+                    : this.normalizeBrush(nextStart, rightSelection);
+
+            nextStart = expandedSelection.start;
+            nextEnd = expandedSelection.end;
+
+            if (zoomToDomain) {
+                const { xAxisZoom } = this.context;
+                if (xAxisZoom !== undefined) xAxisZoom([nextStart.xValue, nextEnd.xValue]);
+            }
+
+            if (onBrush !== undefined) onBrush({ start: nextStart, end: nextEnd }, moreProps);
         }
 
         this.zoomHappening = false;
         this.dragMode = undefined;
+        this.outsideClickSide = undefined;
         this.draftStart = undefined;
         this.draftEnd = undefined;
         this.setBrushCursor(null);
