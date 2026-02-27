@@ -57,6 +57,9 @@ export class Brush extends React.Component<BrushProps, BrushState> {
     private dragMode?: DragMode;
     private interactionCommittedInDrag = false;
     private outsideClickSide?: "left" | "right";
+    private chartBoundingRect?: DOMRect;
+    private lastInteractionMoreProps?: any;
+    private listeningForWindowMouseUp = false;
     private zoomHappening?: boolean;
 
     public constructor(props: BrushProps) {
@@ -87,6 +90,7 @@ export class Brush extends React.Component<BrushProps, BrushState> {
         this.outsideClickSide = undefined;
         this.draftStart = undefined;
         this.draftEnd = undefined;
+        this.stopWindowMouseUpTracking();
         this.setBrushCursor(null);
         this.setState({
             x1y1: null,
@@ -94,6 +98,10 @@ export class Brush extends React.Component<BrushProps, BrushState> {
             end: undefined,
             rect: null,
         });
+    }
+
+    public componentWillUnmount() {
+        this.stopWindowMouseUpTracking();
     }
 
     public render() {
@@ -208,6 +216,63 @@ export class Brush extends React.Component<BrushProps, BrushState> {
         if (setCursorClass !== undefined) setCursorClass(className);
     };
 
+    private readonly stopWindowMouseUpTracking = () => {
+        if (this.listeningForWindowMouseUp && typeof window !== "undefined")
+            window.removeEventListener("mouseup", this.handleWindowMouseUp);
+
+        this.listeningForWindowMouseUp = false;
+        this.chartBoundingRect = undefined;
+        this.lastInteractionMoreProps = undefined;
+    };
+
+    private readonly beginWindowMouseUpTracking = (event: React.MouseEvent, moreProps: any) => {
+        this.lastInteractionMoreProps = moreProps;
+
+        const target = event.target as Element | null;
+        if (target?.getBoundingClientRect !== undefined) this.chartBoundingRect = target.getBoundingClientRect();
+
+        if (!this.listeningForWindowMouseUp && typeof window !== "undefined") {
+            window.addEventListener("mouseup", this.handleWindowMouseUp);
+            this.listeningForWindowMouseUp = true;
+        }
+    };
+
+    private readonly handleWindowMouseUp = (event: MouseEvent) => {
+        console.log("handleWindowMouseUp", event);
+        const moreProps = this.lastInteractionMoreProps;
+        if (moreProps === undefined) {
+            this.stopWindowMouseUpTracking();
+            return;
+        }
+
+        if (
+            this.state.x1y1 !== null &&
+            (this.dragMode === "resize-start" || this.dragMode === "resize-end") &&
+            this.draftStart !== undefined &&
+            this.draftEnd !== undefined &&
+            this.chartBoundingRect !== undefined
+        ) {
+            const isOutsideLeft = event.clientX < this.chartBoundingRect.left;
+            const isOutsideRight = event.clientX > this.chartBoundingRect.right;
+
+            if (isOutsideLeft || isOutsideRight) {
+                const edge: "left" | "right" = isOutsideLeft ? "left" : "right";
+
+                if (this.dragMode === "resize-start") {
+                    const edgeStart = this.getEdgeSelection(edge, this.draftStart);
+                    this.commitSelection(edgeStart, this.draftEnd, moreProps);
+                    return;
+                }
+
+                const edgeEnd = this.getEdgeSelection(edge, this.draftEnd);
+                this.commitSelection(this.draftStart, edgeEnd, moreProps);
+                return;
+            }
+        }
+
+        this.handleZoomComplete({} as React.MouseEvent, moreProps);
+    };
+
     private readonly getEdgeSelection = (edge: "left" | "right", fallbackSelection: BrushSelection) => {
         const { fullData, xAccessor, xScale } = this.context;
 
@@ -246,6 +311,7 @@ export class Brush extends React.Component<BrushProps, BrushState> {
         this.outsideClickSide = undefined;
         this.draftStart = undefined;
         this.draftEnd = undefined;
+        this.stopWindowMouseUpTracking();
         this.setBrushCursor(null);
 
         this.setState({
@@ -257,7 +323,7 @@ export class Brush extends React.Component<BrushProps, BrushState> {
         });
     };
 
-    private readonly handleZoomStart = (_: React.MouseEvent, moreProps: any) => {
+    private readonly handleZoomStart = (event: React.MouseEvent, moreProps: any) => {
         this.zoomHappening = false;
         this.interactionCommittedInDrag = false;
         this.outsideClickSide = undefined;
@@ -293,6 +359,7 @@ export class Brush extends React.Component<BrushProps, BrushState> {
                 this.dragMode = "resize-start";
                 this.draftStart = currentSelection;
                 this.draftEnd = end;
+                this.beginWindowMouseUpTracking(event, moreProps);
                 this.setBrushCursor("react-financial-charts-ew-resize-cursor");
 
                 this.setState({
@@ -308,6 +375,7 @@ export class Brush extends React.Component<BrushProps, BrushState> {
                 this.dragMode = "resize-end";
                 this.draftStart = start;
                 this.draftEnd = currentSelection;
+                this.beginWindowMouseUpTracking(event, moreProps);
                 this.setBrushCursor("react-financial-charts-ew-resize-cursor");
 
                 this.setState({
@@ -384,6 +452,7 @@ export class Brush extends React.Component<BrushProps, BrushState> {
 
         this.zoomHappening = true;
         this.outsideClickSide = undefined;
+        this.lastInteractionMoreProps = moreProps;
         const { type = Brush.defaultProps.type } = this.props;
 
         const {
@@ -442,13 +511,25 @@ export class Brush extends React.Component<BrushProps, BrushState> {
         if (edge !== undefined) {
             if (this.dragMode === "resize-start" && this.draftEnd !== undefined) {
                 const edgeStart = this.getEdgeSelection(edge, this.draftStart ?? currentSelection);
-                this.commitSelection(edgeStart, this.draftEnd, moreProps);
+                this.draftStart = edgeStart;
+                const edgeRect = this.getRectFromSelection(edgeStart, this.draftEnd, moreProps);
+                if (edgeRect !== null)
+                    this.setState({
+                        selected: true,
+                        rect: edgeRect,
+                    });
                 return;
             }
 
             if (this.dragMode === "resize-end" && this.draftStart !== undefined) {
                 const edgeEnd = this.getEdgeSelection(edge, this.draftEnd ?? currentSelection);
-                this.commitSelection(this.draftStart, edgeEnd, moreProps);
+                this.draftEnd = edgeEnd;
+                const edgeRect = this.getRectFromSelection(this.draftStart, edgeEnd, moreProps);
+                if (edgeRect !== null)
+                    this.setState({
+                        selected: true,
+                        rect: edgeRect,
+                    });
                 return;
             }
         }
@@ -496,6 +577,7 @@ export class Brush extends React.Component<BrushProps, BrushState> {
             this.outsideClickSide = undefined;
             this.draftStart = undefined;
             this.draftEnd = undefined;
+            this.stopWindowMouseUpTracking();
             this.setBrushCursor(null);
             return;
         }
@@ -573,6 +655,7 @@ export class Brush extends React.Component<BrushProps, BrushState> {
         this.outsideClickSide = undefined;
         this.draftStart = undefined;
         this.draftEnd = undefined;
+        this.stopWindowMouseUpTracking();
         this.setBrushCursor(null);
 
         this.setState({
