@@ -236,23 +236,58 @@ export class Brush extends React.Component<BrushProps, BrushState> {
 
         const handleHit = this.getHandleHit(x1y1[0], moreProps);
 
-        if (handleHit === "start" && this.state.end !== undefined) {
-            this.dragMode = "resize-start";
-            this.draftStart = currentSelection;
-            this.draftEnd = this.state.end;
-            this.setBrushCursor("react-financial-charts-ew-resize-cursor");
-        } else if (handleHit === "end" && this.state.start !== undefined) {
-            this.dragMode = "resize-end";
-            this.draftStart = this.state.start;
-            this.draftEnd = currentSelection;
-            this.setBrushCursor("react-financial-charts-ew-resize-cursor");
-        } else {
+        if (type === "1D" && start !== undefined && end !== undefined) {
+            if (handleHit === "start") {
+                this.dragMode = "resize-start";
+                this.draftStart = currentSelection;
+                this.draftEnd = end;
+                this.setBrushCursor("react-financial-charts-ew-resize-cursor");
+
+                this.setState({
+                    selected: true,
+                    x1y1,
+                    rect: null,
+                });
+
+                return;
+            }
+
+            if (handleHit === "end") {
+                this.dragMode = "resize-end";
+                this.draftStart = start;
+                this.draftEnd = currentSelection;
+                this.setBrushCursor("react-financial-charts-ew-resize-cursor");
+
+                this.setState({
+                    selected: true,
+                    x1y1,
+                    rect: null,
+                });
+
+                return;
+            }
+
+            this.dragMode = undefined;
+            this.draftStart = undefined;
+            this.draftEnd = undefined;
+            this.setBrushCursor(null);
+
+            if (clickedOutsideCurrentRect && currentRect !== null)
+                this.outsideClickSide = x1y1[0] < currentRect.x ? "left" : "right";
+
+            this.setState({
+                selected: false,
+                x1y1: null,
+                rect: null,
+            });
+
+            return;
+        }
+
+        {
             this.dragMode = "new";
             this.draftStart = currentSelection;
             this.draftEnd = undefined;
-
-            if (type === "1D" && clickedOutsideCurrentRect && currentRect !== null)
-                this.outsideClickSide = x1y1[0] < currentRect.x ? "left" : "right";
         }
 
         this.setState({
@@ -262,7 +297,25 @@ export class Brush extends React.Component<BrushProps, BrushState> {
         });
     };
 
-    private readonly handleDrawSquare = (_: React.MouseEvent, moreProps: any) => {
+    private readonly handleDrawSquare = (event: React.MouseEvent, moreProps: any) => {
+        const mouseButtons = (event as any)?.buttons as number | undefined;
+        if (this.state.x1y1 !== null && mouseButtons === 0) {
+            this.zoomHappening = false;
+            this.dragMode = undefined;
+            this.outsideClickSide = undefined;
+            this.draftStart = undefined;
+            this.draftEnd = undefined;
+            this.setBrushCursor(null);
+
+            this.setState({
+                selected: false,
+                x1y1: null,
+                rect: null,
+            });
+
+            return;
+        }
+
         if (this.state.x1y1 == null) {
             const {
                 mouseXY: [mouseX],
