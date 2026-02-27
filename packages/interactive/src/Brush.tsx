@@ -238,7 +238,6 @@ export class Brush extends React.Component<BrushProps, BrushState> {
     };
 
     private readonly handleWindowMouseUp = (event: MouseEvent) => {
-        console.log("handleWindowMouseUp", event);
         const moreProps = this.lastInteractionMoreProps;
         if (moreProps === undefined) {
             this.stopWindowMouseUpTracking();
@@ -408,6 +407,7 @@ export class Brush extends React.Component<BrushProps, BrushState> {
             this.dragMode = "new";
             this.draftStart = currentSelection;
             this.draftEnd = undefined;
+            this.beginWindowMouseUpTracking(event, moreProps);
         }
 
         this.setState({
@@ -426,6 +426,7 @@ export class Brush extends React.Component<BrushProps, BrushState> {
             this.outsideClickSide = undefined;
             this.draftStart = undefined;
             this.draftEnd = undefined;
+            this.stopWindowMouseUpTracking();
             this.setBrushCursor(null);
 
             this.setState({

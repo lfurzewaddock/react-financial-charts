@@ -137,6 +137,57 @@ describe("Brush focus-context behaviour", () => {
         expect((brush.state.end as any)?.xValue).toBe(8);
     });
 
+    it("commits a new selection on window mouseup outside chart before any prior selection", () => {
+        const { brush, buildMoreProps, onBrush } = createHarness();
+
+        const mouseDownEvent = {
+            target: {
+                getBoundingClientRect: () => ({ left: 0, right: 100 }),
+            },
+        } as unknown as React.MouseEvent;
+
+        act(() => {
+            (brush as any).handleZoomStart(mouseDownEvent, buildMoreProps(2));
+        });
+
+        act(() => {
+            (brush as any).handleDrawSquare({} as React.MouseEvent, buildMoreProps(8));
+        });
+
+        act(() => {
+            (brush as any).handleWindowMouseUp({ clientX: 120 } as MouseEvent);
+        });
+
+        expect(onBrush).toHaveBeenCalledTimes(1);
+        const [{ start, end }] = onBrush.mock.calls[0];
+        expect(start.xValue).toBe(2);
+        expect(end.xValue).toBe(8);
+        expect((brush.state.start as any)?.xValue).toBe(2);
+        expect((brush.state.end as any)?.xValue).toBe(8);
+    });
+
+    it("cleans up window mouseup tracking when drag is canceled", () => {
+        const { brush, buildMoreProps } = createHarness();
+
+        const mouseDownEvent = {
+            target: {
+                getBoundingClientRect: () => ({ left: 0, right: 100 }),
+            },
+        } as unknown as React.MouseEvent;
+
+        act(() => {
+            (brush as any).handleZoomStart(mouseDownEvent, buildMoreProps(2));
+        });
+
+        expect((brush as any).listeningForWindowMouseUp).toBe(true);
+
+        act(() => {
+            (brush as any).handleDrawSquare({ buttons: 0 } as React.MouseEvent, buildMoreProps(3));
+        });
+
+        expect((brush as any).listeningForWindowMouseUp).toBe(false);
+    });
+
     it("supports resizing from selection handles and sets ew-resize cursor", () => {
         const { brush, buildMoreProps, onBrush, setCursorClass } = createHarness();
 
