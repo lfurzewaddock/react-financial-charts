@@ -6,6 +6,7 @@ import {
     rightDomainBasedZoomAnchor,
 } from "@lfurzewaddock/react-financial-charts-core";
 import Interaction from "./Interaction";
+import FocusContext from "./FocusContext";
 
 export default {
     component: ChartCanvas,
@@ -25,3 +26,5 @@ export const zoomAnchorToMouse = () => <Interaction zoomAnchor={mouseBasedZoomAn
 export const zoomAnchorToLastVisible = () => <Interaction zoomAnchor={lastVisibleItemBasedZoomAnchor} />;
 
 export const zoomAnchorToBounds = () => <Interaction zoomAnchor={rightDomainBasedZoomAnchor} />;
+
+export const focusContext = () => <FocusContext />;

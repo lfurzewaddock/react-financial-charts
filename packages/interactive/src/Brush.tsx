@@ -1,26 +1,35 @@
 import * as React from "react";
 import {
+    ChartContext,
     getStrokeDasharrayCanvas,
     getMouseCanvas,
     GenericChartComponent,
     strokeDashTypes,
 } from "@lfurzewaddock/react-financial-charts-core";
 
-interface BrushProps {
+export interface BrushSelection {
+    readonly item: any;
+    readonly xValue: number | Date;
+    readonly yValue?: number;
+}
+
+export interface BrushProps {
     readonly enabled: boolean;
-    readonly onBrush: ({ start, end }: any, moreProps: any) => void;
+    readonly onBrush?: ({ start, end }: { start: BrushSelection; end: BrushSelection }, moreProps: any) => void;
     readonly type?: "1D" | "2D";
     readonly strokeStyle?: string;
     readonly fillStyle?: string;
-    readonly interactiveState: object;
+    readonly interactiveState?: object;
     readonly strokeDashArray?: strokeDashTypes;
+    readonly zoomToDomain?: boolean;
+    readonly minimumSelectionSize?: number;
 }
 
 interface BrushState {
-    end?: any;
+    end?: BrushSelection;
     rect: any | null;
     selected?: boolean;
-    start?: any;
+    start?: BrushSelection;
     x1y1?: any;
 }
 
@@ -30,7 +39,13 @@ export class Brush extends React.Component<BrushProps, BrushState> {
         strokeStyle: "#000000",
         fillStyle: "#3h3h3h",
         strokeDashArray: "ShortDash",
+        zoomToDomain: false,
+        minimumSelectionSize: 2,
     };
+
+    public static contextType = ChartContext;
+
+    declare public context: React.ContextType<typeof ChartContext>;
 
     private zoomHappening?: boolean;
 
@@ -43,12 +58,24 @@ export class Brush extends React.Component<BrushProps, BrushState> {
         };
     }
 
+    private readonly normalizeBrush = (start: BrushSelection, end: BrushSelection) => {
+        const startX = start.xValue instanceof Date ? start.xValue.valueOf() : start.xValue;
+        const endX = end.xValue instanceof Date ? end.xValue.valueOf() : end.xValue;
+
+        if (startX <= endX) return { start, end };
+
+        return {
+            start: end,
+            end: start,
+        };
+    };
+
     public terminate() {
         this.zoomHappening = false;
         this.setState({
             x1y1: null,
-            start: null,
-            end: null,
+            start: undefined,
+            end: undefined,
             rect: null,
         });
     }
@@ -93,6 +120,7 @@ export class Brush extends React.Component<BrushProps, BrushState> {
 
     private readonly handleZoomStart = (_: React.MouseEvent, moreProps: any) => {
         this.zoomHappening = false;
+        const { type = Brush.defaultProps.type } = this.props;
         const {
             mouseXY: [, mouseY],
             currentItem,
@@ -109,7 +137,7 @@ export class Brush extends React.Component<BrushProps, BrushState> {
             start: {
                 item: currentItem,
                 xValue: xAccessor(currentItem),
-                yValue: yScale.invert(mouseY),
+                yValue: type === "1D" ? undefined : yScale.invert(mouseY),
             },
         });
     };
@@ -118,11 +146,12 @@ export class Brush extends React.Component<BrushProps, BrushState> {
         if (this.state.x1y1 == null) return;
 
         this.zoomHappening = true;
+        const { type = Brush.defaultProps.type } = this.props;
 
         const {
             mouseXY: [, mouseY],
             currentItem,
-            chartConfig: { yScale },
+            chartConfig: { yScale, height: chartHeight },
             xAccessor,
             xScale,
         } = moreProps;
@@ -134,8 +163,8 @@ export class Brush extends React.Component<BrushProps, BrushState> {
         } = this.state;
 
         const x = Math.min(x1, x2);
-        const y = Math.min(y1, y2);
-        const height = Math.abs(y2 - y1);
+        const y = type === "1D" ? 0 : Math.min(y1, y2);
+        const height = type === "1D" ? chartHeight : Math.abs(y2 - y1);
         const width = Math.abs(x2 - x1);
 
         this.setState({
@@ -143,7 +172,7 @@ export class Brush extends React.Component<BrushProps, BrushState> {
             end: {
                 item: currentItem,
                 xValue: xAccessor(currentItem),
-                yValue: yScale.invert(mouseY),
+                yValue: type === "1D" ? undefined : yScale.invert(mouseY),
             },
             rect: {
                 x,
@@ -155,16 +184,39 @@ export class Brush extends React.Component<BrushProps, BrushState> {
     };
 
     private readonly handleZoomComplete = (_: React.MouseEvent, moreProps: any) => {
-        if (this.zoomHappening) {
-            const { onBrush } = this.props;
-            if (onBrush !== undefined) {
-                const { start, end } = this.state;
-                onBrush({ start, end }, moreProps);
+        const {
+            minimumSelectionSize = Brush.defaultProps.minimumSelectionSize,
+            onBrush,
+            type = Brush.defaultProps.type,
+            zoomToDomain,
+        } = this.props;
+        const { end, rect, start } = this.state;
+
+        const selectionIsValid =
+            rect !== null &&
+            (type === "1D"
+                ? rect.width >= minimumSelectionSize
+                : rect.width >= minimumSelectionSize && rect.height >= minimumSelectionSize);
+
+        if (this.zoomHappening && selectionIsValid && start !== undefined && end !== undefined) {
+            const normalizedSelection = this.normalizeBrush(start, end);
+
+            if (zoomToDomain) {
+                const { xAxisZoom } = this.context;
+                if (xAxisZoom !== undefined)
+                    xAxisZoom([normalizedSelection.start.xValue, normalizedSelection.end.xValue]);
             }
+
+            if (onBrush !== undefined) onBrush(normalizedSelection, moreProps);
         }
+
+        this.zoomHappening = false;
 
         this.setState({
             selected: false,
+            x1y1: null,
+            start: undefined,
+            end: undefined,
             rect: null,
         });
     };
