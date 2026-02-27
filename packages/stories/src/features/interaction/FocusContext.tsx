@@ -74,7 +74,7 @@ class FocusContext extends React.Component<ChartProps, FocusContextState> {
                     xExtents={focusExtents}
                 >
                     <Chart id={1} yExtents={this.focusYExtents}>
-                        <XAxis showGridLines showTicks={false} showTickLabel={false} />
+                        <XAxis showGridLines showTicks={false} showTickLabel={true} />
                         <YAxis ticks={5} />
                         <CandlestickSeries />
                     </Chart>

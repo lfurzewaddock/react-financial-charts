@@ -110,6 +110,13 @@ const createHarness = (props?: Partial<React.ComponentProps<typeof Brush>>) => {
     };
 };
 
+const buildMouseDownEvent = (left = 0, right = 100) =>
+    ({
+        target: {
+            getBoundingClientRect: () => ({ left, right }),
+        },
+    }) as unknown as React.MouseEvent;
+
 describe("Brush focus-context behaviour", () => {
     it("commits normalized brush range and persists committed selection", () => {
         const { brush, buildMoreProps, onBrush, xAxisZoom } = createHarness({ zoomToDomain: true });
@@ -140,14 +147,8 @@ describe("Brush focus-context behaviour", () => {
     it("commits a new selection on window mouseup outside chart before any prior selection", () => {
         const { brush, buildMoreProps, onBrush } = createHarness();
 
-        const mouseDownEvent = {
-            target: {
-                getBoundingClientRect: () => ({ left: 0, right: 100 }),
-            },
-        } as unknown as React.MouseEvent;
-
         act(() => {
-            (brush as any).handleZoomStart(mouseDownEvent, buildMoreProps(2));
+            (brush as any).handleZoomStart(buildMouseDownEvent(), buildMoreProps(2));
         });
 
         act(() => {
@@ -169,14 +170,8 @@ describe("Brush focus-context behaviour", () => {
     it("cleans up window mouseup tracking when drag is canceled", () => {
         const { brush, buildMoreProps } = createHarness();
 
-        const mouseDownEvent = {
-            target: {
-                getBoundingClientRect: () => ({ left: 0, right: 100 }),
-            },
-        } as unknown as React.MouseEvent;
-
         act(() => {
-            (brush as any).handleZoomStart(mouseDownEvent, buildMoreProps(2));
+            (brush as any).handleZoomStart(buildMouseDownEvent(), buildMoreProps(2));
         });
 
         expect((brush as any).listeningForWindowMouseUp).toBe(true);
@@ -186,6 +181,204 @@ describe("Brush focus-context behaviour", () => {
         });
 
         expect((brush as any).listeningForWindowMouseUp).toBe(false);
+    });
+
+    it("stops window tracking when mouseup occurs without interaction context", () => {
+        const { brush } = createHarness();
+
+        (brush as any).listeningForWindowMouseUp = true;
+        (brush as any).lastInteractionMoreProps = undefined;
+
+        act(() => {
+            (brush as any).handleWindowMouseUp({ clientX: 10 } as MouseEvent);
+        });
+
+        expect((brush as any).listeningForWindowMouseUp).toBe(false);
+    });
+
+    it("commits resize-start drag to left edge when window mouseup happens outside chart", () => {
+        const { brush, buildMoreProps, onBrush } = createHarness();
+
+        act(() => {
+            brush.setState({
+                start: { item: { x: 2 }, xValue: 2 },
+                end: { item: { x: 8 }, xValue: 8 },
+            });
+        });
+
+        act(() => {
+            (brush as any).handleZoomStart(buildMouseDownEvent(), buildMoreProps(2));
+        });
+
+        act(() => {
+            (brush as any).handleWindowMouseUp({ clientX: -5 } as MouseEvent);
+        });
+
+        expect(onBrush).toHaveBeenCalledTimes(1);
+        const [{ start, end }] = onBrush.mock.calls[0];
+        expect(start.xValue).toBe(1);
+        expect(end.xValue).toBe(8);
+
+        act(() => {
+            (brush as any).handleZoomComplete({} as React.MouseEvent, buildMoreProps(2));
+        });
+
+        expect(onBrush).toHaveBeenCalledTimes(1);
+    });
+
+    it("commits resize-end drag to right edge when window mouseup happens outside chart", () => {
+        const { brush, buildMoreProps, onBrush } = createHarness();
+
+        act(() => {
+            brush.setState({
+                start: { item: { x: 2 }, xValue: 2 },
+                end: { item: { x: 8 }, xValue: 8 },
+            });
+        });
+
+        act(() => {
+            (brush as any).handleZoomStart(buildMouseDownEvent(), buildMoreProps(8));
+        });
+
+        act(() => {
+            (brush as any).handleWindowMouseUp({ clientX: 200 } as MouseEvent);
+        });
+
+        expect(onBrush).toHaveBeenCalledTimes(1);
+        const [{ start, end }] = onBrush.mock.calls[0];
+        expect(start.xValue).toBe(2);
+        expect(end.xValue).toBe(9);
+    });
+
+    it("snaps resize-start draft to left edge when dragged beyond range", () => {
+        const { brush, buildMoreProps } = createHarness();
+
+        act(() => {
+            brush.setState({
+                start: { item: { x: 2 }, xValue: 2 },
+                end: { item: { x: 8 }, xValue: 8 },
+            });
+        });
+
+        act(() => {
+            (brush as any).handleZoomStart(buildMouseDownEvent(), buildMoreProps(2));
+        });
+
+        act(() => {
+            (brush as any).handleDrawSquare({} as React.MouseEvent, buildMoreProps(-1));
+        });
+
+        expect((brush as any).draftStart?.xValue).toBe(1);
+        expect((brush.state.rect as any)?.x).toBe(10);
+    });
+
+    it("snaps resize-end draft to right edge when dragged beyond range", () => {
+        const { brush, buildMoreProps } = createHarness();
+
+        act(() => {
+            brush.setState({
+                start: { item: { x: 2 }, xValue: 2 },
+                end: { item: { x: 8 }, xValue: 8 },
+            });
+        });
+
+        act(() => {
+            (brush as any).handleZoomStart(buildMouseDownEvent(), buildMoreProps(8));
+        });
+
+        act(() => {
+            (brush as any).handleDrawSquare({} as React.MouseEvent, buildMoreProps(11));
+        });
+
+        expect((brush as any).draftEnd?.xValue).toBe(9);
+        expect((brush.state.rect as any)?.width).toBe(70);
+    });
+
+    it("falls back to xScale range edges when fullData is empty", () => {
+        const { brush } = createHarness();
+
+        (brush as any).context.fullData = [];
+
+        const fallbackSelection = {
+            item: { x: 5 },
+            xValue: 5,
+        };
+
+        const leftSelection = (brush as any).getEdgeSelection("left", fallbackSelection);
+        const rightSelection = (brush as any).getEdgeSelection("right", fallbackSelection);
+
+        expect(leftSelection.xValue).toBe(0);
+        expect(rightSelection.xValue).toBe(10);
+    });
+
+    it("supports 2D brush selection", () => {
+        const { brush, buildMoreProps, onBrush } = createHarness({ type: "2D" });
+
+        act(() => {
+            (brush as any).handleZoomStart(buildMouseDownEvent(), buildMoreProps(2, 20));
+        });
+
+        act(() => {
+            (brush as any).handleDrawSquare({} as React.MouseEvent, buildMoreProps(8, 80));
+        });
+
+        act(() => {
+            (brush as any).handleZoomComplete({} as React.MouseEvent, buildMoreProps(8, 80));
+        });
+
+        expect(onBrush).toHaveBeenCalledTimes(1);
+        const [{ start, end }] = onBrush.mock.calls[0];
+        expect(start.xValue).toBe(2);
+        expect(end.xValue).toBe(8);
+        expect(start.yValue).toBe(8);
+        expect(end.yValue).toBeCloseTo(2, 12);
+    });
+
+    it("applies zoomToDomain for click-outside expansion", () => {
+        const { brush, buildMoreProps, xAxisZoom } = createHarness({ zoomToDomain: true });
+
+        act(() => {
+            brush.setState({
+                start: { item: { x: 3 }, xValue: 3 },
+                end: { item: { x: 7 }, xValue: 7 },
+            });
+        });
+
+        act(() => {
+            (brush as any).handleZoomStart({} as React.MouseEvent, buildMoreProps(0));
+        });
+
+        act(() => {
+            (brush as any).handleZoomComplete({} as React.MouseEvent, {
+                ...buildMoreProps(0),
+                fullData: [{ x: 1 }, { x: 5 }, { x: 9 }],
+            });
+        });
+
+        expect(xAxisZoom).toHaveBeenCalledWith([1, 7]);
+    });
+
+    it("terminates and clears interactive state", () => {
+        const { brush } = createHarness();
+
+        act(() => {
+            brush.setState({
+                selected: true,
+                start: { item: { x: 2 }, xValue: 2 },
+                end: { item: { x: 8 }, xValue: 8 },
+                x1y1: [20, 50],
+                rect: { x: 20, y: 0, width: 60, height: 100 },
+            });
+        });
+
+        act(() => {
+            brush.terminate();
+        });
+
+        expect(brush.state.x1y1).toBeNull();
+        expect(brush.state.start).toBeUndefined();
+        expect(brush.state.end).toBeUndefined();
+        expect(brush.state.rect).toBeNull();
     });
 
     it("supports resizing from selection handles and sets ew-resize cursor", () => {
