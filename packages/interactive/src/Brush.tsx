@@ -384,13 +384,27 @@ export class Brush extends React.Component<BrushProps, BrushState> {
                 return;
             }
 
+            if (clickedOutsideCurrentRect && currentRect !== null) {
+                this.dragMode = "new";
+                this.draftStart = currentSelection;
+                this.draftEnd = undefined;
+                this.outsideClickSide = x1y1[0] < currentRect.x ? "left" : "right";
+                this.beginWindowMouseUpTracking(event, moreProps);
+                this.setBrushCursor(null);
+
+                this.setState({
+                    selected: true,
+                    x1y1,
+                    rect: null,
+                });
+
+                return;
+            }
+
             this.dragMode = undefined;
             this.draftStart = undefined;
             this.draftEnd = undefined;
             this.setBrushCursor(null);
-
-            if (clickedOutsideCurrentRect && currentRect !== null)
-                this.outsideClickSide = x1y1[0] < currentRect.x ? "left" : "right";
 
             this.setState({
                 selected: false,

@@ -447,6 +447,36 @@ describe("Brush focus-context behaviour", () => {
         expect((brush.state.end as any)?.xValue).toBe(8);
     });
 
+    it("replaces an existing selection when dragging a new selection from outside current bounds", () => {
+        const { brush, buildMoreProps, onBrush } = createHarness();
+
+        act(() => {
+            brush.setState({
+                start: { item: { x: 3 }, xValue: 3 },
+                end: { item: { x: 7 }, xValue: 7 },
+            });
+        });
+
+        act(() => {
+            (brush as any).handleZoomStart(buildMouseDownEvent(), buildMoreProps(1));
+        });
+
+        act(() => {
+            (brush as any).handleDrawSquare({} as React.MouseEvent, buildMoreProps(2));
+        });
+
+        act(() => {
+            (brush as any).handleZoomComplete({} as React.MouseEvent, buildMoreProps(2));
+        });
+
+        expect(onBrush).toHaveBeenCalledTimes(1);
+        const [{ start, end }] = onBrush.mock.calls[0];
+        expect(start.xValue).toBe(1);
+        expect(end.xValue).toBe(2);
+        expect((brush.state.start as any)?.xValue).toBe(1);
+        expect((brush.state.end as any)?.xValue).toBe(2);
+    });
+
     it("expands selection to the left max range when clicking left outside selection", () => {
         const { brush, buildMoreProps, onBrush } = createHarness();
 
