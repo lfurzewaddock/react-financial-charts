@@ -13,13 +13,19 @@ export interface BrushSelection {
     readonly yValue?: number;
 }
 
+export interface BrushInteractiveState {
+    readonly start?: BrushSelection;
+    readonly end?: BrushSelection;
+}
+
 export interface BrushProps {
     readonly enabled: boolean;
     readonly onBrush?: ({ start, end }: { start: BrushSelection; end: BrushSelection }, moreProps: any) => void;
+    readonly onBrushChange?: ({ start, end }: { start: BrushSelection; end: BrushSelection }, moreProps: any) => void;
     readonly type?: "1D" | "2D";
     readonly strokeStyle?: string;
     readonly fillStyle?: string;
-    readonly interactiveState?: object;
+    readonly interactiveState?: BrushInteractiveState;
     readonly strokeDashArray?: strokeDashTypes;
     readonly zoomToDomain?: boolean;
     readonly minimumSelectionSize?: number;
@@ -33,7 +39,7 @@ interface BrushState {
     x1y1?: any;
 }
 
-type DragMode = "new" | "resize-start" | "resize-end";
+type DragMode = "new" | "resize-start" | "resize-end" | "move";
 
 export class Brush extends React.Component<BrushProps, BrushState> {
     public static defaultProps = {
@@ -60,14 +66,22 @@ export class Brush extends React.Component<BrushProps, BrushState> {
     private chartBoundingRect?: DOMRect;
     private lastInteractionMoreProps?: any;
     private listeningForWindowMouseUp = false;
+    private moveInitialStart?: BrushSelection;
+    private moveInitialEnd?: BrushSelection;
+    private moveStartMouseX?: number;
     private zoomHappening?: boolean;
 
     public constructor(props: BrushProps) {
         super(props);
 
         this.terminate = this.terminate.bind(this);
+
+        const initialSelection = this.getSelectionFromInteractiveState(props.interactiveState);
+
         this.state = {
             rect: null,
+            start: initialSelection?.start,
+            end: initialSelection?.end,
         };
     }
 
@@ -83,6 +97,23 @@ export class Brush extends React.Component<BrushProps, BrushState> {
         };
     };
 
+    private readonly areSelectionsEqual = (left?: BrushSelection, right?: BrushSelection) => {
+        if (left === right) return true;
+
+        if (left === undefined || right === undefined) return false;
+
+        const leftX = left.xValue instanceof Date ? left.xValue.valueOf() : left.xValue;
+        const rightX = right.xValue instanceof Date ? right.xValue.valueOf() : right.xValue;
+
+        return leftX === rightX && left.yValue === right.yValue;
+    };
+
+    private readonly getSelectionFromInteractiveState = (interactiveState?: BrushInteractiveState) => {
+        if (interactiveState?.start === undefined || interactiveState?.end === undefined) return undefined;
+
+        return this.normalizeBrush(interactiveState.start, interactiveState.end);
+    };
+
     public terminate() {
         this.resetInteractionTracking();
         this.setState({
@@ -95,6 +126,33 @@ export class Brush extends React.Component<BrushProps, BrushState> {
 
     public componentWillUnmount() {
         this.stopWindowMouseUpTracking();
+    }
+
+    public componentDidUpdate(prevProps: BrushProps) {
+        if (prevProps.interactiveState === this.props.interactiveState || this.state.x1y1 != null) return;
+
+        const nextSelection = this.getSelectionFromInteractiveState(this.props.interactiveState);
+        const nextStart = nextSelection?.start;
+        const nextEnd = nextSelection?.end;
+
+        if (this.areSelectionsEqual(this.state.start, nextStart) && this.areSelectionsEqual(this.state.end, nextEnd))
+            return;
+
+        this.resetInteractionTracking();
+
+        this.setState(
+            {
+                selected: false,
+                x1y1: null,
+                start: nextStart,
+                end: nextEnd,
+                rect: null,
+            },
+            () => {
+                const { redraw } = this.context;
+                if (redraw !== undefined) redraw();
+            },
+        );
     }
 
     public render() {
@@ -204,6 +262,20 @@ export class Brush extends React.Component<BrushProps, BrushState> {
         return null;
     };
 
+    private readonly isInsideSelectionBody = (mouseX: number, moreProps: any) => {
+        const { type = Brush.defaultProps.type } = this.props;
+        const { start, end } = this.state;
+
+        if (type !== "1D" || start === undefined || end === undefined) return false;
+
+        const rect = this.getRectFromSelection(start, end, moreProps);
+        if (rect === null || rect.width <= 0) return false;
+
+        if (this.getHandleHit(mouseX, moreProps) !== null) return false;
+
+        return mouseX > rect.x && mouseX < rect.x + rect.width;
+    };
+
     private readonly setBrushCursor = (className: string | null) => {
         const { setCursorClass } = this.context;
         if (setCursorClass !== undefined) setCursorClass(className);
@@ -225,6 +297,9 @@ export class Brush extends React.Component<BrushProps, BrushState> {
         this.outsideClickSide = undefined;
         this.draftStart = undefined;
         this.draftEnd = undefined;
+        this.moveInitialStart = undefined;
+        this.moveInitialEnd = undefined;
+        this.moveStartMouseX = undefined;
         this.stopWindowMouseUpTracking();
         this.setBrushCursor(null);
     };
@@ -401,6 +476,25 @@ export class Brush extends React.Component<BrushProps, BrushState> {
                 return;
             }
 
+            if (!clickedOutsideCurrentRect && currentRect !== null) {
+                this.dragMode = "move";
+                this.draftStart = start;
+                this.draftEnd = end;
+                this.moveInitialStart = start;
+                this.moveInitialEnd = end;
+                this.moveStartMouseX = x1y1[0];
+                this.beginWindowMouseUpTracking(event, moreProps);
+                this.setBrushCursor("react-financial-charts-move-cursor");
+
+                this.setState({
+                    selected: true,
+                    x1y1,
+                    rect: null,
+                });
+
+                return;
+            }
+
             this.dragMode = undefined;
             this.draftStart = undefined;
             this.draftEnd = undefined;
@@ -447,7 +541,10 @@ export class Brush extends React.Component<BrushProps, BrushState> {
             } = moreProps;
             const handleHit = this.getHandleHit(mouseX, moreProps);
 
-            this.setBrushCursor(handleHit !== null ? "react-financial-charts-ew-resize-cursor" : null);
+            if (handleHit !== null) this.setBrushCursor("react-financial-charts-ew-resize-cursor");
+            else if (this.isInsideSelectionBody(mouseX, moreProps))
+                this.setBrushCursor("react-financial-charts-move-cursor");
+            else this.setBrushCursor(null);
 
             return;
         }
@@ -471,6 +568,64 @@ export class Brush extends React.Component<BrushProps, BrushState> {
             xValue: xAccessor(currentItem),
             yValue: type === "1D" ? undefined : yScale.invert(mouseY),
         };
+
+        if (this.dragMode === "move") {
+            if (
+                this.moveInitialStart === undefined ||
+                this.moveInitialEnd === undefined ||
+                this.moveStartMouseX === undefined
+            )
+                return;
+
+            const initialRect = this.getRectFromSelection(this.moveInitialStart, this.moveInitialEnd, moreProps);
+            if (initialRect === null) return;
+
+            let deltaX = moreProps.mouseXY[0] - this.moveStartMouseX;
+
+            const [rangeStart, rangeEnd] = moreProps.xScale.range();
+            const rangeMin = Math.min(rangeStart, rangeEnd);
+            const rangeMax = Math.max(rangeStart, rangeEnd);
+
+            const proposedLeft = initialRect.x + deltaX;
+            const proposedRight = proposedLeft + initialRect.width;
+
+            if (proposedLeft < rangeMin) deltaX += rangeMin - proposedLeft;
+
+            if (proposedRight > rangeMax) deltaX -= proposedRight - rangeMax;
+
+            const nextStartXValue = moreProps.xScale.invert(moreProps.xScale(this.moveInitialStart.xValue) + deltaX);
+            const nextEndXValue = moreProps.xScale.invert(moreProps.xScale(this.moveInitialEnd.xValue) + deltaX);
+
+            const movedStart = {
+                ...this.moveInitialStart,
+                xValue: nextStartXValue,
+            };
+
+            const movedEnd = {
+                ...this.moveInitialEnd,
+                xValue: nextEndXValue,
+            };
+
+            const normalizedSelection = this.normalizeBrush(movedStart, movedEnd);
+
+            this.draftStart = normalizedSelection.start;
+            this.draftEnd = normalizedSelection.end;
+
+            const { onBrushChange } = this.props;
+            if (onBrushChange !== undefined) onBrushChange(normalizedSelection, moreProps);
+
+            const movedRect = this.getRectFromSelection(normalizedSelection.start, normalizedSelection.end, moreProps);
+            if (movedRect === null) return;
+
+            this.setBrushCursor("react-financial-charts-move-cursor");
+
+            this.setState({
+                selected: true,
+                rect: movedRect,
+            });
+
+            return;
+        }
 
         let nextStart = this.draftStart;
         let nextEnd = this.draftEnd;
@@ -516,6 +671,12 @@ export class Brush extends React.Component<BrushProps, BrushState> {
             if (this.dragMode === "resize-start" && this.draftEnd !== undefined) {
                 const edgeStart = this.getEdgeSelection(edge, this.draftStart ?? currentSelection);
                 this.draftStart = edgeStart;
+
+                const normalizedSelection = this.normalizeBrush(edgeStart, this.draftEnd);
+
+                const { onBrushChange } = this.props;
+                if (onBrushChange !== undefined) onBrushChange(normalizedSelection, moreProps);
+
                 const edgeRect = this.getRectFromSelection(edgeStart, this.draftEnd, moreProps);
                 if (edgeRect !== null)
                     this.setState({
@@ -528,6 +689,12 @@ export class Brush extends React.Component<BrushProps, BrushState> {
             if (this.dragMode === "resize-end" && this.draftStart !== undefined) {
                 const edgeEnd = this.getEdgeSelection(edge, this.draftEnd ?? currentSelection);
                 this.draftEnd = edgeEnd;
+
+                const normalizedSelection = this.normalizeBrush(this.draftStart, edgeEnd);
+
+                const { onBrushChange } = this.props;
+                if (onBrushChange !== undefined) onBrushChange(normalizedSelection, moreProps);
+
                 const edgeRect = this.getRectFromSelection(this.draftStart, edgeEnd, moreProps);
                 if (edgeRect !== null)
                     this.setState({
@@ -551,6 +718,11 @@ export class Brush extends React.Component<BrushProps, BrushState> {
 
         this.draftStart = nextStart;
         this.draftEnd = nextEnd;
+
+        const normalizedSelection = this.normalizeBrush(nextStart, nextEnd);
+
+        const { onBrushChange } = this.props;
+        if (onBrushChange !== undefined) onBrushChange(normalizedSelection, moreProps);
 
         const rect = this.getRectFromSelection(nextStart, nextEnd, moreProps);
 

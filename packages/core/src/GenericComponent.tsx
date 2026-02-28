@@ -34,6 +34,7 @@ interface GenericComponentProps {
     readonly onClickOutside?: (e: React.MouseEvent, moreProps: any) => void;
     readonly onPan?: (e: React.MouseEvent, moreProps: any) => void;
     readonly onPanEnd?: (e: React.MouseEvent, moreProps: any) => void;
+    readonly onZoom?: (e: any, moreProps: any) => void;
     readonly onDragStart?: (e: React.MouseEvent, moreProps: any) => void;
     readonly onDrag?: (e: React.MouseEvent, moreProps: any) => void;
     readonly onDragComplete?: (e: React.MouseEvent, moreProps: any) => void;
@@ -64,7 +65,7 @@ export class GenericComponent extends React.Component<GenericComponentProps, Gen
         enableDragOnHover: false,
     };
 
-    public declare context: React.ContextType<typeof ChartCanvasContext>;
+    declare public context: React.ContextType<typeof ChartCanvasContext>;
 
     public moreProps: any = {};
 
@@ -130,9 +131,8 @@ export class GenericComponent extends React.Component<GenericComponentProps, Gen
     }
 
     public listener = (type: string, moreProps: any, state: any, e: any) => {
-        if (moreProps !== undefined) {
-            this.updateMoreProps(moreProps);
-        }
+        if (moreProps !== undefined) this.updateMoreProps(moreProps);
+
         this.evaluationInProgress = true;
         this.evaluateType(type, e);
         this.evaluationInProgress = false;
@@ -142,56 +142,49 @@ export class GenericComponent extends React.Component<GenericComponentProps, Gen
         // @ts-ignore
         const newType = aliases[type] || type;
         const proceed = this.props.drawOn.indexOf(newType) > -1;
-        if (!proceed) {
-            return;
-        }
+        if (!proceed) return;
 
         this.preEvaluate(type, this.moreProps, e);
 
-        if (!this.shouldTypeProceed(type, this.moreProps)) {
-            return;
-        }
+        if (!this.shouldTypeProceed(type, this.moreProps)) return;
 
         switch (type) {
-            case "zoom":
+            case "zoom": {
+                if (this.props.onZoom) this.props.onZoom(e, this.getMoreProps());
+
+                break;
+            }
             case "mouseenter":
                 // DO NOT DRAW FOR THESE EVENTS
                 break;
             case "mouseleave": {
                 this.moreProps.hovering = false;
 
-                if (this.props.onUnHover) {
-                    this.props.onUnHover(e, this.getMoreProps());
-                }
+                if (this.props.onUnHover) this.props.onUnHover(e, this.getMoreProps());
+
                 break;
             }
             case "contextmenu": {
-                if (this.props.onContextMenu) {
-                    this.props.onContextMenu(e, this.getMoreProps());
-                }
-                if (this.moreProps.hovering && this.props.onContextMenuWhenHover) {
+                if (this.props.onContextMenu) this.props.onContextMenu(e, this.getMoreProps());
+
+                if (this.moreProps.hovering && this.props.onContextMenuWhenHover)
                     this.props.onContextMenuWhenHover(e, this.getMoreProps());
-                }
+
                 break;
             }
             case "mousedown": {
-                if (this.props.onMouseDown) {
-                    this.props.onMouseDown(e, this.getMoreProps());
-                }
+                if (this.props.onMouseDown) this.props.onMouseDown(e, this.getMoreProps());
+
                 break;
             }
             case "click": {
                 const { onClick, onClickOutside, onClickWhenHover } = this.props;
                 const moreProps = this.getMoreProps();
-                if (moreProps.hovering && onClickWhenHover !== undefined) {
-                    onClickWhenHover(e, moreProps);
-                } else if (onClickOutside !== undefined) {
-                    onClickOutside(e, moreProps);
-                }
+                if (moreProps.hovering && onClickWhenHover !== undefined) onClickWhenHover(e, moreProps);
+                else if (onClickOutside !== undefined) onClickOutside(e, moreProps);
 
-                if (onClick !== undefined) {
-                    onClick(e, moreProps);
-                }
+                if (onClick !== undefined) onClick(e, moreProps);
+
                 break;
             }
             case "mousemove": {
@@ -218,44 +211,33 @@ export class GenericComponent extends React.Component<GenericComponentProps, Gen
                 }
                 const moreProps = this.getMoreProps();
 
-                if (this.moreProps.hovering && !prevHover) {
-                    if (this.props.onHover) {
-                        this.props.onHover(e, moreProps);
-                    }
-                }
-                if (prevHover && !this.moreProps.hovering) {
-                    if (this.props.onUnHover) {
-                        this.props.onUnHover(e, moreProps);
-                    }
-                }
+                if (this.moreProps.hovering && !prevHover) if (this.props.onHover) this.props.onHover(e, moreProps);
 
-                if (this.props.onMouseMove) {
-                    this.props.onMouseMove(e, moreProps);
-                }
+                if (prevHover && !this.moreProps.hovering) if (this.props.onUnHover) this.props.onUnHover(e, moreProps);
+
+                if (this.props.onMouseMove) this.props.onMouseMove(e, moreProps);
+
                 break;
             }
             case "dblclick": {
                 const moreProps = this.getMoreProps();
 
-                if (this.props.onDoubleClick) {
-                    this.props.onDoubleClick(e, moreProps);
-                }
-                if (this.moreProps.hovering && this.props.onDoubleClickWhenHover) {
+                if (this.props.onDoubleClick) this.props.onDoubleClick(e, moreProps);
+
+                if (this.moreProps.hovering && this.props.onDoubleClickWhenHover)
                     this.props.onDoubleClickWhenHover(e, moreProps);
-                }
+
                 break;
             }
             case "pan": {
                 this.moreProps.hovering = false;
-                if (this.props.onPan) {
-                    this.props.onPan(e, this.getMoreProps());
-                }
+                if (this.props.onPan) this.props.onPan(e, this.getMoreProps());
+
                 break;
             }
             case "panend": {
-                if (this.props.onPanEnd) {
-                    this.props.onPanEnd(e, this.getMoreProps());
-                }
+                if (this.props.onPanEnd) this.props.onPanEnd(e, this.getMoreProps());
+
                 break;
             }
             case "dragstart": {
@@ -263,23 +245,19 @@ export class GenericComponent extends React.Component<GenericComponentProps, Gen
                     const { amIOnTop } = this.context;
                     if (amIOnTop(this.subscriberId)) {
                         this.dragInProgress = true;
-                        if (this.props.onDragStart !== undefined) {
-                            this.props.onDragStart(e, this.getMoreProps());
-                        }
+                        if (this.props.onDragStart !== undefined) this.props.onDragStart(e, this.getMoreProps());
                     }
                 }
                 break;
             }
             case "drag": {
-                if (this.dragInProgress && this.props.onDrag) {
-                    this.props.onDrag(e, this.getMoreProps());
-                }
+                if (this.dragInProgress && this.props.onDrag) this.props.onDrag(e, this.getMoreProps());
+
                 break;
             }
             case "dragend": {
-                if (this.dragInProgress && this.props.onDragComplete) {
-                    this.props.onDragComplete(e, this.getMoreProps());
-                }
+                if (this.dragInProgress && this.props.onDragComplete) this.props.onDragComplete(e, this.getMoreProps());
+
                 this.dragInProgress = false;
                 break;
             }
@@ -295,9 +273,7 @@ export class GenericComponent extends React.Component<GenericComponentProps, Gen
 
     public isHover(e: React.MouseEvent) {
         const { isHover } = this.props;
-        if (isHover === undefined) {
-            return false;
-        }
+        if (isHover === undefined) return false;
 
         return isHover(this.getMoreProps(), e);
     }
@@ -324,9 +300,7 @@ export class GenericComponent extends React.Component<GenericComponentProps, Gen
                 this.setState({
                     updateCount: updateCount + 1,
                 });
-            } else {
-                this.drawOnCanvas();
-            }
+            } else this.drawOnCanvas();
         }
     }
 
@@ -407,9 +381,7 @@ export class GenericComponent extends React.Component<GenericComponentProps, Gen
 
     public drawOnCanvas() {
         const { canvasDraw, canvasToDraw } = this.props;
-        if (canvasDraw === undefined || canvasToDraw === undefined) {
-            return;
-        }
+        if (canvasDraw === undefined || canvasToDraw === undefined) return;
 
         const { getCanvasContexts } = this.context;
 
@@ -427,9 +399,7 @@ export class GenericComponent extends React.Component<GenericComponentProps, Gen
 
     public render() {
         const { canvasDraw, clip, svgDraw } = this.props;
-        if (canvasDraw !== undefined || svgDraw === undefined) {
-            return null;
-        }
+        if (canvasDraw !== undefined || svgDraw === undefined) return null;
 
         const { chartId } = this.context;
 

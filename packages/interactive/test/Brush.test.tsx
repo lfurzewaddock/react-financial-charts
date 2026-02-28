@@ -40,6 +40,7 @@ const createHarness = (props?: Partial<React.ComponentProps<typeof Brush>>) => {
     const setCursorClass = jest.fn();
     const xAxisZoom = jest.fn();
     const onBrush = jest.fn();
+    const redraw = jest.fn();
 
     const chartCanvasCtx = {
         width: 100,
@@ -69,7 +70,7 @@ const createHarness = (props?: Partial<React.ComponentProps<typeof Brush>>) => {
         subscribe: jest.fn(),
         unsubscribe: jest.fn(),
         setCursorClass,
-        redraw: jest.fn(),
+        redraw,
     };
 
     const chartCtx = {
@@ -77,15 +78,17 @@ const createHarness = (props?: Partial<React.ComponentProps<typeof Brush>>) => {
         chartConfig,
     };
 
-    const rendered = render(
+    const renderBrush = (nextProps?: Partial<React.ComponentProps<typeof Brush>>) => (
         <ChartCanvasContext.Provider value={chartCanvasCtx as any}>
             <ChartContext.Provider value={chartCtx as any}>
                 <svg>
-                    <Brush ref={brushRef} enabled type="1D" minimumSelectionSize={5} onBrush={onBrush} {...props} />
+                    <Brush ref={brushRef} enabled type="1D" minimumSelectionSize={5} onBrush={onBrush} {...nextProps} />
                 </svg>
             </ChartContext.Provider>
-        </ChartCanvasContext.Provider>,
+        </ChartCanvasContext.Provider>
     );
+
+    const rendered = render(renderBrush(props));
 
     const xAccessor = (datum: { x: number }) => datum.x;
 
@@ -103,7 +106,11 @@ const createHarness = (props?: Partial<React.ComponentProps<typeof Brush>>) => {
     return {
         brush: brushRef.current!,
         buildMoreProps,
+        updateProps: (nextProps?: Partial<React.ComponentProps<typeof Brush>>) => {
+            rendered.rerender(renderBrush(nextProps));
+        },
         onBrush,
+        redraw,
         setCursorClass,
         xAxisZoom,
         ...rendered,
@@ -118,6 +125,112 @@ const buildMouseDownEvent = (left = 0, right = 100) =>
     }) as unknown as React.MouseEvent;
 
 describe("Brush focus-context behaviour", () => {
+    it("initializes selection from interactiveState", () => {
+        const { brush } = createHarness({
+            interactiveState: {
+                start: { item: { x: 2 }, xValue: 2 },
+                end: { item: { x: 8 }, xValue: 8 },
+            },
+        });
+
+        expect((brush.state.start as any)?.xValue).toBe(2);
+        expect((brush.state.end as any)?.xValue).toBe(8);
+    });
+
+    it("syncs selection from interactiveState updates when idle", () => {
+        const { brush, updateProps } = createHarness({
+            interactiveState: {
+                start: { item: { x: 2 }, xValue: 2 },
+                end: { item: { x: 8 }, xValue: 8 },
+            },
+        });
+
+        act(() => {
+            updateProps({
+                interactiveState: {
+                    start: { item: { x: 4 }, xValue: 4 },
+                    end: { item: { x: 9 }, xValue: 9 },
+                },
+            });
+        });
+
+        expect((brush.state.start as any)?.xValue).toBe(4);
+        expect((brush.state.end as any)?.xValue).toBe(9);
+    });
+
+    it("requests chart redraw when syncing interactiveState", () => {
+        const { updateProps, redraw } = createHarness({
+            interactiveState: {
+                start: { item: { x: 2 }, xValue: 2 },
+                end: { item: { x: 8 }, xValue: 8 },
+            },
+        });
+
+        redraw.mockClear();
+
+        act(() => {
+            updateProps({
+                interactiveState: {
+                    start: { item: { x: 3 }, xValue: 3 },
+                    end: { item: { x: 9 }, xValue: 9 },
+                },
+            });
+        });
+
+        expect(redraw).toHaveBeenCalledTimes(1);
+    });
+
+    it("ignores interactiveState updates while a drag interaction is active", () => {
+        const { brush, buildMoreProps, updateProps } = createHarness({
+            interactiveState: {
+                start: { item: { x: 2 }, xValue: 2 },
+                end: { item: { x: 8 }, xValue: 8 },
+            },
+        });
+
+        act(() => {
+            (brush as any).handleZoomStart(buildMouseDownEvent(), buildMoreProps(1));
+        });
+
+        expect(brush.state.x1y1).not.toBeNull();
+
+        act(() => {
+            updateProps({
+                interactiveState: {
+                    start: { item: { x: 4 }, xValue: 4 },
+                    end: { item: { x: 9 }, xValue: 9 },
+                },
+            });
+        });
+
+        expect((brush.state.start as any)?.xValue).toBe(2);
+        expect((brush.state.end as any)?.xValue).toBe(8);
+    });
+
+    it("does not mutate selection when interactiveState values are unchanged", () => {
+        const { brush, updateProps } = createHarness({
+            interactiveState: {
+                start: { item: { x: 2 }, xValue: 2 },
+                end: { item: { x: 8 }, xValue: 8 },
+            },
+        });
+
+        const previousStart = brush.state.start;
+        const previousEnd = brush.state.end;
+
+        act(() => {
+            updateProps({
+                interactiveState: {
+                    start: { item: { x: 2 }, xValue: 2 },
+                    end: { item: { x: 8 }, xValue: 8 },
+                },
+            });
+        });
+
+        expect(brush.state.start).toBe(previousStart);
+        expect(brush.state.end).toBe(previousEnd);
+    });
+
     it("commits normalized brush range and persists committed selection", () => {
         const { brush, buildMoreProps, onBrush, xAxisZoom } = createHarness({ zoomToDomain: true });
 
@@ -420,7 +533,25 @@ describe("Brush focus-context behaviour", () => {
         expect(end.xValue).toBe(8);
     });
 
-    it("retains previous selection when attempted new selection is below minimum size", () => {
+    it("shows move cursor when hovering inside an existing selection body", () => {
+        const { brush, buildMoreProps, setCursorClass } = createHarness();
+
+        act(() => {
+            brush.setState({
+                start: { item: { x: 2 }, xValue: 2 },
+                end: { item: { x: 8 }, xValue: 8 },
+            });
+        });
+
+        act(() => {
+            (brush as any).handleDrawSquare({} as React.MouseEvent, buildMoreProps(5));
+        });
+
+        const cursorCalls = setCursorClass.mock.calls.map(([value]) => value);
+        expect(cursorCalls).toContain("react-financial-charts-move-cursor");
+    });
+
+    it("retains previous selection when attempted new outside selection is below minimum size", () => {
         const { brush, buildMoreProps, onBrush } = createHarness({ minimumSelectionSize: 20 });
 
         act(() => {
@@ -431,20 +562,50 @@ describe("Brush focus-context behaviour", () => {
         });
 
         act(() => {
-            (brush as any).handleZoomStart({} as React.MouseEvent, buildMoreProps(5));
+            (brush as any).handleZoomStart(buildMouseDownEvent(), buildMoreProps(1));
         });
 
         act(() => {
-            (brush as any).handleDrawSquare({} as React.MouseEvent, buildMoreProps(5.5));
+            (brush as any).handleDrawSquare({} as React.MouseEvent, buildMoreProps(1.5));
         });
 
         act(() => {
-            (brush as any).handleZoomComplete({} as React.MouseEvent, buildMoreProps(5.5));
+            (brush as any).handleZoomComplete({} as React.MouseEvent, buildMoreProps(1.5));
         });
 
         expect(onBrush).not.toHaveBeenCalled();
         expect((brush.state.start as any)?.xValue).toBe(2);
         expect((brush.state.end as any)?.xValue).toBe(8);
+    });
+
+    it("moves existing selection when dragging between handles", () => {
+        const { brush, buildMoreProps, onBrush } = createHarness();
+
+        act(() => {
+            brush.setState({
+                start: { item: { x: 2 }, xValue: 2 },
+                end: { item: { x: 8 }, xValue: 8 },
+            });
+        });
+
+        act(() => {
+            (brush as any).handleZoomStart(buildMouseDownEvent(), buildMoreProps(5));
+        });
+
+        act(() => {
+            (brush as any).handleDrawSquare({} as React.MouseEvent, buildMoreProps(6));
+        });
+
+        act(() => {
+            (brush as any).handleZoomComplete({} as React.MouseEvent, buildMoreProps(6));
+        });
+
+        expect(onBrush).toHaveBeenCalledTimes(1);
+        const [{ start, end }] = onBrush.mock.calls[0];
+        expect(start.xValue).toBeCloseTo(3, 12);
+        expect(end.xValue).toBeCloseTo(9, 12);
+        expect((brush.state.start as any)?.xValue).toBeCloseTo(3, 12);
+        expect((brush.state.end as any)?.xValue).toBeCloseTo(9, 12);
     });
 
     it("replaces an existing selection when dragging a new selection from outside current bounds", () => {
