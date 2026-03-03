@@ -551,7 +551,7 @@ describe("Brush focus-context behaviour", () => {
         expect(cursorCalls).toContain("react-financial-charts-move-cursor");
     });
 
-    it("retains previous selection when attempted new outside selection is below minimum size", () => {
+    it("snaps attempted new outside selection to minimum size when below threshold", () => {
         const { brush, buildMoreProps, onBrush } = createHarness({ minimumSelectionSize: 20 });
 
         act(() => {
@@ -573,9 +573,72 @@ describe("Brush focus-context behaviour", () => {
             (brush as any).handleZoomComplete({} as React.MouseEvent, buildMoreProps(1.5));
         });
 
-        expect(onBrush).not.toHaveBeenCalled();
-        expect((brush.state.start as any)?.xValue).toBe(2);
+        expect(onBrush).toHaveBeenCalledTimes(1);
+        const [{ start, end }] = onBrush.mock.calls[0];
+        expect(start.xValue).toBe(1);
+        expect(end.xValue).toBe(3);
+        expect((brush.state.start as any)?.xValue).toBe(1);
+        expect((brush.state.end as any)?.xValue).toBe(3);
+    });
+
+    it("snaps resize-start interaction to minimum size when below threshold", () => {
+        const { brush, buildMoreProps, onBrush } = createHarness({ minimumSelectionSize: 40 });
+
+        act(() => {
+            brush.setState({
+                start: { item: { x: 2 }, xValue: 2 },
+                end: { item: { x: 8 }, xValue: 8 },
+            });
+        });
+
+        act(() => {
+            (brush as any).handleZoomStart(buildMouseDownEvent(), buildMoreProps(2));
+        });
+
+        act(() => {
+            (brush as any).handleDrawSquare({} as React.MouseEvent, buildMoreProps(7.5));
+        });
+
+        act(() => {
+            (brush as any).handleZoomComplete({} as React.MouseEvent, buildMoreProps(7.5));
+        });
+
+        expect(onBrush).toHaveBeenCalledTimes(1);
+        const [{ start, end }] = onBrush.mock.calls[0];
+        expect(start.xValue).toBe(4);
+        expect(end.xValue).toBe(8);
+        expect((brush.state.start as any)?.xValue).toBe(4);
         expect((brush.state.end as any)?.xValue).toBe(8);
+    });
+
+    it("snaps resize-end interaction to minimum size when below threshold", () => {
+        const { brush, buildMoreProps, onBrush } = createHarness({ minimumSelectionSize: 40 });
+
+        act(() => {
+            brush.setState({
+                start: { item: { x: 2 }, xValue: 2 },
+                end: { item: { x: 8 }, xValue: 8 },
+            });
+        });
+
+        act(() => {
+            (brush as any).handleZoomStart(buildMouseDownEvent(), buildMoreProps(8));
+        });
+
+        act(() => {
+            (brush as any).handleDrawSquare({} as React.MouseEvent, buildMoreProps(2.5));
+        });
+
+        act(() => {
+            (brush as any).handleZoomComplete({} as React.MouseEvent, buildMoreProps(2.5));
+        });
+
+        expect(onBrush).toHaveBeenCalledTimes(1);
+        const [{ start, end }] = onBrush.mock.calls[0];
+        expect(start.xValue).toBe(2);
+        expect(end.xValue).toBe(6);
+        expect((brush.state.start as any)?.xValue).toBe(2);
+        expect((brush.state.end as any)?.xValue).toBe(6);
     });
 
     it("moves existing selection when dragging between handles", () => {

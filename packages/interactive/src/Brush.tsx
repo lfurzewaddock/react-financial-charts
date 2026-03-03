@@ -97,6 +97,108 @@ export class Brush extends React.Component<BrushProps, BrushState> {
         };
     };
 
+    private readonly applyMinimumSelectionSize = (
+        start: BrushSelection,
+        end: BrushSelection,
+        moreProps: any,
+        dragMode: DragMode | undefined,
+    ) => {
+        const { minimumSelectionSize = Brush.defaultProps.minimumSelectionSize, type = Brush.defaultProps.type } =
+            this.props;
+
+        const normalizedSelection = this.normalizeBrush(start, end);
+
+        if (type !== "1D") return normalizedSelection;
+
+        const startPixel = moreProps.xScale(normalizedSelection.start.xValue);
+        const endPixel = moreProps.xScale(normalizedSelection.end.xValue);
+
+        if (!Number.isFinite(startPixel) || !Number.isFinite(endPixel)) return normalizedSelection;
+
+        const currentWidth = Math.abs(endPixel - startPixel);
+        if (currentWidth >= minimumSelectionSize) return normalizedSelection;
+
+        const [rangeStart, rangeEnd] = moreProps.xScale.range();
+        const rangeMin = Math.min(rangeStart, rangeEnd);
+        const rangeMax = Math.max(rangeStart, rangeEnd);
+        const maxRangeWidth = Math.max(0, rangeMax - rangeMin);
+        const targetWidth = Math.min(minimumSelectionSize, maxRangeWidth);
+
+        if (targetWidth <= 0) return normalizedSelection;
+
+        const rawStartPixel = moreProps.xScale(start.xValue);
+        const rawEndPixel = moreProps.xScale(end.xValue);
+
+        const clampToRange = (left: number, right: number) => {
+            let nextLeft = left;
+            let nextRight = right;
+
+            if (nextLeft < rangeMin) {
+                const delta = rangeMin - nextLeft;
+                nextLeft += delta;
+                nextRight += delta;
+            }
+
+            if (nextRight > rangeMax) {
+                const delta = nextRight - rangeMax;
+                nextLeft -= delta;
+                nextRight -= delta;
+            }
+
+            return {
+                left: Math.max(rangeMin, nextLeft),
+                right: Math.min(rangeMax, nextRight),
+            };
+        };
+
+        let leftPixel: number;
+        let rightPixel: number;
+
+        if (dragMode === "resize-start" && Number.isFinite(rawStartPixel) && Number.isFinite(rawEndPixel))
+            if (rawStartPixel <= rawEndPixel) {
+                leftPixel = rawEndPixel - targetWidth;
+                rightPixel = rawEndPixel;
+            } else {
+                leftPixel = rawEndPixel;
+                rightPixel = rawEndPixel + targetWidth;
+            }
+        else if (dragMode === "resize-end" && Number.isFinite(rawStartPixel) && Number.isFinite(rawEndPixel))
+            if (rawEndPixel >= rawStartPixel) {
+                leftPixel = rawStartPixel;
+                rightPixel = rawStartPixel + targetWidth;
+            } else {
+                leftPixel = rawStartPixel - targetWidth;
+                rightPixel = rawStartPixel;
+            }
+        else if (dragMode === "new" && Number.isFinite(rawStartPixel) && Number.isFinite(rawEndPixel))
+            if (rawEndPixel >= rawStartPixel) {
+                leftPixel = rawStartPixel;
+                rightPixel = rawStartPixel + targetWidth;
+            } else {
+                leftPixel = rawStartPixel - targetWidth;
+                rightPixel = rawStartPixel;
+            }
+        else {
+            const center = (startPixel + endPixel) / 2;
+            leftPixel = center - targetWidth / 2;
+            rightPixel = center + targetWidth / 2;
+        }
+
+        const clampedSelection = clampToRange(leftPixel, rightPixel);
+
+        const adjustedStart = {
+            ...normalizedSelection.start,
+            xValue: moreProps.xScale.invert(clampedSelection.left),
+        };
+
+        const adjustedEnd = {
+            ...normalizedSelection.end,
+            xValue: moreProps.xScale.invert(clampedSelection.right),
+        };
+
+        return this.normalizeBrush(adjustedStart, adjustedEnd);
+    };
+
     private readonly areSelectionsEqual = (left?: BrushSelection, right?: BrushSelection) => {
         if (left === right) return true;
 
@@ -374,7 +476,7 @@ export class Brush extends React.Component<BrushProps, BrushState> {
 
     private readonly commitSelection = (start: BrushSelection, end: BrushSelection, moreProps: any) => {
         const { onBrush, zoomToDomain } = this.props;
-        const normalizedSelection = this.normalizeBrush(start, end);
+        const normalizedSelection = this.applyMinimumSelectionSize(start, end, moreProps, this.dragMode);
 
         if (zoomToDomain) {
             const { xAxisZoom } = this.context;
@@ -757,8 +859,25 @@ export class Brush extends React.Component<BrushProps, BrushState> {
                 ? rect.width >= minimumSelectionSize
                 : rect.width >= minimumSelectionSize && rect.height >= minimumSelectionSize);
 
-        if (this.zoomHappening && selectionIsValid && this.draftStart !== undefined && this.draftEnd !== undefined) {
-            const normalizedSelection = this.normalizeBrush(this.draftStart, this.draftEnd);
+        if (this.zoomHappening && this.draftStart !== undefined && this.draftEnd !== undefined) {
+            if (type !== "1D" && !selectionIsValid) {
+                this.resetInteractionTracking();
+
+                this.setState({
+                    selected: false,
+                    x1y1: null,
+                    start: nextStart,
+                    end: nextEnd,
+                    rect: null,
+                });
+
+                return;
+            }
+
+            const normalizedSelection =
+                type === "1D"
+                    ? this.applyMinimumSelectionSize(this.draftStart, this.draftEnd, moreProps, this.dragMode)
+                    : this.normalizeBrush(this.draftStart, this.draftEnd);
 
             nextStart = normalizedSelection.start;
             nextEnd = normalizedSelection.end;
