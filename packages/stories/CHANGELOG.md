@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.2.0](https://github.com/lfurzewaddock/react-financial-charts/compare/v2.1.0...v2.2.0) (2026-03-03)
+
+### Features
+
+- brush/ctx chart nav step 1 (resizes with focus chart) ([719c823](https://github.com/lfurzewaddock/react-financial-charts/commit/719c823fd4bbd334fc37d5d6d04ca38775786698))
+- context chart brush selection persist ([73256ff](https://github.com/lfurzewaddock/react-financial-charts/commit/73256ffb36d1877c02548757ad7dcea5633caf34))
+
 # [2.1.0](https://github.com/lfurzewaddock/react-financial-charts/compare/v2.0.4...v2.1.0) (2026-02-24)
 
 ### Features
