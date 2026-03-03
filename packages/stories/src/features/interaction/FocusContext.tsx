@@ -14,7 +14,14 @@ import {
 } from "react-financial-charts";
 import { IOHLCData, withOHLCData } from "../../data";
 
-interface ChartProps {
+export interface FocusCtxProps {
+    readonly ctxLineStrokeStyle: string;
+    readonly ctxBrushStrokeStyle: string;
+    readonly ctxBrushFillStyle: string;
+    readonly ctxBrushMinSelectionSize: number;
+    readonly ctxXAxisShowGridLines: boolean;
+}
+interface ChartProps extends FocusCtxProps {
     readonly data: IOHLCData[];
     readonly height: number;
     readonly ratio: number;
@@ -42,7 +49,17 @@ class FocusContext extends React.Component<ChartProps, FocusContextState> {
     }
 
     public render() {
-        const { data: initialData, height, ratio, width } = this.props;
+        const {
+            data: initialData,
+            height,
+            ratio,
+            width,
+            ctxBrushStrokeStyle = "#2563eb",
+            ctxLineStrokeStyle = "#2563eb",
+            ctxBrushFillStyle = "rgba(37, 99, 235, 0.18)",
+            ctxBrushMinSelectionSize = 5,
+            ctxXAxisShowGridLines = true,
+        } = this.props;
         // abort if no height yet
         if (height <= 0) return;
 
@@ -114,18 +131,18 @@ class FocusContext extends React.Component<ChartProps, FocusContextState> {
                     useCrossHairStyleCursor={false}
                 >
                     <Chart id={2} yExtents={this.contextYExtents}>
-                        <XAxis ticks={6} showGridLines />
+                        <XAxis ticks={6} showGridLines={ctxXAxisShowGridLines} />
                         <YAxis ticks={3} showTicks={false} showDomain={false} showTickLabel={false} />
-                        <LineSeries yAccessor={this.contextYExtents} strokeStyle="#2563eb" />
+                        <LineSeries yAccessor={this.contextYExtents} strokeStyle={ctxLineStrokeStyle} />
                         <Brush
                             enabled
                             type="1D"
                             onBrush={this.handleBrush}
                             onBrushChange={this.handleBrush}
                             interactiveState={brushInteractiveState}
-                            minimumSelectionSize={5}
-                            strokeStyle="#2563eb"
-                            fillStyle="rgba(37, 99, 235, 0.18)"
+                            minimumSelectionSize={ctxBrushMinSelectionSize}
+                            strokeStyle={ctxBrushStrokeStyle}
+                            fillStyle={ctxBrushFillStyle}
                         />
                     </Chart>
                 </ChartCanvas>
