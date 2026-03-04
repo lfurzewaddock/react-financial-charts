@@ -6,5 +6,7 @@ allowBuilds:
   nx: true
 
 onlyBuiltDependencies:
+  - '@swc/core'
   - esbuild
   - nx
+  - unrs-resolver
